@@ -66,6 +66,10 @@ function ProductListingContent() {
   const [selectedRange, setSelectedRange] = useState<string>('Tất cả');
   const [selectedType, setSelectedType] = useState<string>('Tất cả');
 
+  // Khai báo state cho tính năng Xem thêm (Load More)
+  const ITEMS_PER_PAGE = 16;
+  const [visibleCount, setVisibleCount] = useState<number>(ITEMS_PER_PAGE);
+
   const filterSummaryRef = useRef<HTMLDivElement>(null);
 
   // Lấy data từ Supabase
@@ -99,6 +103,11 @@ function ProductListingContent() {
     const rangeParam = searchParams.get('range');
     setSelectedRange(rangeParam || 'Tất cả');
   }, [searchParams]);
+
+  // Reset số lượng hiển thị về 16 mỗi khi thay đổi bộ lọc hoặc tìm kiếm
+  useEffect(() => {
+    setVisibleCount(ITEMS_PER_PAGE);
+  }, [selectedCategory, selectedMaterial, priceRange, showOnlyDiscount, selectedRange, selectedType, searchParams.get('search')]);
 
   const filteredProducts = products.filter(product => {
     let matchRoom = true;
@@ -166,6 +175,9 @@ function ProductListingContent() {
       }
       return (sizeOrder[a.size || 'S'] || 0) - (sizeOrder[b.size || 'S'] || 0);
   });
+
+  // Chỉ lấy số lượng sản phẩm hiển thị dựa trên visibleCount
+  const displayedProducts = sortedAndFilteredProducts.slice(0, visibleCount);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
@@ -395,62 +407,79 @@ function ProductListingContent() {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
-                {sortedAndFilteredProducts.map((product) => (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="group cursor-pointer flex flex-col"
-                  >
-                    <Link className="block" href={`/san-pham/${product.slug}`}>
-                      <div className="relative aspect-square overflow-hidden bg-[#faf8f5] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] rounded-[2px] mb-6">
-                        <OptimizedImage 
-                          src={product.images?.[0]} 
-                          alt={product.name} 
-                          aspectRatio="square" 
-                          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
-                        />
-                        {product.images?.[1] && (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
+                  {displayedProducts.map((product) => (
+                    <motion.div
+                      key={product.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      className="group cursor-pointer flex flex-col"
+                    >
+                      <Link className="block" href={`/san-pham/${product.slug}`}>
+                        <div className="relative aspect-square overflow-hidden bg-[#faf8f5] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] rounded-[2px] mb-6">
                           <OptimizedImage 
-                            src={product.images[1]} 
-                            alt={`${product.name} detail`} 
+                            src={product.images?.[0]} 
+                            alt={product.name} 
                             aspectRatio="square" 
-                            className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700" 
+                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
                           />
-                        )}
-                      </div>
+                          {product.images?.[1] && (
+                            <OptimizedImage 
+                              src={product.images[1]} 
+                              alt={`${product.name} detail`} 
+                              aspectRatio="square" 
+                              className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700" 
+                            />
+                          )}
+                        </div>
 
-                      <div className="flex flex-col items-start px-2">
-                        <div className="flex items-center gap-3 mb-3">
-                          <span className="text-[10px] tracking-[0.1em] font-semibold text-wood/40">
-                            {product.dimensions ? `${product.dimensions} mm` : (product.size ? `SIZE ${product.size}` : '')}
-                          </span>
-                          {product.old_price && (
-                            <>
-                              <span className="w-1 h-px bg-wood/20"></span>
-                              <span className="text-[10px] tracking-widest uppercase font-bold text-maroon">
-                                -{Math.round((1 - product.price / product.old_price) * 100)}%
-                              </span>
-                            </>
-                          )}
+                        <div className="flex flex-col items-start px-2">
+                          <div className="flex items-center gap-3 mb-3">
+                            <span className="text-[10px] tracking-[0.1em] font-semibold text-wood/40">
+                              {product.dimensions ? `${product.dimensions} mm` : (product.size ? `SIZE ${product.size}` : '')}
+                            </span>
+                            {product.old_price && (
+                              <>
+                                <span className="w-1 h-px bg-wood/20"></span>
+                                <span className="text-[10px] tracking-widest uppercase font-bold text-maroon">
+                                  -{Math.round((1 - product.price / product.old_price) * 100)}%
+                                </span>
+                              </>
+                            )}
+                          </div>
+                          <h3 className="text-xl font-serif text-wood font-light tracking-wide mb-3 group-hover:text-maroon transition-colors line-clamp-1">
+                            {product.name}
+                          </h3>
+                          
+                          <div className="flex items-center gap-3">
+                            <span className="text-[15px] font-sans font-medium text-wood">{formatPrice(product.price)}</span>
+                            {product.old_price && (
+                              <span className="text-[13px] font-sans text-wood/40 line-through">{formatPrice(product.old_price)}</span>
+                            )}
+                          </div>
                         </div>
-                        <h3 className="text-xl font-serif text-wood font-light tracking-wide mb-3 group-hover:text-maroon transition-colors line-clamp-1">
-                          {product.name}
-                        </h3>
-                        
-                        <div className="flex items-center gap-3">
-                          <span className="text-[15px] font-sans font-medium text-wood">{formatPrice(product.price)}</span>
-                          {product.old_price && (
-                            <span className="text-[13px] font-sans text-wood/40 line-through">{formatPrice(product.old_price)}</span>
-                          )}
-                        </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                ))}
-              </div>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Nút Xem Thêm (Load More) */}
+                {visibleCount < sortedAndFilteredProducts.length && (
+                  <div className="mt-20 text-center">
+                    <button
+                      onClick={() => setVisibleCount(prev => prev + ITEMS_PER_PAGE)}
+                      className="inline-flex items-center gap-2 bg-transparent border-2 border-wood text-wood px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[12px] hover:bg-wood hover:text-white transition-all shadow-sm"
+                    >
+                      Xem thêm sản phẩm
+                    </button>
+                    <p className="text-wood/40 text-xs mt-4">
+                      Đang hiển thị {displayedProducts.length} / {sortedAndFilteredProducts.length} sản phẩm
+                    </p>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
