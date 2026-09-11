@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+/* Cấu hình màu sắc và font chữ chuẩn theo Document của Happy Furniture */
+@theme {
+  --color-ivory: #FDFCF0;
+  --color-maroon: #800000;
+  --color-wood: #2C1E1A;
+  --color-primary: #FDFCF0;
+  --color-accent: #800000;
+  --color-secondary: #2C1E1A;
+
+  --font-sans: var(--font-inter), sans-serif;
+  --font-serif: var(--font-playfair), serif;
+}
+
+/* Ép toàn bộ web sử dụng nền ngà (ivory) và chữ nâu (wood) */
+@layer base {
+  body {
+    @apply bg-ivory text-wood font-sans antialiased;
+  }
+}
