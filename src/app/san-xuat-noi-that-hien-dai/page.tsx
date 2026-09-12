@@ -10,6 +10,24 @@ export const metadata: Metadata = {
   keywords: ['nội thất không gian sống hiện đại', 'tối ưu tiện nghi', 'công năng nội thất', 'sản xuất nội thất hiện đại', 'thiết kế nội thất tối giản']
 };
 
+const interiorPhotos = [
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_001.webp', caption: 'HỆ TỦ BẾP HIỆN ĐẠI TỐI ƯU CÔNG NĂNG' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_002.webp', caption: 'KHÔNG GIAN PHÒNG KHÁCH TINH GỌN' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_003.webp', caption: 'THIẾT KẾ PHÒNG NGỦ ẤM ÁP' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_004.webp', caption: 'TỦ QUẦN ÁO KỊCH TRẦN THÔNG MINH' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_005.webp', caption: 'GÓC LÀM VIỆC KẾT HỢP KỆ LƯU TRỮ' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_006.webp', caption: 'SỰ KẾT HỢP VẬT LIỆU MDF VÀ ÁNH SÁNG' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_007.webp', caption: 'ĐƯỜNG NÉT SẮC SẢO, THI CÔNG CHUẨN XÁC' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_008.webp', caption: 'BÀN GIAO THỰC TẾ TẠI CĂN HỘ CHUNG CƯ' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_009.webp', caption: 'NỘI THẤT NHÀ PHỐ HIỆN ĐẠI' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_010.webp', caption: 'NỘI THẤT NHÀ PHỐ HIỆN ĐẠI' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_011.webp', caption: 'NỘI THẤT NHÀ PHỐ HIỆN ĐẠI' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_012.webp', caption: 'NỘI THẤT NHÀ PHỐ HIỆN ĐẠI' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_013.webp', caption: 'NỘI THẤT NHÀ PHỐ HIỆN ĐẠI' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_014.webp', caption: 'NỘI THẤT NHÀ PHỐ HIỆN ĐẠI' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_015.webp', caption: 'NỘI THẤT NHÀ PHỐ HIỆN ĐẠI' }
+];
+
 export default function NoiThatHienDaiPage() {
   return (
     <div className="bg-ivory min-h-screen text-wood">
@@ -47,19 +65,53 @@ export default function NoiThatHienDaiPage() {
         </div>
       </section>
 
+      {/* SECTION HÌNH ẢNH NỘI THẤT THỰC TẾ (SẮC CẠNH DỌC) */}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16 max-w-3xl mx-auto">
+            <h2 className="text-maroon font-bold uppercase tracking-[4px] text-xs mb-4">Từ bản vẽ đến thực tế</h2>
+            <h3 className="text-[32px] md:text-[42px] font-serif font-bold text-wood mb-4">
+              Không Gian Sống Hoàn Thiện
+            </h3>
+            <p className="text-wood/60 text-sm md:text-base">
+              Minh chứng thực tế cho triết lý thiết kế tinh gọn & năng lực thi công của đội ngũ Happy Furniture.
+            </p>
+            <div className="w-20 h-1 bg-maroon mx-auto mt-6" />
+          </div>
+
+          <div className="-mx-6 px-6 md:mx-0 md:px-0">
+            <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              {interiorPhotos.map((photo, index) => (
+                <div key={index} className="w-[85vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-start">
+                  <div className="group relative overflow-hidden bg-wood/5 aspect-[3/4]">
+                    <OptimizedImage 
+                      src={photo.url} alt={photo.caption}
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-wood/90 via-wood/20 to-transparent opacity-90 flex items-end p-6 md:p-8">
+                      <p className="text-white text-xs md:text-sm font-bold tracking-widest uppercase">{photo.caption}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Năng lực cốt lõi - Thiết kế */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-ivory border-t border-wood/5">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <h2 className="text-maroon font-bold uppercase tracking-[4px] text-xs mb-4">Triết Lý Thiết Kế</h2>
             <h3 className="text-[32px] md:text-[40px] font-serif font-bold text-wood mb-6">
-              Không gian sống là công cụ phục vụ con người
+              Không gian sống hiện đại tiện nghi kiến tạo mái ấm gia đình hạnh phúc
             </h3>
             <div className="w-20 h-1 bg-maroon mx-auto" />
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-ivory p-8 rounded-2xl border border-wood/5 shadow-sm">
+            <div className="bg-white p-8 rounded-2xl border border-wood/5 shadow-sm">
               <div className="w-14 h-14 bg-maroon text-white rounded-xl flex items-center justify-center mb-6 shadow-md">
                 <Zap className="w-7 h-7" />
               </div>
@@ -69,7 +121,7 @@ export default function NoiThatHienDaiPage() {
               </p>
             </div>
 
-            <div className="bg-ivory p-8 rounded-2xl border border-wood/5 shadow-sm">
+            <div className="bg-white p-8 rounded-2xl border border-wood/5 shadow-sm">
               <div className="w-14 h-14 bg-maroon text-white rounded-xl flex items-center justify-center mb-6 shadow-md">
                 <LayoutTemplate className="w-7 h-7" />
               </div>
@@ -79,7 +131,7 @@ export default function NoiThatHienDaiPage() {
               </p>
             </div>
 
-            <div className="bg-ivory p-8 rounded-2xl border border-wood/5 shadow-sm">
+            <div className="bg-white p-8 rounded-2xl border border-wood/5 shadow-sm">
               <div className="w-14 h-14 bg-maroon text-white rounded-xl flex items-center justify-center mb-6 shadow-md">
                 <Maximize className="w-7 h-7" />
               </div>
@@ -96,7 +148,7 @@ export default function NoiThatHienDaiPage() {
       <section className="py-24 bg-maroon text-white text-center">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-[32px] md:text-[48px] font-serif font-bold mb-6">
-            Làm mới không gian, nâng tầm cuộc sống
+            Tối ưu không gian, tiện nghi cuộc sống
           </h2>
           <p className="text-white/80 text-lg mb-10 max-w-2xl mx-auto">
             Gửi cho chúng tôi mặt bằng căn hộ của bạn, đội ngũ Happy Furniture sẽ đưa ra giải pháp thiết kế hiện đại và tối ưu tiện nghi nhất.

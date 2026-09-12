@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-// Đã xóa Facebook và Instagram ra khỏi lucide-react
 import { MapPin, Phone, MessageCircle, ArrowRight, ShieldCheck, Factory, Zap } from 'lucide-react';
 
 // Khôi phục Icon Facebook bằng SVG chuẩn style của Lucide
@@ -23,9 +22,11 @@ export const Footer = () => {
   return (
     <footer className="bg-wood text-ivory pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        {/* Đã đổi lg:grid-cols-4 thành lg:grid-cols-5 để thêm cột Năng lực */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+          
           {/* Column 1: About */}
-          <div className="space-y-6">
+          <div className="space-y-6 lg:col-span-1">
             <div>
               <Link href="/" className="flex flex-col items-start group">
                 <h2 className="text-2xl font-extrabold tracking-tighter text-white group-hover:text-maroon transition-colors leading-none">HAPPY FURNITURE</h2>
@@ -35,7 +36,7 @@ export const Footer = () => {
               </Link>
             </div>
             <p className="text-sm leading-relaxed text-ivory/70">
-              <span className="text-white font-bold block mb-2">Xưởng sản xuất 1000m2 tại Quận 12, TP.HCM.</span>
+              <span className="text-white font-bold block mb-2">Xưởng sản xuất tại Quận 12, TP.HCM.</span>
               Chuyên thiết kế và thi công nội thất may đo trọn gói tại <span className="text-white font-bold">TP.HCM, Bình Dương</span> và các khu vực lân cận (Đồng Nai, Tây Ninh & Long An).
             </p>
             <div className="flex gap-4">
@@ -48,7 +49,23 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* Column 2: System */}
+          {/* Column 2: Core Competencies (Năng lực cốt lõi - SEO Links) */}
+          <div className="space-y-6">
+            <h3 className="text-[12px] uppercase tracking-[4px] font-bold text-white border-b border-white/10 pb-4">Năng Lực</h3>
+            <div className="flex flex-col gap-4">
+              <Link href="/xuong-san-xuat-noi-that" className="text-sm text-ivory/70 hover:text-white transition-colors">
+                Xưởng sản xuất trực tiếp
+              </Link>
+              <Link href="/noi-that-go-cong-nghiep" className="text-sm text-ivory/70 hover:text-white transition-colors">
+                Vật liệu gỗ công nghiệp
+              </Link>
+              <Link href="/san-xuat-noi-that-hien-dai" className="text-sm text-ivory/70 hover:text-white transition-colors">
+                Sản xuất nội thất hiện đại
+              </Link>
+            </div>
+          </div>
+
+          {/* Column 3: System */}
           <div className="space-y-6">
             <h3 className="text-[12px] uppercase tracking-[4px] font-bold text-white border-b border-white/10 pb-4">Hệ thống</h3>
             <div className="space-y-4">
@@ -69,22 +86,22 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* Column 3: Commitments */}
+          {/* Column 4: Commitments */}
           <div className="space-y-6">
             <h3 className="text-[12px] uppercase tracking-[4px] font-bold text-white border-b border-white/10 pb-4">Cam kết</h3>
             <div className="space-y-4">
               <div className="flex gap-3">
                 <Zap className="w-5 h-5 text-white shrink-0" />
-                <p className="text-sm text-ivory/70">Sản xuất trực tiếp - Không qua trung gian - Tiết kiệm đến 30% ngân sách.</p>
+                <p className="text-sm text-ivory/70">Sản xuất trực tiếp - Không qua trung gian - Tiết kiệm tối đa ngân sách.</p>
               </div>
               <div className="flex gap-3">
                 <ShieldCheck className="w-5 h-5 text-white shrink-0" />
-                <p className="text-sm text-ivory/70">Vật liệu MDF lõi xanh chống ẩm cao cấp, bền bỉ theo thời gian.</p>
+                <p className="text-sm text-ivory/70">Vật liệu cốt xanh chống ẩm cao cấp, an toàn sức khỏe gia đình.</p>
               </div>
             </div>
           </div>
 
-          {/* Column 4: Contact */}
+          {/* Column 5: Contact */}
           <div className="space-y-6">
             <h3 className="text-[12px] uppercase tracking-[4px] font-bold text-white border-b border-white/10 pb-4">Liên hệ</h3>
             <div className="space-y-4">

@@ -1,14 +1,26 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ShieldCheck, Zap, Factory, CheckCircle2, ArrowRight, PhoneCall } from 'lucide-react';
+import { ShieldCheck, Zap, Factory, ArrowRight, PhoneCall, Camera } from 'lucide-react';
 import { OptimizedImage } from '@/components/OptimizedImage';
 
 export const metadata: Metadata = {
   title: 'Xưởng Sản Xuất Nội Thất Hiện Đại tại TP.HCM | Happy Furniture',
-  description: 'Tham quan xưởng sản xuất nội thất tại Quận 12, TPHCM. Chuyên gỗ công nghiệp MDF lõi xanh chống ẩm cho không gian sống hiện đại, tối ưu tiện nghi và công năng, tiết kiệm đến 30% chi phí.',
+  description: 'Tham quan hình ảnh thực tế xưởng sản xuất nội thất tại Quận 12, TPHCM. Chuyên gỗ công nghiệp MDF lõi xanh chống ẩm, tối ưu tiện nghi và công năng.',
   alternates: { canonical: '/xuong-san-xuat-noi-that' },
-  keywords: ['xưởng nội thất', 'xưởng sản xuất nội thất', 'xưởng mộc gỗ công nghiệp', 'nội thất giá xưởng bình dương tphcm']
+  keywords: ['xưởng nội thất', 'hình ảnh xưởng sản xuất', 'xưởng mộc gỗ công nghiệp', 'nội thất giá xưởng bình dương tphcm']
 };
+
+const workshopPhotos = [
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_001.webp', caption: 'XƯỞNG SẢN XUẤT TẠI QUẬN 12' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_002.webp', caption: 'GIA CÔNG CẮT VÁN' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_003.webp', caption: 'LẮP RÁP THỬ NGHIỆM MOCK-UP' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_004.webp', caption: 'DÁN CẠNH NẸP VÁN' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_005.webp', caption: 'ĐÓNG GÓI CHUẨN BỊ GIAO HÀNG' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_006.webp', caption: 'BÓC TÁCH BẢN VẼ SẢN XUẤT' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_007.webp', caption: 'ĐỘI NGŨ THỢ MỘC LÀNH NGHỀ' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_008.webp', caption: 'QUY TRÌNH KIỂM TRA CHẤT LƯỢNG' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_009.webp', caption: 'ĐẢM BẢO CHUẨN XÁC TỪNG MILIMET' }
+];
 
 export default function XuongSanXuatPage() {
   return (
@@ -27,14 +39,14 @@ export default function XuongSanXuatPage() {
         <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
           <div className="inline-flex items-center gap-2 bg-maroon px-4 py-2 rounded-full mb-6 shadow-md">
             <Factory className="w-4 h-4 text-white" />
-            <span className="text-[11px] font-bold uppercase tracking-widest text-white">Xưởng Sản Xuất Nội thất Trực Tiếp</span>
+            <span className="text-[11px] font-bold uppercase tracking-widest text-white">Xưởng Sản Xuất Nội Thất Trực Tiếp</span>
           </div>
           <h1 className="text-[40px] md:text-[60px] font-serif font-bold mb-6 leading-tight">
             XƯỞNG NỘI THẤT <br/>
             <span className="text-white italic">CHUYÊN SẢN XUẤT & THI CÔNG</span>
           </h1>
           <p className="text-white/80 max-w-3xl mx-auto text-lg md:text-xl leading-relaxed font-medium">
-            Loại bỏ chi phí trung gian, Xưởng tại Quận 12 của chúng tôi đảm nhiệm từ khâu Sản xuất, Thiết kế cho đến Thi công lắp đặt tại công trình với đội thợ mộc giàu kinh nghiệm nghề và team thiết kế kỹ thuật. Kiến tạo không gian sống hiện đại cho gia đình bạn tại Bình Dương và TP.HCM với mức giá tối ưu nhất.
+            Xưởng tại Quận 12 của chúng tôi đảm nhiệm từ khâu Sản xuất, Thiết kế cho đến Thi công lắp đặt tại công trình với đội thợ mộc giàu kinh nghiệm nghề. Kiến tạo nội thất không gian sống hiện đại, tối ưu tiện nghi và công năng cho gia đình bạn.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <a href="https://zalo.me/0909163593" target="_blank" rel="noreferrer" className="bg-maroon text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white hover:text-wood transition-all shadow-xl">
@@ -47,8 +59,51 @@ export default function XuongSanXuatPage() {
         </div>
       </section>
 
+      {/* SECTION HÌNH ẢNH XƯỞNG THỰC TẾ (SLIDER VUÔNG VỨC) */}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16 max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2 text-maroon mb-2">
+              <Camera className="w-4 h-4" />
+              <span className="text-xs uppercase tracking-[3px] font-bold">Góc xưởng chân thực</span>
+            </div>
+            <h2 className="text-[32px] md:text-[42px] font-serif font-bold text-wood mb-4">
+              Nhật Ký Sản Xuất Tại Xưởng
+            </h2>
+            <p className="text-wood/60 text-sm md:text-base">
+              Bộ sưu tập hình chụp thực tế tại không gian làm việc mỗi ngày, minh chứng cho quy mô và tâm huyết trong từng sản phẩm bàn giao đến khách hàng. Kéo lướt để xem thêm.
+            </p>
+            <div className="w-20 h-1 bg-maroon mx-auto mt-6" />
+          </div>
+
+          <div className="-mx-6 px-6 md:mx-0 md:px-0">
+            <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              {workshopPhotos.map((photo, index) => (
+                <div 
+                  key={index} 
+                  className="w-[85vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-start"
+                >
+                  <div className="group relative overflow-hidden bg-wood/5 aspect-[3/4]">
+                    <OptimizedImage 
+                      src={photo.url} 
+                      alt={photo.caption}
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-wood/90 via-wood/20 to-transparent opacity-90 flex items-end p-6 md:p-8">
+                      <p className="text-white text-xs md:text-sm font-bold tracking-widest uppercase">
+                        {photo.caption}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Năng lực cốt lõi */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-ivory border-t border-wood/5">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <h2 className="text-maroon font-bold uppercase tracking-[4px] text-xs mb-4">Năng Lực Thực Tế</h2>
@@ -59,7 +114,7 @@ export default function XuongSanXuatPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-ivory p-8 rounded-2xl border border-wood/5 shadow-sm">
+            <div className="bg-white p-8 rounded-2xl border border-wood/5 shadow-sm">
               <div className="w-14 h-14 bg-maroon text-white rounded-xl flex items-center justify-center mb-6 shadow-md">
                 <Factory className="w-7 h-7" />
               </div>
@@ -69,7 +124,7 @@ export default function XuongSanXuatPage() {
               </p>
             </div>
 
-            <div className="bg-ivory p-8 rounded-2xl border border-wood/5 shadow-sm">
+            <div className="bg-white p-8 rounded-2xl border border-wood/5 shadow-sm">
               <div className="w-14 h-14 bg-maroon text-white rounded-xl flex items-center justify-center mb-6 shadow-md">
                 <ShieldCheck className="w-7 h-7" />
               </div>
@@ -79,57 +134,14 @@ export default function XuongSanXuatPage() {
               </p>
             </div>
 
-            <div className="bg-ivory p-8 rounded-2xl border border-wood/5 shadow-sm">
+            <div className="bg-white p-8 rounded-2xl border border-wood/5 shadow-sm">
               <div className="w-14 h-14 bg-maroon text-white rounded-xl flex items-center justify-center mb-6 shadow-md">
                 <Zap className="w-7 h-7" />
               </div>
-              <h4 className="text-xl font-bold text-wood mb-3">Tiết kiệm đến 30% chi phí</h4>
+              <h4 className="text-xl font-bold text-wood mb-3">Tối ưu chi phí đầu tư</h4>
               <p className="text-wood/70 text-sm leading-relaxed">
                 Không tốn phí thuê mặt bằng showroom đắt đỏ ở trung tâm thành phố hay chi phí cho bản vẽ thiết kế, mọi khoản đầu tư của bạn đều dồn vào chất lượng ván gỗ và phụ kiện thông minh.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Quy trình sản xuất khép kín */}
-      <section className="py-24 bg-ivory border-t border-wood/5">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-maroon font-bold uppercase tracking-[4px] text-xs mb-4">Quy Trình Khép Kín</h2>
-              <h3 className="text-[32px] md:text-[40px] font-serif font-bold text-wood mb-6">
-                Từ bản vẽ kỹ thuật đến sản phẩm thực tế tại xưởng
-              </h3>
-              <p className="text-wood/70 text-lg leading-relaxed mb-8">
-                Mọi đường nét thiết kế trên phần mềm đều được quy chuẩn hóa với bản vẽ kỹ thuật chuẩn xác và tay nghề của những người thợ mộc trên 20 năm kinh nghiệm.
-              </p>
-              
-              <ul className="space-y-4">
-                {[
-                  "Bước 1: Khảo sát hiện trạng không gian thực tế tại công trình.",
-                  "Bước 2: Lên bản vẽ 3D phối cảnh và bóc tách bản vẽ kỹ thuật 2D sản xuất.",
-                  "Bước 3: Gia công cắt, chạy rãnh, dán cạnh tự động tại xưởng Quận 12.",
-                  "Bước 4: Lắp ráp thử nghiệm tại xưởng trước khi vận chuyển.",
-                  "Bước 5: Vận chuyển, lắp đặt tận nơi và nghiệm thu bàn giao bảo hành."
-                ].map((step, idx) => (
-                  <li key={idx} className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-wood/5">
-                    <CheckCircle22 className="w-5 h-5 text-maroon shrink-0 mt-0.5" />
-                    <span className="text-sm font-medium text-wood">{step}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="relative">
-              <div className="rounded-3xl overflow-hidden shadow-2xl relative h-[500px] w-full border-8 border-white">
-                <OptimizedImage 
-                  src="https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/team-images/xuong.webp" 
-                  alt="Quy trình sản xuất tại xưởng Happy Furniture" 
-                  aspectRatio="auto"
-                  className="w-full h-full object-cover"
-                />
-              </div>
             </div>
           </div>
         </div>
@@ -155,14 +167,5 @@ export default function XuongSanXuatPage() {
         </div>
       </section>
     </div>
-  );
-}
-
-function CheckCircle22(props: any) {
-  return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-      <path d="M22 4L12 14.01l-3-3" />
-    </svg>
   );
 }

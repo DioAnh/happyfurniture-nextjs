@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -13,10 +13,9 @@ export const HOME_IMAGES = {
   serviceRetail: 'https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=1000&auto=format&fit=crop',
   serviceRental: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1000&auto=format&fit=crop',
   serviceTownhouse: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=1000&auto=format&fit=crop',
-  uspWorkshop: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/team-images/xuong.webp'
+  uspWorkshop: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_002.webp'
 };
 
-// DATA KHỞI TẠO TẠM THỜI (Tránh lỗi import từ ProductListing)
 const RANGES = [
   { id: 'amb', name: 'Amberglow', code: 'AMB', story: 'Vân sáng, bắt sáng, nới rộng không gian' },
   { id: 'wdl', name: 'Woodland', code: 'WDL', story: 'Sồi tối màu, vân thẳng sắc nét, Rustic Modernism.' },
@@ -34,6 +33,45 @@ const DEMO_IMAGES = {
     aur: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=800'
   }
 };
+
+const workshopPhotos = [
+  {
+    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_001.webp',
+    caption: 'XƯỞNG SẢN XUẤT TẠI QUẬN 12'
+  },
+  {
+    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_002.webp',
+    caption: 'LẮP RÁP THÀNH PHẨM'
+  },
+  {
+    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_003.webp',
+    caption: 'KIỂM TRA CHẤT LƯỢNG'
+  },
+  {
+    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_004.webp',
+    caption: 'DÁN CẠNH NẸP VÁN'
+  },
+  {
+    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_005.webp',
+    caption: 'ĐÓNG GÓI CHUẨN BỊ GIAO HÀNG'
+  },
+  {
+    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_006.webp',
+    caption: 'BÓC TÁCH BẢN VẼ SẢN XUẤT'
+  },
+  {
+    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_007.webp',
+    caption: 'ĐỘI NGŨ THỢ MỘC LÀNH NGHỀ'
+  },
+  {
+    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_008.webp',
+    caption: 'QUY TRÌNH KIỂM TRA CHẤT LƯỢNG'
+  },
+  {
+    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_009.webp',
+    caption: 'ĐẢM BẢO CHUẨN XÁC TỪNG MILIMET'
+  }
+];
 
 const HomeCollections = () => {
   const [selectedRange, setSelectedRange] = useState<string>(RANGES[0].id);
@@ -106,6 +144,53 @@ const HomeCollections = () => {
 
 export default function HomeClient() {
   const SHOW_TEAM_SECTION = false;
+  
+  // 1. Mảng ảnh dự án thực tế từ thư mục interior
+  const interiorPhotos = [
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_001.webp', caption: 'HỆ TỦ BẾP HIỆN ĐẠI TỐI ƯU CÔNG NĂNG' },
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_002.webp', caption: 'KHÔNG GIAN PHÒNG NGỦ TINH GỌN' },
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_003.webp', caption: 'THIẾT KẾ PHÒNG KHÁCH HIỆN ĐẠI' },
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_004.webp', caption: 'TỦ QUẦN ÁO LIỀN BÀN HỌC' },
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_005.webp', caption: 'HỆ GIƯỜNG PHẢNG LƯU TRỮ' },
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_006.webp', caption: 'KHÔNG GIAN LÀM VIỆC' },
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_007.webp', caption: 'TỦ BẾP HIỆN ĐẠI' },
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_008.webp', caption: 'BÀN GIAO THỰC TẾ CĂN HỘ CHUNG CƯ' },
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_009.webp', caption: 'TỐI ƯU CÔNG NĂNG TỦ BẾP HIỆN ĐẠI' },
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_010.webp', caption: 'THIẾT KẾ & THI CÔNG, SẢN XUẤT' },
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_011.webp', caption: 'NỘI THẤT CĂN HỘ HIỆN ĐẠI' },
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_012.webp', caption: 'HỆ TỦ ÁO KỊCH TRẦN' },
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_013.webp', caption: 'KHÔNG GIAN NGỦ & LÀM VIỆC' },
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_014.webp', caption: 'GIƯỜNG & TỦ ÁO MDF CHỐNG ẨM' },
+    { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_015.webp', caption: 'PHÒNG NGỦ HIỆN ĐẠI' },
+  ];
+
+  // 2. Refs cho 2 Slider
+  const workshopScrollRef = useRef<HTMLDivElement>(null);
+  const interiorScrollRef = useRef<HTMLDivElement>(null);
+
+  // 3. Logic cuộn tự động dùng chung cho nhiều slider
+  useEffect(() => {
+    const autoScroll = (ref: React.RefObject<HTMLDivElement>) => {
+      if (ref.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = ref.current;
+        const isAtEnd = scrollLeft >= scrollWidth - clientWidth - 10;
+        if (isAtEnd) {
+          ref.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          const itemWidth = ref.current.children[0].clientWidth;
+          ref.current.scrollBy({ left: itemWidth + 24, behavior: 'smooth' });
+        }
+      }
+    };
+
+    const timer = setInterval(() => {
+      autoScroll(workshopScrollRef); // Cuộn slider xưởng
+      autoScroll(interiorScrollRef); // Cuộn slider nội thất
+    }, 3000); 
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="overflow-hidden">
       {/* 1. Hero Section */}
@@ -126,13 +211,13 @@ export default function HomeClient() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-[48px] md:text-[68px] font-serif font-bold leading-[1.14] text-wood mb-10">
-              <span className="text-maroon italic">Nội Thất</span> <br />May Đo Từ<br /> 
-              <span className="text-maroon italic">Xưởng</span> Đến <span className="text-maroon italic"><br /> Không Gian</span> Sống
+              <span className="text-maroon italic">Nội Thất</span> <br />Hiện đại Từ<br /> 
+              <span className="text-maroon italic">Xưởng Sản xuất</span> <span className="text-maroon italic"> </span> Gỗ công nghiệp
             </h1>
             <p className="text-lg text-wood/70 mb-10 max-w-[600px] leading-relaxed font-medium">
               Giải pháp thiết kế và thi công nội thất cho căn hộ, nhà phố tại <span className="text-maroon font-bold">Bình Dương </span>
               & <span className="text-maroon font-bold">TP.HCM</span>. 
-              Tập trung vào tối ưu <span className="text-maroon font-bold">tiện nghi & công năng sử dụng</span>, đáp ứng nhu cầu của khách hàng nhờ sản xuất trực tiếp tại xưởng với đội ngũ kỹ thuật và thiết kế.
+              Tập trung vào tối ưu <span className="text-maroon font-bold">tiện nghi & công năng sử dụng</span>, với mức giá tối ưu nhất nhờ sản xuất trực tiếp tại xưởng với đội ngũ kỹ thuật và thiết kế.
             </p>
             <div className="flex flex-wrap gap-5">
               <Link 
@@ -157,7 +242,6 @@ export default function HomeClient() {
             transition={{ duration: 1 }}
             className="relative hidden lg:block"
           >
-            {/* THAY ĐỔI: Thêm height cứng h-[450px] và w-full để Next Image fill được */}
             <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border-[12px] border-white h-[450px] w-full">
               <OptimizedImage 
                 src={HOME_IMAGES.heroBanner} 
@@ -205,7 +289,53 @@ export default function HomeClient() {
         </div>
       </section>
 
-      {/* 1.2. Catalogue CTA Section */}
+      
+      {/* 1.2 SECTION GÓC XƯỞNG THỰC TẾ (SLIDER) TRANG CHỦ */}
+      <section className="py-24 bg-ivory/50 border-t border-wood/5 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div>
+              <h2 className="text-maroon font-bold uppercase tracking-[4px] text-xs mb-3">Trực tiếp từ xưởng sản xuất</h2>
+              <h3 className="text-[32px] md:text-[45px] font-serif font-bold text-wood">
+                Góc Làm Việc & Xưởng Thực Tế
+              </h3>
+            </div>
+            <Link href="/xuong-san-xuat-noi-that" className="inline-flex items-center gap-2 text-maroon font-bold text-xs uppercase tracking-widest border-b-2 border-maroon pb-1 hover:text-wood hover:border-wood transition-colors shrink-0">
+              Xem chi tiết về xưởng <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="-mx-6 px-6 md:mx-0 md:px-0">
+            <div 
+              ref={workshopScrollRef}
+              className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            >
+              {workshopPhotos.map((photo, index) => (
+                <div 
+                  key={index} 
+                  className="w-[85vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-start"
+                >
+                  <div className="group relative overflow-hidden bg-wood/5 aspect-[3/4]">
+                    <OptimizedImage 
+                      src={photo.url} 
+                      alt={photo.caption}
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-wood/90 via-wood/20 to-transparent opacity-90 flex items-end p-6 md:p-8">
+                      <p className="text-white text-xs md:text-sm font-bold tracking-widest uppercase">
+                        {photo.caption}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+        </div>
+      </section>
+
+      {/* 1.3. Catalogue CTA Section */}
       <section className="bg-maroon py-16 md:py-20 relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-6 relative z-10 flex flex-col items-center text-center gap-10">
           <motion.div
@@ -215,7 +345,7 @@ export default function HomeClient() {
             className="max-w-3xl"
           >
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4 leading-tight">
-              Khám phá trọn bộ sưu tập nội thất mới nhất
+              Khám phá Sản phẩm nội thất & Hồ sơ năng lực xưởng Happy Furniture
             </h2>
             <p className="text-white/70 text-lg">
               Tải ngay Catalogue để cập nhật các xu hướng thiết kế và báo giá chi tiết từ xưởng Happy Furniture.
@@ -237,13 +367,13 @@ export default function HomeClient() {
               Catalogue Sản Phẩm Lẻ
             </a>
             <a 
-              href="https://drive.google.com/drive/folders/1uORn--7SEUJaEfiZFI-pASTKMBRoF04c?usp=sharing" 
+              href="https://drive.google.com/file/d/1vA3qgSCkx1_5xFhajBdmnUzPCyM7oJsT/view?usp=sharing" 
               target="_blank"
               rel="noreferrer"
               className="w-full sm:w-[280px] bg-transparent border-2 border-white text-white px-4 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-white hover:text-maroon transition-all flex items-center justify-center gap-3"
             >
               <Download className="w-4 h-4 shrink-0" />
-              Catalogue Công Trình
+              Hồ sơ Năng lực
             </a>
             <Link 
               href="/vat-lieu"
@@ -256,7 +386,49 @@ export default function HomeClient() {
         </div>
       </section>
 
-      {/* 1.5. Design Philosophy */}
+
+
+      {/* SECTION NỘI THẤT THỰC TẾ (SLIDER) TRANG CHỦ */}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div>
+              <h2 className="text-maroon font-bold uppercase tracking-[4px] text-xs mb-3">Từ bản vẽ đến thực tế</h2>
+              <h3 className="text-[32px] md:text-[45px] font-serif font-bold text-wood">
+                Không Gian Sống Hoàn Thiện
+              </h3>
+            </div>
+            <Link href="/du-an" className="inline-flex items-center gap-2 text-maroon font-bold text-xs uppercase tracking-widest border-b-2 border-maroon pb-1 hover:text-wood hover:border-wood transition-colors shrink-0">
+              Xem tất cả dự án <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="-mx-6 px-6 md:mx-0 md:px-0">
+            <div 
+              ref={interiorScrollRef}
+              className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            >
+              {interiorPhotos.map((photo, index) => (
+                <div key={index} className="w-[85vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-start">
+                  <div className="group relative overflow-hidden bg-wood/5 aspect-[3/4]">
+                    <OptimizedImage 
+                      src={photo.url} alt={photo.caption}
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-wood/90 via-wood/20 to-transparent opacity-90 flex items-end p-6 md:p-8">
+                      <p className="text-white text-xs md:text-sm font-bold tracking-widest uppercase">{photo.caption}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+      {/* 1.4. Design Philosophy */}
       <section className="py-24 bg-ivory overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
@@ -399,6 +571,7 @@ export default function HomeClient() {
         </div>
       </section>
 
+
       {/* 3. Home Collections */}
       <HomeCollections />
 
@@ -453,7 +626,6 @@ export default function HomeClient() {
             </div>
 
             <div className="relative">
-              {/* THAY ĐỔI: Thêm height cứng h-[600px] */}
               <div className="rounded-3xl overflow-hidden shadow-2xl relative h-[600px] w-full">
                 <OptimizedImage 
                   src={HOME_IMAGES.uspWorkshop} 

@@ -6,6 +6,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CartProvider } from "@/context/CartContext";
 import { ScrollToTopFix } from "@/components/ScrollToTopFix";
+import Script from 'next/script';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -107,18 +108,16 @@ export default function RootLayout({
         <meta name="geo.placename" content="Thuận An, Bình Dương" />
         <meta name="geo.position" content="10.9562375;106.7234531" />
         <meta name="ICBM" content="10.9562375, 106.7234531" />
-        {/* Nhúng mã GTM */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','GTM-TLLV7X7H');
-            `,
-          }}
-        />
+        {/* Nhúng mã GTM chuẩn của Next.js */}
+        <Script id="gtm-script" strategy="afterInteractive">
+          {`
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-TLLV7X7H');
+          `}
+        </Script>
         {/* Thêm JSON-LD cho toàn trang */}
         <script
           type="application/ld+json"

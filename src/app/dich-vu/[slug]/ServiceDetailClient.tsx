@@ -22,6 +22,24 @@ const Counter = ({ from, to, delay }: { from: number, to: number | string, delay
   );
 };
 
+const interiorPhotos = [
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_001.webp', caption: 'HỆ TỦ BẾP HIỆN ĐẠI TỐI ƯU CÔNG NĂNG' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_002.webp', caption: 'KHÔNG GIAN PHÒNG NGỦ TINH GỌN' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_003.webp', caption: 'THIẾT KẾ PHÒNG KHÁCH HIỆN ĐẠI' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_004.webp', caption: 'TỦ QUẦN ÁO LIỀN BÀN HỌC' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_005.webp', caption: 'HỆ GIƯỜNG PHẢNG LƯU TRỮ' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_006.webp', caption: 'KHÔNG GIAN LÀM VIỆC' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_007.webp', caption: 'TỦ BẾP HIỆN ĐẠI' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_008.webp', caption: 'BÀN GIAO THỰC TẾ CĂN HỘ CHUNG CƯ' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_009.webp', caption: 'TỐI ƯU CÔNG NĂNG TỦ BẾP HIỆN ĐẠI' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_010.webp', caption: 'THIẾT KẾ & THI CÔNG, SẢN XUẤT' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_011.webp', caption: 'NỘI THẤT CĂN HỘ HIỆN ĐẠI' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_012.webp', caption: 'HỆ TỦ ÁO KỊCH TRẦN' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_013.webp', caption: 'KHÔNG GIAN NGỦ & LÀM VIỆC' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_014.webp', caption: 'GIƯỜNG & TỦ ÁO MDF CHỐNG ẨM' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_015.webp', caption: 'PHÒNG NGỦ HIỆN ĐẠI' },
+];
+
 // DỮ LIỆU 5 DỊCH VỤ CỐ ĐỊNH (Thay thế cho servicesData cũ)
 const MOCK_SERVICES = [
   {
@@ -209,6 +227,41 @@ export default function ServiceDetailClient({ slug }: { slug: string }) {
                 <h4 className="text-lg font-semibold text-wood">{metric.label}</h4>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* SECTION DỰ ÁN THỰC TẾ SLIDER (SẮC CẠNH DỌC) */}
+      <section className="py-24 bg-white overflow-hidden border-t border-wood/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16 max-w-3xl mx-auto">
+            <h2 className="text-maroon font-bold uppercase tracking-[4px] text-xs mb-4">Hình ảnh thực tế</h2>
+            <h3 className="text-[32px] md:text-[40px] font-serif font-bold text-wood mb-4">
+              Không Gian Sống Đã Hoàn Thiện
+            </h3>
+            <p className="text-wood/60 text-sm md:text-base">
+              Chúng tôi không bán bản vẽ, chúng tôi trao tay không gian sống thực tế sắc nét từng chi tiết.
+            </p>
+            <div className="w-20 h-1 bg-maroon mx-auto mt-6" />
+          </div>
+
+          <div className="-mx-6 px-6 md:mx-0 md:px-0">
+            <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              {interiorPhotos.map((photo, index) => (
+                <div key={index} className="w-[85vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-start">
+                  <div className="group relative overflow-hidden bg-wood/5 aspect-[3/4]">
+                    <OptimizedImage 
+                      src={photo.url} alt={photo.caption}
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-wood/90 via-wood/20 to-transparent opacity-90 flex items-end p-6 md:p-8">
+                      <p className="text-white text-xs md:text-sm font-bold tracking-widest uppercase">{photo.caption}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
