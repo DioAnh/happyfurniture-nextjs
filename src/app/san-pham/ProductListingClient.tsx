@@ -67,7 +67,7 @@ function ProductListingContent() {
   const [selectedType, setSelectedType] = useState<string>('Tất cả');
 
   // Khai báo state cho tính năng Xem thêm (Load More)
-  const ITEMS_PER_PAGE = 16;
+  const ITEMS_PER_PAGE = 18;
   const [visibleCount, setVisibleCount] = useState<number>(ITEMS_PER_PAGE);
 
   const filterSummaryRef = useRef<HTMLDivElement>(null);

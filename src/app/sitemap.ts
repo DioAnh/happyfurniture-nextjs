@@ -6,6 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Các trang chính
   const mainPages = [
     '', '/san-pham', '/du-an', '/cong-dong', '/dich-vu',
+    '/xuong-san-xuat-noi-that',
     '/dich-vu/can-ho-cho-thue', '/dich-vu/nha-pho-chung-cu', '/dich-vu/gia-cong-noi-that',
     '/dich-vu/thi-cong-lap-dat', '/dich-vu/thau-du-an-chung-cu',
     '/vat-lieu', '/hoc-vien', '/lien-he',
