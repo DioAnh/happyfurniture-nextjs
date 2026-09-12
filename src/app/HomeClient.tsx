@@ -170,7 +170,8 @@ export default function HomeClient() {
 
   // 3. Logic cuộn tự động dùng chung cho nhiều slider
   useEffect(() => {
-    const autoScroll = (ref: React.RefObject<HTMLDivElement>) => {
+    // SỬA LỖI TẠI ĐÂY: Thêm " | null " vào type của ref
+    const autoScroll = (ref: React.RefObject<HTMLDivElement | null>) => {
       if (ref.current) {
         const { scrollLeft, scrollWidth, clientWidth } = ref.current;
         const isAtEnd = scrollLeft >= scrollWidth - clientWidth - 10;
