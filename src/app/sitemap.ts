@@ -1,9 +1,15 @@
 import { MetadataRoute } from 'next';
+import { createClient } from '@supabase/supabase-js';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+// Khởi tạo Supabase client bằng biến môi trường mặc định
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.happyfurniture.net';
 
-  // Các trang chính
+  // 1. Các trang chính (Giữ nguyên của bạn)
   const mainPages = [
     '', '/san-pham', '/du-an', '/cong-dong', '/dich-vu',
     '/xuong-san-xuat-noi-that',
@@ -18,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route === '' ? 1 : 0.8,
   }));
 
-  // Danh mục sản phẩm SEO tĩnh (Dựa theo dữ liệu cũ)
+  // 2. Danh mục sản phẩm SEO tĩnh (Giữ nguyên của bạn)
   const categoryPages = [
     'tu-quan-ao-mdf', 'giuong-ngu-mdf', 'ke-trang-tri-mdf', 'tu-hoc-keo-mdf', 'tu-giay-mdf',
     'tu-dung-do-da-nang-mdf', 'tu-dau-giuong-mdf', 'ban-console-mdf', 'ban-tra-ca-phe-mdf',
@@ -30,5 +36,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
-  return [...mainPages, ...categoryPages];
+  // 3. Tự động lấy danh sách URL Sản phẩm từ Supabase
+  // (Lưu ý: Nếu bảng dữ liệu của bạn tên khác 'products', hãy thay đổi ở dòng `.from('products')` bên dưới)
+  const { data: products } = await supabase
+    .from('products')
+    .select('slug, updated_at, created_at');
+
+  const productPages = (products || []).map((product: any) => ({
+    url: `${baseUrl}/san-pham/${product.slug}`,
+    // Sử dụng thời gian cập nhật thật để tăng độ tin cậy với Google
+    lastModified: product.updated_at 
+      ? new Date(product.updated_at) 
+      : (product.created_at ? new Date(product.created_at) : new Date()),
+    changeFrequency: 'weekly' as const,
+    priority: 0.9,
+  }));
+
+  // Hợp nhất toàn bộ URL thành một Sitemap hoàn chỉnh
+  return [...mainPages, ...categoryPages, ...productPages];
 }

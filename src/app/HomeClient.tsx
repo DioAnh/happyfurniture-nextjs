@@ -172,7 +172,6 @@ export default function HomeClient() {
 
   // 3. Logic cuộn tự động dùng chung cho nhiều slider
   useEffect(() => {
-    // SỬA LỖI TẠI ĐÂY: Thêm " | null " vào type của ref
     const autoScroll = (ref: React.RefObject<HTMLDivElement | null>) => {
       if (ref.current) {
         const { scrollLeft, scrollWidth, clientWidth } = ref.current;
@@ -203,6 +202,7 @@ export default function HomeClient() {
             src={HOME_IMAGES.heroBanner} 
             alt="Xưởng nội thất Happy Furniture" 
             className="w-full h-full opacity-20"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-ivory via-ivory/95 to-transparent" />
         </div>
