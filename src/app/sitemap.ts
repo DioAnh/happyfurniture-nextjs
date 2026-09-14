@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { createClient } from '@supabase/supabase-js';
 
-// Khởi tạo Supabase client bằng biến môi trường mặc định
+// Khởi tạo Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -9,7 +9,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.happyfurniture.net';
 
-  // 1. Các trang chính (Giữ nguyên của bạn)
+  // 1. Các trang chính
   const mainPages = [
     '', '/san-pham', '/du-an', '/cong-dong', '/dich-vu',
     '/xuong-san-xuat-noi-that',
@@ -24,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1 : 0.8,
   }));
 
-  // 2. Danh mục sản phẩm SEO tĩnh (Giữ nguyên của bạn)
+  // 2. Danh mục sản phẩm SEO tĩnh
   const categoryPages = [
     'tu-quan-ao-mdf', 'giuong-ngu-mdf', 'ke-trang-tri-mdf', 'tu-hoc-keo-mdf', 'tu-giay-mdf',
     'tu-dung-do-da-nang-mdf', 'tu-dau-giuong-mdf', 'ban-console-mdf', 'ban-tra-ca-phe-mdf',
@@ -36,18 +36,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
 
-  // 3. Tự động lấy danh sách URL Sản phẩm từ Supabase
-  // (Lưu ý: Nếu bảng dữ liệu của bạn tên khác 'products', hãy thay đổi ở dòng `.from('products')` bên dưới)
+  // 3. Tự động lấy danh sách URL Sản phẩm từ Supabase (Đã fix lỗi thiếu cột)
   const { data: products } = await supabase
     .from('products')
-    .select('slug, updated_at, created_at');
+    .select('slug, created_at'); // Chỉ lấy slug và created_at
 
   const productPages = (products || []).map((product: any) => ({
     url: `${baseUrl}/san-pham/${product.slug}`,
-    // Sử dụng thời gian cập nhật thật để tăng độ tin cậy với Google
-    lastModified: product.updated_at 
-      ? new Date(product.updated_at) 
-      : (product.created_at ? new Date(product.created_at) : new Date()),
+    // Sử dụng ngày tạo (created_at) làm mốc thời gian khai báo với Google
+    lastModified: product.created_at ? new Date(product.created_at) : new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.9,
   }));
