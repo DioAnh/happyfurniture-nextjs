@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { OptimizedImage } from '@/components/OptimizedImage';
 import { Target, Phone, ArrowLeft, ArrowRight, ShieldCheck, Zap, Award, Gem, HardHat, Factory } from 'lucide-react';
+import { QualityStandards } from '@/components/QualityStandards';
+import { FaqSection } from '@/components/FaqSection';
 
 // COMPONENT ĐẾM SỐ (COUNTER)
 const Counter = ({ from, to, delay }: { from: number, to: number | string, delay: number }) => {
@@ -374,6 +376,12 @@ export default function ServiceDetailClient({ slug }: { slug: string }) {
           </div>
         </div>
       </section>
+
+      <QualityStandards/>
+      
+      <FaqSection/>
+
+
     </div>
   );
 }

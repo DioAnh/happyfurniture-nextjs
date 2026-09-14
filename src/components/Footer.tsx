@@ -31,7 +31,7 @@ export const Footer = () => {
               <Link href="/" className="flex flex-col items-start group">
                 <h2 className="text-2xl font-extrabold tracking-tighter text-white group-hover:text-maroon transition-colors leading-none">HAPPY FURNITURE</h2>
                 <p className="text-[11px] uppercase tracking-[3px] text-ivory/60 font-semibold mt-1">
-                  Nội thất nhà làm - Trực tiếp từ xưởng
+                  Xưởng Sản xuất nội thất
                 </p>
               </Link>
             </div>

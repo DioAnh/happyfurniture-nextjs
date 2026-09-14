@@ -6,10 +6,48 @@ import Link from 'next/link';
 import { ShieldCheck, HardHat, Hammer, ArrowRight, CornerRightDown } from 'lucide-react';
 import { OptimizedImage } from '@/components/OptimizedImage';
 
-// Dữ liệu mô phỏng để tránh lỗi thiếu file servicesData
+// Dữ liệu đầy đủ 5 dịch vụ đã được khôi phục
 const servicesData = [
-  { slug: 'can-ho-cho-thue', enTitle: 'Rental Solution', title: 'Giải Pháp Nội Thất Cho Thuê', description: 'Gói nội thất tối ưu chi phí, thẩm mỹ bền đẹp, cam kết thời gian thu hồi vốn (ROI) cao nhất cho chủ nhà.', audience: 'Nhà Đầu Tư Bất Động Sản', image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267' },
-  { slug: 'nha-pho-chung-cu', enTitle: 'Residential', title: 'Thiết Kế Thi Công Nhà Phố & Chung Cư', description: 'Cá nhân hóa không gian sống, tối ưu công năng từng mét vuông với chất lượng ván MDF lõi xanh cao cấp nhất.', audience: 'Gia Đình Trẻ & Gia Chủ Hiện Đại', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c' }
+  { 
+    slug: 'giai-phap-noi-that-cho-thue', 
+    enTitle: 'Rental Solution', 
+    title: 'Giải Pháp Nội Thất Cho Thuê', 
+    description: 'Gói nội thất tối ưu chi phí, thẩm mỹ bền đẹp, cam kết thời gian thu hồi vốn (ROI) cao nhất cho chủ nhà.', 
+    audience: 'Nhà Đầu Tư Bất Động Sản', 
+    image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267' 
+  },
+  { 
+    slug: 'nha-pho-chung-cu', 
+    enTitle: 'Residential', 
+    title: 'Thiết Kế Thi Công Nhà Phố & Chung Cư', 
+    description: 'Cá nhân hóa không gian sống, tối ưu công năng từng mét vuông với chất lượng ván MDF lõi xanh cao cấp nhất.', 
+    audience: 'Gia Đình Trẻ & Gia Chủ Hiện Đại', 
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c' 
+  },
+  {
+    slug: 'san-xuat-gia-cong-noi-that-le-may-do',
+    enTitle: 'Custom Furniture',
+    title: 'Sản Xuất & Gia Công Nội Thất Lẻ May Đo',
+    description: 'Nhận thiết kế và gia công lẻ các sản phẩm như hệ tủ bếp, tủ quần áo, giường ngủ theo đúng kích thước và cấu trúc không gian thực tế của gia đình.',
+    audience: 'Khách Hàng Nâng Cấp Không Gian',
+    image: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_004.webp'
+  },
+  {
+    slug: 'thau-thi-cong-lap-dat-noi-that',
+    enTitle: 'Installation Contractor',
+    title: 'Thầu Thi Công & Lắp Đặt Nội Thất',
+    description: 'Dịch vụ thi công lắp đặt trọn gói theo bản vẽ 3D có sẵn, đảm bảo độ chính xác tuyệt đối, chuẩn vật liệu và bám sát tiến độ cam kết.',
+    audience: 'Đơn Vị Thiết Kế & Chủ Thầu',
+    image: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_007.webp'
+  },
+  {
+    slug: 'thau-thi-cong-du-an-quy-mo-lon',
+    enTitle: 'Commercial Projects',
+    title: 'Thầu Thi Công Dự Án Quy Mô Lớn',
+    description: 'Đủ năng lực sản xuất hàng loạt, đáp ứng khối lượng lớn cho các dự án thương mại: chuỗi cửa hàng, văn phòng công ty, tòa nhà căn hộ dịch vụ và khách sạn.',
+    audience: 'Doanh Nghiệp & CĐT Dự Án',
+    image: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/interior/modern_interior_apartment_011.webp'
+  }
 ];
 
 export default function ServicesClient() {
@@ -73,6 +111,50 @@ export default function ServicesClient() {
           })}
         </div>
       </section>
+
+      {/* Core Values Section - Absolute Visual Commitment (Được khôi phục) */}
+      <section className="bg-wood py-32 text-ivory relative overflow-hidden mt-20">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-maroon to-transparent opacity-50" />
+        
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="mb-20">
+            <h2 className="text-4xl md:text-6xl font-serif font-bold max-w-2xl text-white">
+              Sự Khác Biệt Nằm Ở Chữ <span className="text-[#E8C599] font-serif italic">Thật</span>
+            </h2>
+            <div className="w-full h-px bg-white/10 mt-12" />
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-12 md:gap-8">
+            <div className="relative group">
+              <span className="absolute -top-16 -left-4 text-8xl font-serif font-black text-white/5 transition-transform group-hover:-translate-y-4 duration-500">01</span>
+              <HardHat className="w-10 h-10 text-[#E8C599] mb-6" />
+              <h3 className="text-3xl font-serif font-bold mb-4 text-white">Vật Liệu <span className="text-[#E8C599]">Thật</span></h3>
+              <p className="text-ivory/60 leading-relaxed text-lg">
+                MDF Ba Thanh chuẩn E1, nhựa PVC kháng nước, keo dán cạnh PUR. Không sử dụng vật tư trôi nổi không rõ nguồn gốc.
+              </p>
+            </div>
+            
+            <div className="relative group outline-none md:border-l border-white/10 md:pl-8">
+              <span className="absolute -top-16 -left-4 md:left-4 text-8xl font-serif font-black text-white/5 transition-transform group-hover:-translate-y-4 duration-500">02</span>
+              <Hammer className="w-10 h-10 text-[#E8C599] mb-6" />
+              <h3 className="text-3xl font-serif font-bold mb-4 text-white">Thi Công <span className="text-[#E8C599]">Thật</span></h3>
+              <p className="text-ivory/60 leading-relaxed text-lg">
+                Đo đạc tỉ mỉ, quy trình lắp đặt khép kín chuẩn xác, và cam kết bàn giao không gian sạch sẽ hoàn toàn.
+              </p>
+            </div>
+
+            <div className="relative group outline-none md:border-l border-white/10 md:pl-8">
+              <span className="absolute -top-16 -left-4 md:left-4 text-8xl font-serif font-black text-white/5 transition-transform group-hover:-translate-y-4 duration-500">03</span>
+              <ShieldCheck className="w-10 h-10 text-[#E8C599] mb-6" />
+              <h3 className="text-3xl font-serif font-bold mb-4 text-white">Bảo Hành <span className="text-[#E8C599]">Thật</span></h3>
+              <p className="text-ivory/60 leading-relaxed text-lg">
+                Chế độ bảo hành minh bạch tận nơi. Tốc độ phản hồi và có mặt xử lý trong vòng 24 đến 48 giờ làm việc.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }

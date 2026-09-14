@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ShieldCheck, Layers, Droplets, ArrowRight, PhoneCall } from 'lucide-react';
 import { OptimizedImage } from '@/components/OptimizedImage';
+import { FaqSection } from '@/components/FaqSection';
 
 export const metadata: Metadata = {
   title: 'Nội Thất Gỗ Công Nghiệp Tối Ưu Tiện Nghi | Happy Furniture',
@@ -91,6 +92,8 @@ export default function GoCongNghiepPage() {
           </div>
         </div>
       </section>
+
+      <FaqSection/>
 
       {/* Call to Action cuối trang */}
       <section className="py-24 bg-maroon text-white text-center">

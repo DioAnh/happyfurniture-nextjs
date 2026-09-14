@@ -158,7 +158,7 @@ export default function ContactClient() {
               <h3 className="text-[24px] font-serif font-bold text-wood mb-6">Về Happy Furniture</h3>
               <div className="prose prose-wood max-w-none text-wood/70 leading-relaxed space-y-4">
                 <p>Happy Furniture tự hào là đơn vị chuyên thiết kế và thi công nội thất may đo trực tiếp tại xưởng. Với hơn 10 năm kinh nghiệm trong ngành gỗ công nghiệp, chúng tôi thấu hiểu nhu cầu về một không gian sống vừa thẩm mỹ, vừa tối ưu công năng với chi phí hợp lý nhất.</p>
-                <p>Chúng tôi cam kết sử dụng vật liệu lõi xanh chống ẩm (MDF, HDF) từ các nhà cung cấp uy tín, kết hợp với công nghệ máy móc hiện đại để tạo ra những sản phẩm có độ hoàn thiện sắc nét nhất.</p>
+                <p>Chúng tôi cam kết sử dụng vật liệu MDF lõi xanh chống ẩm từ các nhà cung cấp uy tín, kết hợp với công nghệ máy móc hiện đại để tạo ra những sản phẩm có độ hoàn thiện sắc nét nhất.</p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 pt-8 border-t border-wood/5">
                   <div className="text-center">
                     <p className="text-[24px] font-bold text-maroon">1000+</p>

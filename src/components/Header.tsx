@@ -113,7 +113,7 @@ export const Header = () => {
               HAPPY FURNITURE
             </h1>
             <p className="text-[9px] uppercase tracking-[3px] text-wood/60 font-semibold mt-1 ml-[1px]">
-              Nội thất nhà làm
+              Xưởng sản xuất nội thất
             </p>
           </Link>
 

@@ -18,8 +18,29 @@ export default function WorkflowClient() {
     { id: '10', title: 'Bàn giao & Bảo hành', desc: 'Nghiệm thu, vệ sinh, thanh toán 50% còn lại và kích hoạt bảo hành 1 năm.', icon: CheckCircle2, color: 'bg-emerald-50 text-emerald-600' }
   ];
 
+  const howToSchema = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Quy trình thiết kế và thi công nội thất trọn gói - Happy Furniture",
+    "description": "Hướng dẫn chi tiết 10 bước từ khảo sát, thiết kế 3D đến gia công tại xưởng và lắp đặt hoàn thiện nội thất nhà ở.",
+    "totalTime": "P20D", // Nghĩa là quy trình mất khoảng 20 ngày (Period 20 Days)
+    "step": steps.map((step, index) => ({
+      "@type": "HowToStep",
+      "position": index + 1,
+      "name": step.title,
+      "text": step.desc
+    }))
+  };
+
   return (
     <div className="bg-ivory min-h-screen py-20">
+
+      {/* CHÈN MÃ SCHEMA VÔ HÌNH VÀO ĐÂY */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      />
+      
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-20">
           <h2 className="text-maroon font-bold uppercase tracking-[4px] text-xs mb-4">Quy trình chuyên nghiệp</h2>

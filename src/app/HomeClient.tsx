@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import { ArrowRight, ShieldCheck, Truck, Factory, Users, Award, CheckCircle2, Zap, Star, Clock, Phone, Download } from 'lucide-react';
 import { OptimizedImage } from '@/components/OptimizedImage';
 import { RangeSelectionCard } from '@/components/RangeSelectionCard';
+import { FaqSection } from '@/components/FaqSection';
+import { QualityStandards } from '@/components/QualityStandards';
 
 export const HOME_IMAGES = {
   heroBanner: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/main-pages/noi-that-phong-ngu-mdf-melamine-thuan-an-binh-duong.webp',
@@ -577,7 +579,7 @@ export default function HomeClient() {
       <HomeCollections />
 
       {/* 4. USP Section */}
-      <section className="py-32 bg-ivory relative overflow-hidden">
+      <section className="pt-32 pb-12 bg-ivory relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div className="space-y-12">
@@ -706,7 +708,14 @@ export default function HomeClient() {
       </section>
       )}
 
-      {/* 6. CTA Section */}
+
+      {/* 6. THÊM TIÊU CHUẨN VẬT LIỆU VÀO ĐÂY */}
+      <QualityStandards />
+
+      {/* 7. THÊM FAQ SECTION VÀO ĐÂY */}
+      <FaqSection />
+
+      {/* 8. CTA Section */}
       <section className="py-24 bg-maroon">
         <div className="max-w-4xl mx-auto px-6 text-center text-white">
           <h2 className="text-[32px] md:text-[48px] font-serif font-bold mb-8">

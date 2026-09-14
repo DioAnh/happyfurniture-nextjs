@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ShieldCheck, Zap, Factory, ArrowRight, PhoneCall, Camera } from 'lucide-react';
 import { OptimizedImage } from '@/components/OptimizedImage';
+import { QualityStandards } from '@/components/QualityStandards';
+import { FaqSection } from '@/components/FaqSection';
 
 export const metadata: Metadata = {
   title: 'Xưởng Sản Xuất Nội Thất Hiện Đại tại TP.HCM | Happy Furniture',
@@ -59,49 +61,6 @@ export default function XuongSanXuatPage() {
         </div>
       </section>
 
-      {/* SECTION HÌNH ẢNH XƯỞNG THỰC TẾ (SLIDER VUÔNG VỨC) */}
-      <section className="py-24 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 text-maroon mb-2">
-              <Camera className="w-4 h-4" />
-              <span className="text-xs uppercase tracking-[3px] font-bold">Góc xưởng chân thực</span>
-            </div>
-            <h2 className="text-[32px] md:text-[42px] font-serif font-bold text-wood mb-4">
-              Nhật Ký Sản Xuất Tại Xưởng
-            </h2>
-            <p className="text-wood/60 text-sm md:text-base">
-              Bộ sưu tập hình chụp thực tế tại không gian làm việc mỗi ngày, minh chứng cho quy mô và tâm huyết trong từng sản phẩm bàn giao đến khách hàng. Kéo lướt để xem thêm.
-            </p>
-            <div className="w-20 h-1 bg-maroon mx-auto mt-6" />
-          </div>
-
-          <div className="-mx-6 px-6 md:mx-0 md:px-0">
-            <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              {workshopPhotos.map((photo, index) => (
-                <div 
-                  key={index} 
-                  className="w-[85vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-start"
-                >
-                  <div className="group relative overflow-hidden bg-wood/5 aspect-[3/4]">
-                    <OptimizedImage 
-                      src={photo.url} 
-                      alt={photo.caption}
-                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-wood/90 via-wood/20 to-transparent opacity-90 flex items-end p-6 md:p-8">
-                      <p className="text-white text-xs md:text-sm font-bold tracking-widest uppercase">
-                        {photo.caption}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Năng lực cốt lõi */}
       <section className="py-24 bg-ivory border-t border-wood/5">
         <div className="max-w-7xl mx-auto px-6">
@@ -147,6 +106,55 @@ export default function XuongSanXuatPage() {
         </div>
       </section>
 
+
+      
+      {/* SECTION HÌNH ẢNH XƯỞNG THỰC TẾ (SLIDER VUÔNG VỨC) */}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16 max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2 text-maroon mb-2">
+              <Camera className="w-4 h-4" />
+              <span className="text-xs uppercase tracking-[3px] font-bold">Góc xưởng chân thực</span>
+            </div>
+            <h2 className="text-[32px] md:text-[42px] font-serif font-bold text-wood mb-4">
+              Nhật Ký Sản Xuất Tại Xưởng
+            </h2>
+            <p className="text-wood/60 text-sm md:text-base">
+              Bộ sưu tập hình chụp thực tế tại không gian làm việc mỗi ngày, minh chứng cho quy mô và tâm huyết trong từng sản phẩm bàn giao đến khách hàng. Kéo lướt để xem thêm.
+            </p>
+            <div className="w-20 h-1 bg-maroon mx-auto mt-6" />
+          </div>
+
+          <div className="-mx-6 px-6 md:mx-0 md:px-0">
+            <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              {workshopPhotos.map((photo, index) => (
+                <div 
+                  key={index} 
+                  className="w-[85vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-start"
+                >
+                  <div className="group relative overflow-hidden bg-wood/5 aspect-[3/4]">
+                    <OptimizedImage 
+                      src={photo.url} 
+                      alt={photo.caption}
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-wood/90 via-wood/20 to-transparent opacity-90 flex items-end p-6 md:p-8">
+                      <p className="text-white text-xs md:text-sm font-bold tracking-widest uppercase">
+                        {photo.caption}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <QualityStandards/>
+
+
       {/* Call to Action cuối trang */}
       <section className="py-24 bg-maroon text-white text-center">
         <div className="max-w-4xl mx-auto px-6">
@@ -166,6 +174,7 @@ export default function XuongSanXuatPage() {
           </div>
         </div>
       </section>
+      
     </div>
   );
 }

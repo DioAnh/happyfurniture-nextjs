@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Header } from "@/components/Header";
@@ -8,9 +8,9 @@ import { CartProvider } from "@/context/CartContext";
 import { ScrollToTopFix } from "@/components/ScrollToTopFix";
 import Script from 'next/script';
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+const primaryFont = Plus_Jakarta_Sans({
+  subsets: ["latin", "vietnamese"], // Bắt buộc phải có "vietnamese" để không bị lỗi dấu
+  variable: "--font-inter", // Giữ nguyên tên biến cũ này để bạn không phải đi sửa file tailwind.config.ts
   display: "swap",
 });
 
@@ -102,7 +102,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="vi" className={`${primaryFont.variable} ${playfair.variable}`}>
       <head>
         <meta name="geo.region" content="VN-61" />
         <meta name="geo.placename" content="Thuận An, Bình Dương" />
