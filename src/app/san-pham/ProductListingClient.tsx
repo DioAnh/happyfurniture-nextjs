@@ -11,18 +11,10 @@ import { CategorySelectionCard } from '@/components/CategorySelectionCard';
 import { supabase } from '@/lib/supabase';
 
 // --- DATA CỐ ĐỊNH ---
-export const LEGACY_TYPE_MAP: Record<string, string> = {
-  'Wardrobe': 'WD', 'Bedside': 'BS', 'Drawer Cabinet': 'DC', 'TV Unit': 'TV', 'TV Media Unit': 'TV',
-  'Desk': 'OT', 'Office Desk': 'OT', 'Shelf': 'SH', 'Shoes Cabinet': 'SC', 'Sideboard': 'ST',
-  'Storage Cabinet': 'ST', 'Console Table': 'CO', 'Coffee Table': 'CF', 'Dining Table': 'DT', 'Bed': 'BE'
-};
-
-export const RANGES = [
-  { id: 'AMB', name: 'Amberglow', code: 'AMB' },
-  { id: 'WDL', name: 'Woodland', code: 'WDL' },
-  { id: 'CSM', name: 'Cosmic', code: 'CSM' },
-  { id: 'AET', name: 'Aether', code: 'AET' },
-  { id: 'AUR', name: 'Aura', code: 'AUR' }
+// Xóa RANGES cũ, thay bằng DESIGN_LINES mới
+export const DESIGN_LINES = [
+  { code: 'MIN', name: 'Minimal Functional' },
+  { code: 'MOD', name: 'Modern European' }
 ];
 
 export const TYPES = ['WD', 'BS', 'DC', 'TV', 'OT', 'SH', 'SC', 'ST', 'CO', 'CF', 'DT', 'BE'];
@@ -55,15 +47,15 @@ function ProductListingContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { addToCart } = useCart();
-  const [products, setProducts] = useState<any[]>([]);
+  const [productGroups, setProductGroups] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('Tất cả'); 
-  const [selectedMaterial, setSelectedMaterial] = useState<string>('Tất cả');
+  const [selectedMaterialType, setSelectedMaterialType] = useState<string>('Tất cả');
   const [priceRange, setPriceRange] = useState<string>('Tất cả');
   const [showOnlyDiscount, setShowOnlyDiscount] = useState<boolean>(false);
-  const [selectedRange, setSelectedRange] = useState<string>('Tất cả');
+  const [selectedDesignLine, setSelectedDesignLine] = useState<string>('Tất cả');
   const [selectedType, setSelectedType] = useState<string>('Tất cả');
 
   // Khai báo state cho tính năng Xem thêm (Load More)
@@ -72,19 +64,32 @@ function ProductListingContent() {
 
   const filterSummaryRef = useRef<HTMLDivElement>(null);
 
-  // Lấy data từ Supabase
+  // Lấy data THEO CẤU TRÚC MỚI (Group + Variants)
   useEffect(() => {
-    async function fetchProducts() {
+    async function fetchProductGroups() {
       setLoading(true);
-      const { data, error } = await supabase.from('products').select('*');
+      // Lấy toàn bộ groups kèm các variants (products) chưa bị ẩn
+      const { data, error } = await supabase
+        .from('product_groups')
+        .select(`
+          *,
+          products (*)
+        `);
+
+        // THÊM 2 DÒNG LOG NÀY VÀO
+      console.log("Supabase Error:", error);
+      console.log("Supabase Data:", data);
+      
       if (data) {
-        setProducts(data);
+        // Lọc bỏ các group chưa có variants nào sinh ra để tránh lỗi UI
+        const validGroups = data.filter(group => group.products && group.products.length > 0);
+        setProductGroups(validGroups);
       } else {
         console.error("Lỗi lấy sản phẩm từ Supabase", error);
       }
       setLoading(false);
     }
-    fetchProducts();
+    fetchProductGroups();
   }, []);
 
   // Xử lý Search Params
@@ -93,34 +98,60 @@ function ProductListingContent() {
     setSelectedCategory(categoryParam || 'Tất cả');
 
     const typeParam = searchParams.get('type');
-    if (typeParam) {
-      const mappedType = LEGACY_TYPE_MAP[typeParam] || typeParam;
-      setSelectedType(mappedType);
-    } else {
-      setSelectedType('Tất cả');
-    }
+    setSelectedType(typeParam || 'Tất cả');
 
-    const rangeParam = searchParams.get('range');
-    setSelectedRange(rangeParam || 'Tất cả');
+    const designParam = searchParams.get('design_line');
+    setSelectedDesignLine(designParam || 'Tất cả');
   }, [searchParams]);
 
-  // Reset số lượng hiển thị về 16 mỗi khi thay đổi bộ lọc hoặc tìm kiếm
   useEffect(() => {
     setVisibleCount(ITEMS_PER_PAGE);
-  }, [selectedCategory, selectedMaterial, priceRange, showOnlyDiscount, selectedRange, selectedType, searchParams.get('search')]);
+  }, [selectedCategory, selectedMaterialType, priceRange, showOnlyDiscount, selectedDesignLine, selectedType, searchParams.get('search')]);
 
-  const filteredProducts = products.filter(product => {
+  // Chuẩn bị dữ liệu hiển thị Đại diện cho mỗi Group
+  const representativeProducts = productGroups.map(group => {
+    // Ưu tiên chọn size M, nếu không có lấy biến thể đầu tiên
+    const variants = group.products || [];
+    let repVariant = variants.find((v: any) => v.size === 'M') || variants[0];
+    
+    // Nếu biến thể chưa có ảnh (do DB mới tạo), fallback tạm thời dùng DEMO_IMAGES
+    const defaultImage = DEMO_IMAGES.categories[group.type_code as keyof typeof DEMO_IMAGES.categories] || DEMO_IMAGES.categories['WD'];
+    const imagesToDisplay = (repVariant.images && repVariant.images.length > 0) ? repVariant.images : [defaultImage];
+
+    return {
+      group_id: group.id,
+      name: group.name,
+      base_slug: group.slug,
+      design_code: group.design_code,
+      type_code: group.type_code,
+      rooms: group.rooms,
+      description: group.description,
+      // Dữ liệu từ biến thể đại diện
+      variant_id: repVariant.id,
+      slug: repVariant.slug, // Dùng slug của biến thể làm URL để load trang chi tiết
+      sku: repVariant.sku,
+      price: repVariant.price,
+      old_price: repVariant.old_price,
+      size: repVariant.size,
+      material_code: repVariant.material_code,
+      images: imagesToDisplay,
+      // Tính toán thêm tổng số biến thể màu/size để hiển thị tag "Có X tùy chọn"
+      totalVariants: variants.length,
+      availableColors: Array.from(new Set(variants.map((v:any) => v.material_code))).length
+    };
+  });
+
+  const filteredProducts = representativeProducts.filter(product => {
     let matchRoom = true;
     if (selectedCategory !== 'Tất cả') {
       matchRoom = product.rooms ? product.rooms.includes(selectedCategory) : false;
     }
 
-    let matchMaterial = true;
-    if (selectedMaterial !== 'Tất cả') {
-      const mat = (product.material || '').toLowerCase();
-      if (selectedMaterial === 'MDF Melamine lõi xanh') matchMaterial = mat.includes('mdf') || mat.includes('melamine') || mat.includes('bt');
-      else if (selectedMaterial === 'Laminate') matchMaterial = mat.includes('laminate');
-      else if (selectedMaterial === 'PVD phủ Acrylic cao cấp') matchMaterial = mat.includes('acrylic') || mat.includes('pvd');
+    let matchMaterialType = true;
+    if (selectedMaterialType !== 'Tất cả') {
+        const isWood = product.material_code.startsWith('BT');
+        if (selectedMaterialType === 'Hệ vân gỗ') matchMaterialType = isWood;
+        else if (selectedMaterialType === 'Hệ màu đơn sắc') matchMaterialType = !isWood;
     }
 
     let matchPrice = true;
@@ -133,7 +164,7 @@ function ProductListingContent() {
         else if (priceRange === 'Dưới 5 triệu') matchPrice = p < 5000000;
         else if (priceRange === 'Dưới 9 triệu') matchPrice = p < 9000000;
         else if (priceRange === 'Dưới 15 triệu') matchPrice = p < 15000000;
-        else if (priceRange === 'Dưới 25 triệu') matchPrice = p < 25000000;
+        else if (priceRange === 'Trên 15 triệu') matchPrice = p >= 15000000;
       }
     }
 
@@ -141,42 +172,34 @@ function ProductListingContent() {
     if (selectedType === 'Tất cả') {
       matchType = true;
     } else {
-      const isCodeMatch = product.type_code === selectedType;
-      const isLegacyMatch = product.type && LEGACY_TYPE_MAP[product.type] === selectedType;
       const searchKeyword = TYPE_TRANSLATIONS[selectedType]?.toLowerCase() || selectedType.toLowerCase();
       let isNameMatch = product.name.toLowerCase().includes(searchKeyword);
       
       if (selectedType === 'BE' && product.name.toLowerCase().includes('tủ đầu giường')) {
         isNameMatch = false;
       }
-      matchType = isCodeMatch || isLegacyMatch || product.category === selectedType || isNameMatch;
+      matchType = product.type_code === selectedType || isNameMatch;
     }
 
     const matchDiscount = !showOnlyDiscount || (product.old_price && product.old_price > product.price);
-    const matchRange = selectedRange === 'Tất cả' || product.range_code === selectedRange;
+    const matchDesignLine = selectedDesignLine === 'Tất cả' || product.design_code === selectedDesignLine;
     
     const searchString = searchParams.get('search');
     let matchSearch = true;
     if (searchString) {
       const lowerSearch = searchString.toLowerCase();
       matchSearch = product.name.toLowerCase().includes(lowerSearch) || 
-                    (product.description || '').toLowerCase().includes(lowerSearch) ||
-                    (product.type || '').toLowerCase().includes(lowerSearch) ||
-                    (product.category || '').toLowerCase().includes(lowerSearch);
+                    (product.description || '').toLowerCase().includes(lowerSearch);
     }
 
-    return matchSearch && matchRoom && matchMaterial && matchPrice && matchDiscount && matchRange && matchType;
+    return matchSearch && matchRoom && matchMaterialType && matchPrice && matchDiscount && matchDesignLine && matchType;
   });
 
-  const sizeOrder: Record<string, number> = { 'S': 1, 'M': 2, 'L': 3 };
   const sortedAndFilteredProducts = [...filteredProducts].sort((a, b) => {
-      if (a.range !== b.range) {
-        return (a.range || '').localeCompare(b.range || '');
-      }
-      return (sizeOrder[a.size || 'S'] || 0) - (sizeOrder[b.size || 'S'] || 0);
+      // Ưu tiên hiện các sản phẩm có nhiều biến thể màu sắc hơn lên trước (Hấp dẫn hơn)
+      return b.availableColors - a.availableColors;
   });
 
-  // Chỉ lấy số lượng sản phẩm hiển thị dựa trên visibleCount
   const displayedProducts = sortedAndFilteredProducts.slice(0, visibleCount);
 
   const formatPrice = (price: number) => {
@@ -185,22 +208,22 @@ function ProductListingContent() {
 
   const FilterContent = () => (
     <div className="space-y-8">
-      {/* Bộ sưu tập */}
+      {/* Design Line (Thay thế Range cũ) */}
       <div>
-        <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-wood/80 mb-4 border-b border-wood/5 pb-2">Bộ Sưu Tập</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-wood/80 mb-4 border-b border-wood/5 pb-2">Dòng Thiết Kế</h3>
         <div className="space-y-3">
           <label className="flex items-center gap-3 cursor-pointer group">
-            <input type="radio" name="range" className="w-4 h-4 accent-maroon" checked={selectedRange === 'Tất cả'} onChange={() => setSelectedRange('Tất cả')} />
-            <span className={`text-[13px] font-sans transition-colors ${selectedRange === 'Tất cả' ? 'text-wood font-medium' : 'text-wood/60 group-hover:text-wood'}`}>Tất cả</span>
+            <input type="radio" name="design_line" className="w-4 h-4 accent-maroon" checked={selectedDesignLine === 'Tất cả'} onChange={() => setSelectedDesignLine('Tất cả')} />
+            <span className={`text-[13px] font-sans transition-colors ${selectedDesignLine === 'Tất cả' ? 'text-wood font-medium' : 'text-wood/60 group-hover:text-wood'}`}>Tất cả</span>
           </label>
-          {RANGES.map((r) => (
+          {DESIGN_LINES.map((r) => (
             <label key={r.code} className="flex items-center gap-3 cursor-pointer group">
               <input 
-                type="radio" name="range" className="w-4 h-4 accent-maroon"
-                checked={selectedRange === r.code}
-                onChange={() => setSelectedRange(r.code)}
+                type="radio" name="design_line" className="w-4 h-4 accent-maroon"
+                checked={selectedDesignLine === r.code}
+                onChange={() => setSelectedDesignLine(r.code)}
               />
-              <span className={`text-[13px] font-sans transition-colors ${selectedRange === r.code ? 'text-wood font-medium' : 'text-wood/60 group-hover:text-wood'}`}>
+              <span className={`text-[13px] font-sans transition-colors ${selectedDesignLine === r.code ? 'text-wood font-medium' : 'text-wood/60 group-hover:text-wood'}`}>
                 {r.name}
               </span>
             </label>
@@ -212,7 +235,7 @@ function ProductListingContent() {
       <div>
         <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-wood/80 mb-4 border-b border-wood/5 pb-2">Theo không gian</h3>
         <div className="space-y-3">
-          {['Tất cả', 'Phòng khách', 'Phòng ngủ', 'Phòng bếp', 'Phòng làm việc'].map((cat) => (
+          {['Tất cả', 'Phòng khách', 'Phòng ngủ', 'Phòng bếp', 'Phòng làm việc', 'Phòng thay đồ'].map((cat) => (
             <label key={cat} className="flex items-center gap-3 cursor-pointer group">
               <input 
                 type="radio" 
@@ -229,20 +252,20 @@ function ProductListingContent() {
         </div>
       </div>
 
-      {/* Theo vật liệu */}
+      {/* Loại bề mặt (Tách từ 13 mã màu) */}
       <div>
-        <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-wood/80 mb-4 border-b border-wood/5 pb-2">Theo vật liệu</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-wood/80 mb-4 border-b border-wood/5 pb-2">Loại bề mặt</h3>
         <div className="space-y-3">
-          {['Tất cả', 'MDF Melamine lõi xanh', 'Laminate', 'PVD phủ Acrylic cao cấp'].map((mat) => (
+          {['Tất cả', 'Hệ vân gỗ', 'Hệ màu đơn sắc'].map((mat) => (
             <label key={mat} className="flex items-center gap-3 cursor-pointer group">
               <input 
                 type="radio" 
-                name="material" 
+                name="material_type" 
                 className="w-4 h-4 accent-maroon"
-                checked={selectedMaterial === mat}
-                onChange={() => setSelectedMaterial(mat)}
+                checked={selectedMaterialType === mat}
+                onChange={() => setSelectedMaterialType(mat)}
               />
-              <span className={`text-[13px] font-sans transition-colors ${selectedMaterial === mat ? 'text-wood font-medium' : 'text-wood/60 group-hover:text-wood'}`}>
+              <span className={`text-[13px] font-sans transition-colors ${selectedMaterialType === mat ? 'text-wood font-medium' : 'text-wood/60 group-hover:text-wood'}`}>
                 {mat}
               </span>
             </label>
@@ -254,7 +277,7 @@ function ProductListingContent() {
       <div>
         <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-wood/80 mb-4 border-b border-wood/5 pb-2">Khoảng giá</h3>
         <div className="space-y-3">
-          {['Tất cả', 'Dưới 3 triệu', 'Dưới 5 triệu', 'Dưới 9 triệu', 'Dưới 15 triệu', 'Dưới 25 triệu'].map((range) => (
+          {['Tất cả', 'Dưới 3 triệu', 'Dưới 5 triệu', 'Dưới 9 triệu', 'Dưới 15 triệu', 'Trên 15 triệu'].map((range) => (
             <label key={range} className="flex items-center gap-3 cursor-pointer group">
               <input 
                 type="radio" 
@@ -308,7 +331,7 @@ function ProductListingContent() {
             <span className="text-wood/80 font-bold">Danh mục sản phẩm</span>
           </div>
           <h1 className="text-[36px] font-serif font-bold text-wood">Sản Phẩm Nội Thất May Đo</h1>
-          <p className="text-wood/60 mt-2 mb-0 max-w-4xl">Các sản phẩm nội thất với thiết kế phù hợp không gian sống hiện đại, chất liệu MDF lõi xanh chống ẩm phủ Melamine vân gỗ, đạt chuẩn E2 an toàn cho sức khỏe, được sản xuất trực tiếp từ xưởng Happy Furniture.</p>
+          <p className="text-wood/60 mt-2 mb-0 max-w-4xl">Các sản phẩm nội thất với thiết kế phù hợp không gian sống hiện đại, chất liệu MDF lõi xanh chống ẩm tiêu chuẩn E2 an toàn cho sức khỏe, sản xuất theo yêu cầu cá nhân hóa từ xưởng Happy Furniture.</p>
         </div>
       </div>
 
@@ -357,7 +380,7 @@ function ProductListingContent() {
                   Kết quả tìm kiếm cho: <span className="text-maroon">&quot;{searchParams.get('search')}&quot;</span>
                 </h2>
                 <p className="text-sm text-wood/60 mt-1">
-                  Tìm thấy <span className="font-bold">{sortedAndFilteredProducts.length}</span> sản phẩm phù hợp.
+                  Tìm thấy <span className="font-bold">{sortedAndFilteredProducts.length}</span> thiết kế phù hợp.
                 </p>
               </div>
             )}
@@ -381,12 +404,12 @@ function ProductListingContent() {
               <h2 className="text-2xl font-serif text-wood font-bold">
                 {selectedType !== 'Tất cả' 
                   ? `Sản phẩm loại ${TYPE_TRANSLATIONS[selectedType] || selectedType}` 
-                  : (selectedRange !== 'Tất cả' ? `Sản phẩm thuộc dòng ${RANGES.find(r => r.code === selectedRange)?.name}` : 'Tất cả sản phẩm')}
+                  : (selectedDesignLine !== 'Tất cả' ? `Thiết kế dòng ${DESIGN_LINES.find(r => r.code === selectedDesignLine)?.name}` : 'Tất cả thiết kế')}
               </h2>
-              {(selectedType !== 'Tất cả' || selectedRange !== 'Tất cả') && (
+              {(selectedType !== 'Tất cả' || selectedDesignLine !== 'Tất cả') && (
                 <button 
                   onClick={() => {
-                    setSelectedRange('Tất cả');
+                    setSelectedDesignLine('Tất cả');
                     setSelectedType('Tất cả');
                   }} 
                   className="text-maroon font-semibold hover:text-maroon/80 border-b border-maroon hover:border-maroon/80 pb-1 transition-colors uppercase tracking-[0.2em] text-xs flex-shrink-0"
@@ -401,7 +424,7 @@ function ProductListingContent() {
               <div className="text-center py-20 bg-ivory/50 rounded-2xl">
                 <p className="text-lg text-wood/60 mb-4 font-sans leading-relaxed">Không tìm thấy sản phẩm nào phù hợp với bộ lọc hiện tại.</p>
                 <button onClick={() => {
-                  setSelectedCategory('Tất cả'); setSelectedMaterial('Tất cả'); setPriceRange('Tất cả'); setShowOnlyDiscount(false); setSelectedRange('Tất cả'); setSelectedType('Tất cả');
+                  setSelectedCategory('Tất cả'); setSelectedMaterialType('Tất cả'); setPriceRange('Tất cả'); setShowOnlyDiscount(false); setSelectedDesignLine('Tất cả'); setSelectedType('Tất cả');
                 }} className="text-wood font-semibold hover:text-maroon border-b border-wood hover:border-maroon pb-1 transition-colors uppercase tracking-[0.2em] text-xs">
                   Xóa bộ lọc & xem tất cả
                 </button>
@@ -411,7 +434,7 @@ function ProductListingContent() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
                   {displayedProducts.map((product) => (
                     <motion.div
-                      key={product.id}
+                      key={product.group_id}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
@@ -419,6 +442,12 @@ function ProductListingContent() {
                     >
                       <Link className="block" href={`/san-pham/${product.slug}`}>
                         <div className="relative aspect-square overflow-hidden bg-[#faf8f5] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] rounded-[2px] mb-6">
+                          {/* Dấu Tag "X tùy chọn màu" hấp dẫn click */}
+                          {product.availableColors > 1 && (
+                             <div className="absolute top-4 right-4 z-10 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-[10px] uppercase font-bold tracking-widest text-wood shadow-sm border border-wood/5">
+                               + {product.availableColors} Màu
+                             </div>
+                          )}
                           <OptimizedImage 
                             src={product.images?.[0]} 
                             alt={product.name} 
@@ -438,7 +467,7 @@ function ProductListingContent() {
                         <div className="flex flex-col items-start px-2">
                           <div className="flex items-center gap-3 mb-3">
                             <span className="text-[10px] tracking-[0.1em] font-semibold text-wood/40">
-                              {product.dimensions ? `${product.dimensions} mm` : (product.size ? `SIZE ${product.size}` : '')}
+                              {product.design_code === 'MIN' ? 'MINIMAL' : 'MODERN'}
                             </span>
                             {product.old_price && (
                               <>
@@ -453,11 +482,14 @@ function ProductListingContent() {
                             {product.name}
                           </h3>
                           
-                          <div className="flex items-center gap-3">
-                            <span className="text-[15px] font-sans font-medium text-wood">{formatPrice(product.price)}</span>
-                            {product.old_price && (
-                              <span className="text-[13px] font-sans text-wood/40 line-through">{formatPrice(product.old_price)}</span>
-                            )}
+                          <div className="flex flex-col">
+                            <span className="text-[10px] text-wood/50 mb-1">Giá tham khảo từ</span>
+                            <div className="flex items-center gap-3">
+                              <span className="text-[15px] font-sans font-medium text-wood">{formatPrice(product.price)}</span>
+                              {product.old_price && (
+                                <span className="text-[13px] font-sans text-wood/40 line-through">{formatPrice(product.old_price)}</span>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </Link>
@@ -472,10 +504,10 @@ function ProductListingContent() {
                       onClick={() => setVisibleCount(prev => prev + ITEMS_PER_PAGE)}
                       className="inline-flex items-center gap-2 bg-transparent border-2 border-wood text-wood px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[12px] hover:bg-wood hover:text-white transition-all shadow-sm"
                     >
-                      Xem thêm sản phẩm
+                      Xem thêm thiết kế
                     </button>
                     <p className="text-wood/40 text-xs mt-4">
-                      Đang hiển thị {displayedProducts.length} / {sortedAndFilteredProducts.length} sản phẩm
+                      Đang hiển thị {displayedProducts.length} / {sortedAndFilteredProducts.length} thiết kế
                     </p>
                   </div>
                 )}
