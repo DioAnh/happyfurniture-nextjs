@@ -81,7 +81,7 @@ export default async function ProductDetailPage({ params }: Props) {
   }
 
   // 3. Fetch Toàn bộ biến thể của Group này an toàn
-  let groupVariants = [];
+  let groupVariants: any[] = [];
   if (product.group_id) {
     const { data: variants } = await supabase
       .from('products')
