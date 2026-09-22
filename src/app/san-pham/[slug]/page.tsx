@@ -3,6 +3,10 @@ import { supabase } from '@/lib/supabase';
 import ProductDetailClient from './ProductDetailClient';
 import { notFound } from 'next/navigation';
 
+// FIX: Yêu cầu Vercel KHÔNG ĐƯỢC CACHE trang này, luôn lấy data mới nhất từ Supabase
+export const revalidate = 0; 
+export const dynamic = 'force-dynamic';
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -20,7 +24,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Sản phẩm không tồn tại | Happy Furniture' };
   }
 
-  // Fetch group an toàn (có thể null nếu data chưa chuẩn)
   let groupDescription = '';
   if (product.group_id) {
     const { data: group } = await supabase
@@ -33,7 +36,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
-  // Xử lý an toàn khi images bị NULL hoặc rỗng
   const images = Array.isArray(product.images) ? product.images : [];
   const imageUrl = images.length > 0 
     ? images[0] 
@@ -58,7 +60,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
 
-  // 1. Fetch Biến thể hiện tại
   const { data: product, error: productError } = await supabase
     .from('products')
     .select('*')
@@ -69,7 +70,6 @@ export default async function ProductDetailPage({ params }: Props) {
     notFound(); 
   }
 
-  // 2. Fetch Thông tin gốc (Group) an toàn
   let groupData = null;
   if (product.group_id) {
     const { data: group } = await supabase
@@ -80,7 +80,6 @@ export default async function ProductDetailPage({ params }: Props) {
     groupData = group;
   }
 
-  // 3. Fetch Toàn bộ biến thể của Group này an toàn
   let groupVariants: any[] = [];
   if (product.group_id) {
     const { data: variants } = await supabase
@@ -92,7 +91,6 @@ export default async function ProductDetailPage({ params }: Props) {
     }
   }
 
-  // 4. Gộp thông tin gốc và Xử lý an toàn các giá trị NULL
   const mergedProduct = {
     ...product,
     description: groupData?.description || 'Chi tiết sản phẩm đang được cập nhật.', 

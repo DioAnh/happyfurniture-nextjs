@@ -83,6 +83,10 @@ export default function ProductDetailClient({ initialProduct, groupVariants }: {
 
   useEffect(() => { setActiveImage(0); }, [product.slug]);
 
+  // LOGIC LỌC THÔNG MINH: Chỉ lấy những Size và Màu CÓ TỒN TẠI trong bảng groupVariants
+  const availableSizes = ['XS', 'S', 'M', 'L', 'XL'].filter(s => groupVariants.some(v => v.size === s));
+  const availableMaterials = Array.from(new Set(groupVariants.map(v => v.material_code)));
+
   const displayImages = (product.images && product.images.length > 0) ? product.images : [DEMO_IMAGES[product.type_code] || DEMO_IMAGES['WD']];
 
   const handleAddToCart = () => {
@@ -249,20 +253,21 @@ export default function ProductDetailClient({ initialProduct, groupVariants }: {
 
               <div className="space-y-6 mb-8 border-y border-wood/5 py-6 relative">
                 
-                {/* 1. KÍCH THƯỚC: Chỉ hiện size có thật ứng với màu đang chọn */}
+                {/* 1. KÍCH THƯỚC */}
                 <div>
                   <h4 className="text-sm font-bold text-wood mb-3">Kích thước</h4>
                   <div className="flex flex-wrap gap-2">
-                    {['XS', 'S', 'M', 'L', 'XL'].map(size => {
-                      const targetVariant = groupVariants.find(v => v.size === size && v.material_code === product.material_code);
-                      if (!targetVariant) return null; // ẨN NẾU KHÔNG CÓ DATA
+                    {availableSizes.map(size => {
+                      // Ưu tiên tìm biến thể có cùng màu hiện tại. Nếu không có, tự động chuyển sang màu khác của size đó
+                      const targetVariant = groupVariants.find(v => v.size === size && v.material_code === product.material_code) || groupVariants.find(v => v.size === size);
+                      const isActive = product.size === size;
 
                       return (
                         <button
                           key={size}
                           onClick={() => handleVariantChange(targetVariant.slug)}
                           disabled={isNavigating}
-                          className={`px-6 py-2 border rounded-[2px] text-[12px] font-bold transition-all ${product.size === size ? 'border-maroon text-maroon bg-maroon/5 shadow-sm' : 'border-wood/10 text-wood/60 hover:border-wood/40 bg-white hover:bg-ivory'}`}
+                          className={`px-6 py-2 border rounded-[2px] text-[12px] font-bold transition-all ${isActive ? 'border-maroon text-maroon bg-maroon/5 shadow-sm' : 'border-wood/10 text-wood/60 hover:border-wood/40 bg-white hover:bg-ivory'}`}
                         >
                           Size {size}
                         </button>
@@ -271,22 +276,18 @@ export default function ProductDetailClient({ initialProduct, groupVariants }: {
                   </div>
                 </div>
 
-                {/* 2. MÀU SẮC: Chỉ hiện màu có thật ứng với size đang chọn */}
+                {/* 2. MÀU SẮC */}
                 <div>
                   <h4 className="text-sm font-bold text-wood mb-3">
                     Bề mặt & Màu sắc: <span className="font-normal text-maroon">{MATERIAL_NAMES[product.material_code] || product.material_code}</span>
                   </h4>
                   <div className="flex flex-wrap gap-3">
-                    {Array.from(new Set(groupVariants.map(v => v.material_code))).map(matCode => {
+                    {availableMaterials.map(matCode => {
                       const codeStr = matCode as string;
                       const matName = MATERIAL_NAMES[codeStr] || codeStr;
                       
-                      // KIỂM TRA XEM MÀU NÀY CÓ TỒN TẠI VỚI SIZE ĐANG CHỌN KHÔNG?
-                      const targetVariant = groupVariants.find(v => v.material_code === codeStr && v.size === product.size);
-                      
-                      // NẾU KHÔNG CÓ DATA CHO CẶP (SIZE + MÀU) NÀY -> ẨN LUÔN
-                      if (!targetVariant) return null;
-
+                      // Ưu tiên tìm biến thể cùng size hiện tại. Nếu không có, tự động chuyển sang size khác của màu đó
+                      const targetVariant = groupVariants.find(v => v.material_code === codeStr && v.size === product.size) || groupVariants.find(v => v.material_code === codeStr);
                       const isActive = product.material_code === codeStr;
                       const fallbackColor = MATERIAL_COLORS[codeStr] || '#CCCCCC';
 
@@ -311,7 +312,6 @@ export default function ProductDetailClient({ initialProduct, groupVariants }: {
                               }}
                             />
                           </div>
-
                           {isActive && (
                             <div className="absolute -top-1 -right-1 bg-maroon text-white rounded-full p-0.5 shadow-sm">
                               <Check className="w-3 h-3" />
