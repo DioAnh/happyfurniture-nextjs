@@ -4,7 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, ShieldCheck, Truck, Factory, Users, Award, CheckCircle2, Zap, Star, Clock, Phone, Download } from 'lucide-react';
+// ĐÃ THÊM CHERVON DOWN CHO ICON MŨI TÊN
+import { ArrowRight, ShieldCheck, Truck, Factory, Users, Award, CheckCircle2, Zap, Star, Clock, Phone, Download, Check, ChevronDown } from 'lucide-react';
 import { OptimizedImage } from '@/components/OptimizedImage';
 import { RangeSelectionCard } from '@/components/RangeSelectionCard';
 import { FaqSection } from '@/components/FaqSection';
@@ -37,42 +38,15 @@ const DEMO_IMAGES = {
 };
 
 const workshopPhotos = [
-  {
-    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_001.webp',
-    caption: 'XƯỞNG SẢN XUẤT TẠI QUẬN 12'
-  },
-  {
-    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_002.webp',
-    caption: 'LẮP RÁP THÀNH PHẨM'
-  },
-  {
-    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_003.webp',
-    caption: 'KIỂM TRA CHẤT LƯỢNG'
-  },
-  {
-    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_004.webp',
-    caption: 'DÁN CẠNH NẸP VÁN'
-  },
-  {
-    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_005.webp',
-    caption: 'ĐÓNG GÓI CHUẨN BỊ GIAO HÀNG'
-  },
-  {
-    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_006.webp',
-    caption: 'BÓC TÁCH BẢN VẼ SẢN XUẤT'
-  },
-  {
-    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_007.webp',
-    caption: 'ĐỘI NGŨ THỢ MỘC LÀNH NGHỀ'
-  },
-  {
-    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_008.webp',
-    caption: 'QUY TRÌNH KIỂM TRA CHẤT LƯỢNG'
-  },
-  {
-    url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_009.webp',
-    caption: 'ĐẢM BẢO CHUẨN XÁC TỪNG MILIMET'
-  }
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_001.webp', caption: 'XƯỞNG SẢN XUẤT TẠI QUẬN 12' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_002.webp', caption: 'LẮP RÁP THÀNH PHẨM' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_003.webp', caption: 'KIỂM TRA CHẤT LƯỢNG' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_004.webp', caption: 'DÁN CẠNH NẸP VÁN' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_005.webp', caption: 'ĐÓNG GÓI CHUẨN BỊ GIAO HÀNG' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_006.webp', caption: 'BÓC TÁCH BẢN VẼ SẢN XUẤT' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_007.webp', caption: 'ĐỘI NGŨ THỢ MỘC LÀNH NGHỀ' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_008.webp', caption: 'QUY TRÌNH KIỂM TRA CHẤT LƯỢNG' },
+  { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_009.webp', caption: 'ĐẢM BẢO CHUẨN XÁC TỪNG MILIMET' }
 ];
 
 const HomeCollections = () => {
@@ -170,7 +144,10 @@ export default function HomeClient() {
   const workshopScrollRef = useRef<HTMLDivElement>(null);
   const interiorScrollRef = useRef<HTMLDivElement>(null);
 
-  // 3. Logic cuộn tự động dùng chung cho nhiều slider
+  // LOGIC: ĐỘ MỜ CỦA MŨI TÊN (SCROLL INDICATOR)
+  const [indicatorOpacity, setIndicatorOpacity] = useState(1);
+
+  // 3. Logic cuộn tự động dùng chung cho nhiều slider + Tính toán Scroll Mũi tên
   useEffect(() => {
     const autoScroll = (ref: React.RefObject<HTMLDivElement | null>) => {
       if (ref.current) {
@@ -186,91 +163,119 @@ export default function HomeClient() {
     };
 
     const timer = setInterval(() => {
-      autoScroll(workshopScrollRef); // Cuộn slider xưởng
-      autoScroll(interiorScrollRef); // Cuộn slider nội thất
+      autoScroll(workshopScrollRef);
+      autoScroll(interiorScrollRef);
     }, 3000); 
 
-    return () => clearInterval(timer);
+    // Lắng nghe sự kiện cuộn để làm biến mất mũi tên
+    const handleScrollFade = () => {
+      // Chỉ 200px đầu tiên mũi tên sẽ mờ dần và biến mất
+      const op = Math.max(1 - window.scrollY / 200, 0);
+      setIndicatorOpacity(op);
+    };
+    window.addEventListener('scroll', handleScrollFade, { passive: true });
+
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('scroll', handleScrollFade);
+    };
   }, []);
 
+  // Biến cấu hình hiệu ứng cho vùng chứa (Container) của Hero Banner
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.1 } 
+    }
+  };
+
+  // Biến cấu hình hiệu ứng cho từng thành phần (Item) của Hero Banner
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    }
+  };
+
   return (
-    <div className="overflow-hidden">
-      {/* 1. Hero Section */}
-      <section className="relative min-h-[90vh] flex items-start pt-10">
+    <div className="overflow-hidden bg-ivory">
+      
+      {/* 1. HERO SECTION MỚI - CONCEPT LUXURY FULLSCREEN (FRATO/CARACOLE STYLE) */}
+      <section className="relative w-full min-h-[calc(100vh+80px)] flex items-center justify-center -mt-[80px] overflow-hidden">
+        {/* Nền ảnh tràn viền 100% */}
         <div className="absolute inset-0 z-0">
           <OptimizedImage 
             src={HOME_IMAGES.heroBanner} 
-            alt="Xưởng nội thất Happy Furniture" 
-            className="w-full h-full opacity-20"
-            priority
+            alt="Nội thất hiện đại từ xưởng Happy Furniture" 
+            className="w-full h-full object-cover object-center"
+            priority={true}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-ivory via-ivory/95 to-transparent" />
+          {/* Lớp phủ mờ (Vignette) để làm nổi bật chữ */}
+          <div className="absolute inset-0 bg-black/40 bg-gradient-to-t from-black/60 via-transparent to-black/30 z-10" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+        {/* Nội dung chữ ở giữa */}
+        <div className="relative z-20 text-center px-6 mt-16 max-w-4xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-col items-center"
           >
-            <h1 className="text-[48px] md:text-[68px] font-serif font-bold leading-[1.14] text-wood mb-10">
-              <span className="text-maroon italic">Nội Thất</span> <br />Hiện đại Từ<br /> 
-              <span className="text-maroon italic">Xưởng Sản xuất</span> <span className="text-maroon italic"> </span> Gỗ công nghiệp
-            </h1>
-            <p className="text-lg text-wood/70 mb-10 max-w-[600px] leading-relaxed font-medium">
-              Giải pháp thiết kế và thi công nội thất cho căn hộ, nhà phố tại <span className="text-maroon font-bold">Bình Dương </span>
-              & <span className="text-maroon font-bold">TP.HCM</span>. 
-              Tập trung vào tối ưu <span className="text-maroon font-bold">tiện nghi & công năng sử dụng</span>, với mức giá tối ưu nhất nhờ sản xuất trực tiếp tại xưởng với đội ngũ kỹ thuật và thiết kế.
-            </p>
-            <div className="flex flex-wrap gap-5">
-              <Link 
-                href="/san-pham"
-                className="bg-maroon text-white px-10 py-5 rounded-sm font-bold uppercase tracking-widest text-[12px] hover:bg-wood transition-all shadow-xl shadow-maroon/20 flex items-center gap-3 cursor-pointer"
-              >
-                Xem mẫu thiết kế
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link 
-                href="/lien-he"
-                className="border-2 border-wood/20 text-wood px-10 py-5 rounded-sm font-bold uppercase tracking-widest text-[12px] hover:bg-wood hover:text-white transition-all cursor-pointer"
-              >
-                Báo giá ngay
-              </Link>
-            </div>
-          </motion.div>
+            <motion.h1 
+              variants={itemVariants}
+              className="flex flex-col gap-3 md:gap-4 text-white mb-8 drop-shadow-lg"
+            >
+              {/* DÒNG 1: HIỆU ỨNG TÁCH CHỮ CÁI ĐỔI MÀU (MICRO-INTERACTION) */}
+              <span className="text-[40px] sm:text-[56px] md:text-[76px] leading-none font-sans font-extrabold uppercase tracking-tighter cursor-default">
+                {"HAPPY  FURNITURE".split('').map((char, index) => (
+                  <span 
+                    key={index} 
+                    className="inline-block transition-colors duration-300 hover:text-maroon"
+                  >
+                    {char === ' ' ? '\u00A0' : char}
+                  </span>
+                ))}
+              </span>
+              
+              {/* Dòng 2: Slogan (Serif, Italic, Kiểu cách, Cổ điển) */}
+              <span className="text-[32px] sm:text-[42px] md:text-[52px] leading-none font-serif italic font-light tracking-wide text-white/90">
+                Manufacturer & Build
+              </span>
+            </motion.h1>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1 }}
-            className="relative hidden lg:block"
-          >
-            <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border-[12px] border-white h-[450px] w-full">
-              <OptimizedImage 
-                src={HOME_IMAGES.heroBanner} 
-                alt="Thiết kế Nội thất chung cư hiện đại" 
-                className="w-full h-full"
-                priority={true}
-              />
-            </div>
-            <div className="absolute -bottom-10 -left-10 bg-white p-6 rounded-2xl shadow-2xl z-20 max-w-[320px]">
-              <ul className="space-y-3">
-                <li className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-maroon shrink-0" />
-                  <span className="text-sm font-bold text-wood leading-tight">MDF lõi xanh chống ẩm</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-maroon shrink-0" />
-                  <span className="text-sm font-bold text-wood leading-tight">Cam kết không chi phí phát sinh</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-maroon shrink-0" />
-                  <span className="text-sm font-bold text-wood leading-tight">Giá cả cạnh tranh trên thị trường</span>
-                </li>
-              </ul>
-            </div>
+            <motion.p 
+              variants={itemVariants} 
+              className="text-[15px] sm:text-[17px] text-white/80 font-light leading-relaxed mb-10 max-w-2xl drop-shadow-md"
+            >
+              Giải pháp nội thất hiện đại từ xưởng sản xuất trực tiếp. Tối ưu hóa không gian sống của bạn với sự tinh giản, tiện nghi và chất lượng vượt thời gian.
+            </motion.p>
+
+            {/* Nút bấm CTA: Hover sang Đỏ Maroon */}
+            <motion.div variants={itemVariants}>
+              <Link 
+                href="/san-pham" 
+                className="inline-flex px-10 py-4 bg-white/10 text-white border border-white/80 hover:bg-maroon hover:border-maroon backdrop-blur-sm transition-all duration-500 font-bold tracking-[0.2em] text-[11px] uppercase shadow-xl"
+              >
+                Khám phá ngay
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
+
+        {/* ICON MŨI TÊN CHỈ DẪN CUỘN XUỐNG (MỜ DẦN KHI SCROLL) */}
+        <motion.div 
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
+          style={{ opacity: indicatorOpacity }}
+        >
+          {/* Mũi tên góc vuông siêu mảnh */}
+          <ChevronDown className="w-10 h-10 text-white/60" strokeWidth={1} />
+        </motion.div>
       </section>
 
       {/* 1.1 Intro Section */}

@@ -39,8 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 3. Tự động lấy danh sách URL Sản phẩm từ Supabase (Đã fix lỗi thiếu cột)
   const { data: products } = await supabase
     .from('products')
-    .select('slug, created_at')
-    .order('is_avatar', { ascending: false }); // Chỉ lấy slug và created_at
+    .select('slug, created_at'); // Chỉ lấy slug và created_at
 
   const productPages = (products || []).map((product: any) => ({
     url: `${baseUrl}/san-pham/${product.slug}`,

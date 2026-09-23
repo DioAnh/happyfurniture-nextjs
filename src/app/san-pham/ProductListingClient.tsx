@@ -108,11 +108,17 @@ function ProductListingContent() {
     setVisibleCount(ITEMS_PER_PAGE);
   }, [selectedCategory, selectedMaterialType, priceRange, showOnlyDiscount, selectedDesignLine, selectedType, searchParams.get('search')]);
 
-  // Chuẩn bị dữ liệu hiển thị Đại diện cho mỗi Group
-  const representativeProducts = productGroups.map(group => {
-    // Ưu tiên chọn size M, nếu không có lấy biến thể đầu tiên
+    // Chuẩn bị dữ liệu hiển thị Đại diện cho mỗi Group
+    const representativeProducts = productGroups.map(group => {
     const variants = group.products || [];
-    let repVariant = variants.find((v: any) => v.size === 'M') || variants[0];
+    
+    // Ưu tiên 1: Lấy biến thể đã được ghim làm Avatar trong Database
+    let repVariant = variants.find((v: any) => v.is_avatar === true);
+    
+    // Ưu tiên 2: Fallback (Dự phòng) - Nếu không có Avatar nào được ghim, lấy Size M hoặc cái đầu tiên
+    if (!repVariant) {
+        repVariant = variants.find((v: any) => v.size === 'M') || variants[0];
+    }
     
     // Nếu biến thể chưa có ảnh (do DB mới tạo), fallback tạm thời dùng DEMO_IMAGES
     const defaultImage = DEMO_IMAGES.categories[group.type_code as keyof typeof DEMO_IMAGES.categories] || DEMO_IMAGES.categories['WD'];

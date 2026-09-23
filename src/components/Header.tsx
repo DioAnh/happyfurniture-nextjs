@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 import { ShoppingBag, Menu, Search, X, ChevronDown, Phone, Minus, Plus, Trash2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
@@ -76,11 +76,34 @@ const menuItems = [
 
 export const Header = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { cart, totalItems, totalPrice, updateQuantity, removeFromCart, isCartOpen, setIsCartOpen, isAnimatingCartIcon } = useCart();
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // 1. Trạng thái cuộn mượt (Opacity từ 0 -> 1)
+  const [scrollOpacity, setScrollOpacity] = useState(0);
+  const isHomePage = pathname === '/';
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Khi cuộn qua 150px, độ đục nền đạt 100% (1.0). Nếu chưa tới thì mờ dần.
+      const opacity = Math.min(window.scrollY / 150, 1);
+      setScrollOpacity(opacity);
+    };
+    
+    if (isHomePage) {
+      // Khi mới vào web, gọi luôn hàm để lỡ khách reload ở giữa trang thì nền vẫn ăn
+      handleScroll(); 
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      return () => window.removeEventListener('scroll', handleScroll);
+    } else {
+      // Nếu ở trang con (sản phẩm, liên hệ), nền luôn đặc
+      setScrollOpacity(1); 
+    }
+  }, [isHomePage]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
@@ -103,16 +126,36 @@ export const Header = () => {
     }
   };
 
+  // 2. Logic nội suy màu sắc
+  // Đổi màu chữ khi cuộn qua 60% (scrollOpacity > 0.6) để tương phản tốt
+  const isDarkText = scrollOpacity > 0.6 || !isHomePage; 
+
+  const headerStyle = {
+    // Ivory color (250, 248, 245) pha với opacity cuộn
+    backgroundColor: `rgba(250, 248, 245, ${scrollOpacity})`,
+    // Viền mờ dần khi cuộn
+    borderBottom: `1px solid rgba(139, 90, 43, ${scrollOpacity * 0.1})`,
+    backdropFilter: scrollOpacity > 0.1 ? `blur(${scrollOpacity * 8}px)` : 'none',
+    WebkitBackdropFilter: scrollOpacity > 0.1 ? `blur(${scrollOpacity * 8}px)` : 'none',
+  };
+
+  const textClass = isDarkText ? 'text-wood' : 'text-white drop-shadow-md';
+  const logoClass = isDarkText ? 'text-maroon' : 'text-white drop-shadow-md';
+  const hoverClass = isDarkText ? 'hover:text-maroon' : 'hover:text-white/70';
+
   return (
     <>
-      <header className="sticky top-0 z-50 bg-ivory/95 backdrop-blur-md border-b border-wood/10">
+      <header 
+        className="fixed top-0 w-full z-50 transition-colors duration-500"
+        style={headerStyle}
+      >
         <div className="max-w-7xl mx-auto px-6 h-[80px] flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex flex-col items-start flex-shrink-0">
-            <h1 className="text-[22px] font-extrabold tracking-tighter text-maroon uppercase leading-none">
+            <h1 className={`text-[22px] font-extrabold tracking-tighter uppercase leading-none transition-colors duration-500 ${logoClass}`}>
               HAPPY FURNITURE
             </h1>
-            <p className="text-[9px] uppercase tracking-[3px] text-wood/60 font-semibold mt-1 ml-[1px]">
+            <p className={`text-[9px] uppercase tracking-[3px] font-semibold mt-1 ml-[1px] transition-colors duration-500 ${isDarkText ? 'text-wood/60' : 'text-white/80'}`}>
               Xưởng sản xuất nội thất
             </p>
           </Link>
@@ -128,7 +171,7 @@ export const Header = () => {
               >
                 <Link 
                   href={item.path} 
-                  className="flex items-center gap-1 text-[11px] xl:text-[13px] font-semibold uppercase tracking-widest hover:text-maroon transition-colors h-full px-1 xl:px-2 whitespace-nowrap"
+                  className={`flex items-center gap-1 text-[11px] xl:text-[13px] font-semibold uppercase tracking-widest transition-colors duration-300 h-full px-1 xl:px-2 whitespace-nowrap ${textClass} ${hoverClass}`}
                 >
                   {item.title}
                   <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${activeDropdown === item.title ? 'rotate-180' : ''}`} />
@@ -228,7 +271,7 @@ export const Header = () => {
           <div className="flex items-center gap-6">
             <div className="hidden sm:flex items-center gap-4">
               <Search 
-                className="w-5 h-5 cursor-pointer hover:text-maroon transition-colors" 
+                className={`w-5 h-5 cursor-pointer transition-colors duration-300 ${textClass} ${hoverClass}`} 
                 onClick={() => setIsSearchOpen(true)}
               />
 
@@ -242,7 +285,7 @@ export const Header = () => {
                 >
                   <ShoppingBag 
                     className={`w-5 h-5 cursor-pointer transition-colors duration-300 ${
-                      totalItems > 0 ? 'text-green-600' : 'text-wood hover:text-maroon'
+                      totalItems > 0 ? 'text-green-500' : `${textClass}${hoverClass}`
                     }`} 
                   />
                 </motion.div>
@@ -251,7 +294,9 @@ export const Header = () => {
                   animate={isAnimatingCartIcon ? { scale: [1, 1.4, 1] } : { scale: 1 }}
                   transition={{ duration: 0.4, ease: "easeInOut" }}
                   className={`absolute -top-2 -right-2 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center transition-colors duration-300 ${
-                    totalItems > 0 ? 'bg-green-600' : 'bg-maroon'
+                    totalItems > 0 
+                      ? 'bg-green-600' 
+                      : (isDarkText ? 'bg-maroon' : 'bg-white/30 text-white border border-white/50')
                   }`}
                 >
                   {totalItems}
@@ -263,7 +308,11 @@ export const Header = () => {
               href="https://zalo.me/0909163593"
               target="_blank"
               rel="noreferrer"
-              className="hidden md:flex items-center gap-2 bg-maroon text-white px-4 xl:px-6 py-3 rounded-full text-[11px] xl:text-[12px] font-bold uppercase tracking-wider hover:bg-wood transition-all shadow-lg shadow-maroon/20 cursor-pointer whitespace-nowrap"
+              className={`hidden md:flex items-center gap-2 px-4 xl:px-6 py-3 rounded-full text-[11px] xl:text-[12px] font-bold uppercase tracking-wider transition-all shadow-lg cursor-pointer whitespace-nowrap ${
+                isDarkText 
+                  ? 'bg-maroon text-white hover:bg-wood shadow-maroon/20' 
+                  : 'bg-white/20 text-white backdrop-blur-sm border border-white/50 hover:bg-white hover:text-maroon shadow-black/10'
+              }`}
             >
               <Phone className="w-3 h-3" />
               Tư vấn ngay
@@ -273,7 +322,7 @@ export const Header = () => {
               className="lg:hidden p-2"
               onClick={() => setIsMobileMenuOpen(true)}
             >
-              <Menu className="w-6 h-6" />
+              <Menu className={`w-6 h-6 transition-colors duration-300 ${textClass}`} />
             </button>
           </div>
         </div>
