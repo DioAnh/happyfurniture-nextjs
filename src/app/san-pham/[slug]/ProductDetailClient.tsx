@@ -89,17 +89,40 @@ const generateDimensions = (typeCode: string, size: string) => {
   const t = typeCode?.toUpperCase();
   const s = size?.toUpperCase();
   
-  if (t === 'WD') { 
+  if (t === 'WD') { // Tủ quần áo
     if (s === 'S') return 'Ngang 1200 x Sâu 600 x Cao 2000 (mm)';
     if (s === 'M') return 'Ngang 1600 x Sâu 600 x Cao 2000 (mm)';
-    if (s === 'L') return 'Ngang 2000 x Sâu 600 x Cao 2000 (mm)';
-  } else if (t === 'BE') { 
+    if (s === 'L') return 'Ngang 2000 x Sâu 600 x Cao 2000 (mm)'; // Dành cho Lumina
+  } else if (t === 'BE') { // Giường
     if (s === 'S') return 'Rộng 1200 x Dài 2000 x Cao 300 (mm)';
     if (s === 'M') return 'Rộng 1600 x Dài 2000 x Cao 300 (mm)';
     if (s === 'L') return 'Rộng 1800 x Dài 2000 x Cao 300 (mm)';
-  } else if (t === 'BS') { 
-    return 'Ngang 400 x Sâu 400 x Cao 450 (mm)';
+  } else if (t === 'BS') { // Tủ đầu giường
+    return 'Ngang 480 x Sâu 350 x Cao 660 (mm)';
+  } else if (t === 'DT') { // Bàn ăn
+    return 'Ngang 1500 x Sâu 800 x Cao 800 (mm)';
+  } else if (t === 'CO') { // Bàn console
+    return 'Ngang 1000 x Sâu 320 x Cao 900 (mm)';
+  } else if (t === 'OT') { // Bàn làm việc
+    return 'Ngang 1000 x Sâu 550 x Cao 770 (mm)';
+  } else if (t === 'CF') { // Bàn trà
+    return 'Ngang 950 x Sâu 550 x Cao 390 (mm)';
+  } else if (t === 'SH') { // Kệ trang trí
+    if (s === 'S') return 'Ngang 620 x Sâu 410 x Cao 2200 (mm)';
+    return 'Ngang 950 x Sâu 410 x Cao 2200 (mm)'; // M
+  } else if (t === 'TV') { // Kệ TV
+    return 'Ngang 1500 x Sâu 380 x Cao 450 (mm)';
+  } else if (t === 'ST') { // Tủ kho đa năng
+    if (s === 'M') return 'Ngang 1200 x Sâu 480 x Cao 1140 (mm)';
+    if (s === 'L') return 'Ngang 1500 x Sâu 480 x Cao 1050 (mm)';
+  } else if (t === 'SC') { // Tủ giày
+    if (s === 'S') return 'Ngang 650 x Sâu 420 x Cao 1050 (mm)';
+    if (s === 'M') return 'Ngang 900 x Sâu 420 x Cao 1050 (mm)';
+  } else if (t === 'DC') { // Tủ hộc kéo
+    if (s === 'S') return 'Ngang 800 x Sâu 400 x Cao 950 (mm)';
+    if (s === 'M') return 'Ngang 950 x Sâu 420 x Cao 1050 (mm)';
   }
+  
   return 'Kích thước tiêu chuẩn (Có thể tùy chỉnh khi đặt hàng)';
 };
 
