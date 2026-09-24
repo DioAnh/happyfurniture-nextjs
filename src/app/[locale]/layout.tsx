@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
-import "./globals.css";
+import "./../globals.css"; // Lưu ý đường dẫn file css vì layout giờ đã nằm trong [locale]
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CartProvider } from "@/context/CartContext";
 import { ScrollToTopFix } from "@/components/ScrollToTopFix";
 import Script from 'next/script';
+
+// Import thư viện đa ngôn ngữ
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import { notFound } from 'next/navigation';
 
 const primaryFont = Plus_Jakarta_Sans({
   subsets: ["latin", "vietnamese"], // Bắt buộc phải có "vietnamese" để không bị lỗi dấu
@@ -96,13 +101,23 @@ const HOME_SCHEMA = {
   ]
 };
 
-export default function RootLayout({
+
+// Cập nhật kiểu dữ liệu params thành Promise (Chuẩn Next.js 15+)
+export default async function RootLayout({
   children,
-}: Readonly<{
+  params
+}: {
   children: React.ReactNode;
-}>) {
+  params: Promise<{ locale: string }>; // <-- Khai báo đây là một Promise
+}) {
+
+  // Dùng await để "giải mã" lấy biến locale từ URL
+  const { locale } = await params;
+
+  const messages = await getMessages();
+
   return (
-    <html lang="vi" className={`${primaryFont.variable} ${playfair.variable}`}>
+    <html lang={locale} className={`${primaryFont.variable} ${playfair.variable}`}>
       <head>
         <meta name="geo.region" content="VN-61" />
         <meta name="geo.placename" content="Thuận An, Bình Dương" />
@@ -134,12 +149,15 @@ export default function RootLayout({
           ></iframe>
         </noscript>
         
-        <CartProvider>
-          <ScrollToTopFix />
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </CartProvider>
+        {/* Bọc toàn bộ Ứng dụng bằng Provider Ngôn ngữ */}
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          <CartProvider>
+            <ScrollToTopFix />
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </CartProvider>
+        </NextIntlClientProvider>
         
         <SpeedInsights />
       </body>

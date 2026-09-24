@@ -1,5 +1,10 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from 'next-intl/plugin';
 
+// Khởi tạo plugin đa ngôn ngữ trỏ đến file cấu hình i18n
+const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
+
+// Gom TẤT CẢ các cấu hình vào trong một biến nextConfig duy nhất
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -42,4 +47,5 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Đóng gói toàn bộ cấu hình bằng plugin i18n và chỉ có MỘT lệnh export default
+export default withNextIntl(nextConfig);

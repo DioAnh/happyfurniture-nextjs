@@ -1,0 +1,14 @@
+{
+  "Header": {
+    "retail": "Retail Products",
+    "services": "Services",
+    "projects": "Projects",
+    "community": "Community",
+    "contact": "Contact Us",
+    "consultBtn": "Get Advice"
+  },
+  "HomePage": {
+    "metaTitle": "Happy Furniture - Custom Furniture Manufacturer & Build",
+    "metaDescription": "Happy Furniture specializes in manufacturing, designing, and installing high-quality melamine-faced moisture-resistant MDF furniture in Binh Duong, Ho Chi Minh City, and Dong Nai."
+  }
+}

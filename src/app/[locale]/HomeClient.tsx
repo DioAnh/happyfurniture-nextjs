@@ -246,7 +246,7 @@ export default function HomeClient() {
               
               {/* Dòng 2: Slogan (Serif, Italic, Kiểu cách, Cổ điển) */}
               <span className="text-[32px] sm:text-[42px] md:text-[52px] leading-none font-serif italic font-light tracking-wide text-white/90">
-                Manufacturer & Build
+                Interior Manufacturer & Build
               </span>
             </motion.h1>
 
