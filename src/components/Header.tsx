@@ -146,18 +146,23 @@ export const Header = () => {
   return (
     <>
       <header className="fixed top-0 w-full z-50 transition-colors duration-500" style={headerStyle}>
-        {/* FIX BỐ CỤC 1: Thêm gap-4 xl:gap-8 để tạo khoảng cách an toàn tuyệt đối giữa Menu và Cụm Tiện ích */}
-        <div className="max-w-7xl mx-auto px-6 h-[80px] flex items-center justify-between gap-4 xl:gap-8">
-          <Link href="/" className="flex flex-col items-start flex-shrink-0">
+        
+        {/* FIX 1: Tăng max-w lên 1440px và bỏ các gap khổng lồ đi để không bị tràn màn hình */}
+        <div className="w-full max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8 h-[80px] flex items-center justify-between">
+          
+        {/* KHỐI 1: LOGO (Bám trái) */}
+          <Link href="/" className="flex flex-col items-start shrink-0">
             <h1 className={`text-[22px] font-extrabold tracking-tighter uppercase leading-none transition-colors duration-500 ${logoClass}`}>
               HAPPY FURNITURE
             </h1>
+            {/* Đã gỡ hardcode, tự động dịch theo ngôn ngữ */}
             <p className={`text-[9px] uppercase tracking-[3px] font-semibold mt-1 ml-[1px] transition-colors duration-500 ${isDarkText ? 'text-wood/60' : 'text-white/80'}`}>
-              Xưởng sản xuất nội thất
+              {t('logoSubtitle')}
             </p>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-3 xl:gap-5 h-full">
+          {/* KHỐI 2: MENU (Căn giữa hoàn hảo bằng flex-1 justify-center) */}
+          <nav className="hidden lg:flex flex-1 justify-center items-center gap-3 xl:gap-6 h-full px-2 xl:px-8">
             {menuItems.map((item) => (
               <div 
                 key={item.title}
@@ -259,8 +264,8 @@ export const Header = () => {
             ))}
           </nav>
 
-          {/* FIX BỐ CỤC 2: Thêm đường kẻ phân cách (border-l) và khoảng đệm (pl-4 lg:pl-8) */}
-          <div className={`flex items-center shrink-0 gap-5 xl:gap-6 pl-4 lg:pl-8 lg:border-l transition-colors duration-500 ${isDarkText ? 'border-wood/20' : 'border-white/30'}`}>
+          {/* KHỐI 3: TIỆN ÍCH (Bám phải) */}
+          <div className={`flex items-center shrink-0 gap-3 xl:gap-5 pl-3 xl:pl-6 lg:border-l transition-colors duration-500 ${isDarkText ? 'border-wood/20' : 'border-white/30'}`}>
             
             <div className={`hidden md:flex items-center gap-2 text-[11px] font-bold tracking-widest ${textClass} transition-colors duration-300`}>
               <button 
@@ -278,7 +283,7 @@ export const Header = () => {
               </button>
             </div>
 
-            <div className="hidden sm:flex items-center gap-4">
+            <div className="hidden sm:flex items-center gap-3 xl:gap-4">
               <Search 
                 className={`w-5 h-5 cursor-pointer transition-colors duration-300 ${textClass} ${hoverClass}`} 
                 onClick={() => setIsSearchOpen(true)}

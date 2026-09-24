@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { MapPin, Phone, Mail, Clock, MessageCircle, ChevronRight, Factory, Store } from 'lucide-react';
 import { OptimizedImage } from '@/components/OptimizedImage';
+import { useTranslations } from 'next-intl';
 
 const FacebookIcon = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -27,27 +28,34 @@ const YoutubeIcon = ({ className }: { className?: string }) => (
 );
 
 export default function ContactClient() {
+  // Nạp 3 bộ từ điển dùng trong trang này
+  const t = useTranslations('ContactPage');
+  const tAbout = useTranslations('AboutCompany');
+  const tHome = useTranslations('HomeMain'); // Dùng ké phần CTA của Home
+  const tFooter = useTranslations('Footer'); // Dùng ké text địa chỉ của Footer
+  
   const locations = [
     {
-      type: 'Xưởng sản xuất',
+      type: t('addressLabel'), 
       name: 'Happy Furniture Workshop',
-      address: 'Quận 12, TP. Hồ Chí Minh',
+      address: tFooter('col2WSDesc'), // Lấy địa chỉ từ Footer json
       mapUrl: 'https://maps.app.goo.gl/eFUALjGezoPBD8y46',        
       icon: <Factory className="w-6 h-6" />,
-      details: 'Chuyên sản xuất, may đo nội thất gỗ công nghiệp MDF, Laminate, Acrylic.'
+      details: tFooter('col1Link1') // Lấy chữ "Xưởng sản xuất trực tiếp"
     },
     {
-      type: 'Showroom / Cửa hàng',
+      type: tFooter('col2StoreTitle'), 
       name: 'Happy Furniture Showroom',
-      address: 'Thuận An, Bình Dương',
+      address: tFooter('col2StoreDesc'),
       mapUrl: 'https://maps.app.goo.gl/wPNMErQWShXnE1iz5',
       icon: <Store className="w-6 h-6" />,
-      details: 'Trưng bày các mẫu thiết kế mới nhất và tư vấn trực tiếp cho khách hàng.'
+      details: ''
     }
   ];
 
   return (
     <div className="bg-ivory min-h-screen">
+      {/* HERO SECTION */}
       <section className="relative py-24 bg-wood text-white overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <OptimizedImage 
@@ -64,32 +72,35 @@ export default function ContactClient() {
             animate={{ opacity: 1, y: 0 }}
             className="text-[42px] md:text-[56px] font-serif font-bold mb-6"
           >
-            Liên Hệ Với Chúng Tôi
+            {t('pageTitle')}
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             className="text-white/70 max-w-2xl mx-auto text-lg"
-          >
-            Happy Furniture luôn sẵn sàng lắng nghe và hiện thực hóa không gian sống mơ ước của bạn. 
-            Trọng tâm phục vụ tại <span className="text-white font-bold">Thuận An, Bình Dương</span> và các khu vực lân cận.
-          </motion.p>
+            dangerouslySetInnerHTML={{ __html: t('pageDesc') }} 
+          />
         </div>
       </section>
 
+      {/* CONTENT SECTION */}
       <section className="py-20 max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-3 gap-12">
+          
+          {/* CỘT TRÁI: THÔNG TIN LIÊN HỆ */}
           <div className="lg:col-span-1 space-y-6">
             <div className="bg-white p-8 rounded-sm shadow-sm border border-wood/5">
-              <h3 className="text-[18px] font-bold text-wood mb-6 uppercase tracking-widest border-b border-wood/10 pb-4">Thông tin liên hệ</h3>
+              <h3 className="text-[18px] font-bold text-wood mb-6 uppercase tracking-widest border-b border-wood/10 pb-4">
+                {t('pageTitle')}
+              </h3>
               <div className="space-y-6">
                 <div className="flex gap-4">
                   <div className="w-10 h-10 bg-ivory rounded-full flex items-center justify-center text-maroon shrink-0">
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-[12px] uppercase tracking-widest text-wood/40 font-bold mb-1">Hotline / Zalo</p>
+                    <p className="text-[12px] uppercase tracking-widest text-wood/40 font-bold mb-1">{t('phoneLabel')}</p>
                     <a href="tel:0909163593" className="text-[16px] font-bold text-wood hover:text-maroon transition-colors">0909 163 593</a>
                   </div>
                 </div>
@@ -98,7 +109,7 @@ export default function ContactClient() {
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-[12px] uppercase tracking-widest text-wood/40 font-bold mb-1">Email</p>
+                    <p className="text-[12px] uppercase tracking-widest text-wood/40 font-bold mb-1">{t('emailLabel')}</p>
                     <p className="text-[16px] font-bold text-wood">contact@happyfurniture.net</p>
                   </div>
                 </div>
@@ -107,31 +118,32 @@ export default function ContactClient() {
                     <Clock className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-[12px] uppercase tracking-widest text-wood/40 font-bold mb-1">Giờ làm việc</p>
-                    <p className="text-[16px] font-bold text-wood">Thứ 2 - Chủ Nhật: 08:00 - 20:00</p>
+                    <p className="text-[12px] uppercase tracking-widest text-wood/40 font-bold mb-1">{t('hoursLabel')}</p>
+                    <p className="text-[16px] font-bold text-wood">{t('hoursText')}</p>
                   </div>
                 </div>
               </div>
 
               <div className="mt-10 pt-10 border-t border-wood/5 space-y-4">
                 <a href="https://zalo.me/0909163593" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-3 w-full bg-maroon text-white py-4 rounded-sm font-bold uppercase tracking-widest text-[12px] hover:bg-wood transition-colors">
-                  <MessageCircle className="w-5 h-5" /> Chat qua Zalo ngay
+                  <MessageCircle className="w-5 h-5" /> Zalo
                 </a>
                 <a href="https://www.facebook.com/profile.php?id=61585294213927" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-3 w-full bg-[#1877F2] text-white py-4 rounded-sm font-bold uppercase tracking-widest text-[12px] hover:bg-[#1877F2]/90 transition-colors">
-                  <FacebookIcon className="w-5 h-5" /> Kết nối qua Facebook
+                  <FacebookIcon className="w-5 h-5" /> Facebook
                 </a>
                 <a href="http://www.youtube.com/@HappyFurnitureAcademy" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-3 w-full bg-[#FF0000] text-white py-4 rounded-sm font-bold uppercase tracking-widest text-[12px] hover:bg-[#FF0000]/90 transition-colors">
-                  <YoutubeIcon className="w-5 h-5" /> Kênh YouTube Academy
+                  <YoutubeIcon className="w-5 h-5" /> YouTube
                 </a>
                 <a href="https://www.instagram.com/happyfurniturevietnam/" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-3 w-full bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F56040] text-white py-4 rounded-sm font-bold uppercase tracking-widest text-[12px] hover:opacity-90 transition-all">
-                  <InstagramIcon className="w-5 h-5" /> Happy Furniture Instagram
+                  <InstagramIcon className="w-5 h-5" /> Instagram
                 </a>
               </div>
             </div>
           </div>
 
+          {/* CỘT PHẢI: BẢN ĐỒ & VỀ CÔNG TY */}
           <div className="lg:col-span-2 space-y-8">
-            <h3 className="text-[24px] font-serif font-bold text-wood">Địa điểm của chúng tôi</h3>
+            <h3 className="text-[24px] font-serif font-bold text-wood">{t('addressLabel')}</h3>
             <div className="grid md:grid-cols-2 gap-8">
               {locations.map((loc, idx) => (
                 <motion.div 
@@ -147,38 +159,68 @@ export default function ContactClient() {
                   <p className="text-wood/60 mb-6 text-[15px] leading-relaxed">{loc.address}</p>
                   <p className="text-wood/50 text-[13px] mb-8 italic">{loc.details}</p>
                   <a href={loc.mapUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-maroon font-bold uppercase tracking-widest text-[12px] group-hover:gap-4 transition-all">
-                    Xem trên Google Maps
+                    Google Maps
                     <ChevronRight className="w-4 h-4" />
                   </a>
                 </motion.div>
               ))}
             </div>
 
+            {/* KHỐI VỀ CÔNG TY (Đã dịch 100%) */}
             <div className="mt-12 bg-white p-10 rounded-sm shadow-sm border border-wood/5">
-              <h3 className="text-[24px] font-serif font-bold text-wood mb-6">Về Happy Furniture</h3>
+              <h3 className="text-[24px] font-serif font-bold text-wood mb-6">{tAbout('title')}</h3>
               <div className="prose prose-wood max-w-none text-wood/70 leading-relaxed space-y-4">
-                <p>Happy Furniture tự hào là đơn vị chuyên thiết kế và thi công nội thất may đo trực tiếp tại xưởng. Với hơn 10 năm kinh nghiệm trong ngành gỗ công nghiệp, chúng tôi thấu hiểu nhu cầu về một không gian sống vừa thẩm mỹ, vừa tối ưu công năng với chi phí hợp lý nhất.</p>
-                <p>Chúng tôi cam kết sử dụng vật liệu MDF lõi xanh chống ẩm từ các nhà cung cấp uy tín, kết hợp với công nghệ máy móc hiện đại để tạo ra những sản phẩm có độ hoàn thiện sắc nét nhất.</p>
+                <p>{tAbout('desc1')}</p>
+                <p>{tAbout('desc2')}</p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 pt-8 border-t border-wood/5">
                   <div className="text-center">
                     <p className="text-[24px] font-bold text-maroon">1000+</p>
-                    <p className="text-[11px] uppercase tracking-widest text-wood/40">Dự án</p>
+                    <p className="text-[11px] uppercase tracking-widest text-wood/40">{tAbout('stat1')}</p>
                   </div>
                   <div className="text-center">
                     <p className="text-[24px] font-bold text-maroon">10+</p>
-                    <p className="text-[11px] uppercase tracking-widest text-wood/40">Năm kinh nghiệm</p>
+                    <p className="text-[11px] uppercase tracking-widest text-wood/40">{tAbout('stat2')}</p>
                   </div>
                   <div className="text-center">
                     <p className="text-[24px] font-bold text-maroon">Direct</p>
-                    <p className="text-[11px] uppercase tracking-widest text-wood/40">Giá tại xưởng</p>
+                    <p className="text-[11px] uppercase tracking-widest text-wood/40">{tAbout('stat3')}</p>
                   </div>
                   <div className="text-center">
                     <p className="text-[24px] font-bold text-maroon">24/7</p>
-                    <p className="text-[11px] uppercase tracking-widest text-wood/40">Hỗ trợ</p>
+                    <p className="text-[11px] uppercase tracking-widest text-wood/40">{tAbout('stat4')}</p>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      
+      {/* CTA Section (Đã dịch 100% bằng cách gọi ké file HomeMain) */}
+      <section className="py-24 bg-maroon">
+        <div className="max-w-4xl mx-auto px-6 text-center text-white">
+          <h2 className="text-[32px] md:text-[48px] font-serif font-bold mb-8">
+            {tHome('ctaTitle')}
+          </h2>
+          <p className="text-white/80 mb-12 text-lg">
+            {tHome('ctaDesc')}
+          </p>
+          <div className="flex flex-wrap justify-center gap-6">
+            <a 
+              href="tel:0909163593"
+              className="bg-white text-maroon px-12 py-5 rounded-full font-bold uppercase tracking-widest text-[13px] hover:bg-wood hover:text-white transition-all shadow-2xl"
+            >
+              {tHome('ctaBtn1')}
+            </a>
+            <a 
+              href="https://zalo.me/0909163593"
+              target="_blank"
+              rel="noreferrer"
+              className="bg-transparent border-2 border-white/30 text-white px-12 py-5 rounded-full font-bold uppercase tracking-widest text-[13px] hover:bg-white hover:text-maroon transition-all flex items-center justify-center"
+            >
+              {tHome('ctaBtn2')}
+            </a>
           </div>
         </div>
       </section>

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ProductListingClient from './ProductListingClient';
+import { useTranslations } from 'next-intl';
 
 export const revalidate = 0;
 
