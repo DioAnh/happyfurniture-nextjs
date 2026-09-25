@@ -57,7 +57,6 @@ function ProductListingContent() {
 
   const filterSummaryRef = useRef<HTMLDivElement>(null);
 
-  // Dịch Type sang chuỗi Tiếng Việt cứng để Database lọc đúng (vì DB lưu tên tiếng Việt)
   const TYPE_TRANSLATIONS_DB: Record<string, string> = {
     'SH': 'Kệ trang trí', 'DC': 'Tủ hộc kéo', 'SC': 'Tủ giày', 'ST': 'Tủ kho', 'WD': 'Tủ quần áo',
     'OT': 'Bàn làm việc', 'TV': 'Kệ TV', 'CO': 'Bàn console', 'CF': 'Bàn cà phê', 'DT': 'Bàn ăn',
@@ -186,7 +185,6 @@ function ProductListingContent() {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
   };
 
-  // Ánh xạ dữ liệu Lọc với Từ điển
   const spaceFilters = [
     { id: 'Tất cả', label: t('all') },
     { id: 'Phòng khách', label: t('spaces.living') },
@@ -287,13 +285,12 @@ function ProductListingContent() {
 
   if (loading) {
     return (
-      <div className="min-h-[70vh] bg-ivory flex items-center justify-center">
+      <div className="min-h-[70vh] bg-white flex items-center justify-center">
         <div className="text-wood/40 text-sm uppercase tracking-widest animate-pulse">{t('loading')}</div>
       </div>
     );
   }
 
-  // Dịch Key của Loại sản phẩm để hiển thị ở Tên Danh mục (VD: Kệ TV -> TV MEDIA UNITS)
   const getTranslatedTypeName = (typeCode: string) => {
     switch (typeCode) {
       case 'WD': return tCat('wardrobe');
@@ -313,8 +310,9 @@ function ProductListingContent() {
   };
 
   return (
-    <div className="bg-ivory min-h-screen">
-      <div className="bg-ivory border-b border-wood/5 pt-8 pb-4">
+    // Đã thay đổi bg-ivory thành bg-white cho toàn trang
+    <div className="bg-white min-h-screen">
+      <div className="bg-white border-b border-wood/5 pt-8 pb-4">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-wood/40 mb-3">
             <Link className="hover:text-maroon" href="/">{t('breadcrumbHome')}</Link>
@@ -326,7 +324,7 @@ function ProductListingContent() {
         </div>
       </div>
 
-      <div className="border-b border-wood/5 bg-ivory/30 pt-8 pb-12">
+      <div className="border-b border-wood/5 bg-white pt-8 pb-12">
          <div className="max-w-7xl mx-auto px-6">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-8 md:gap-y-10">
               {TYPES.map((type) => (
@@ -375,7 +373,7 @@ function ProductListingContent() {
             <div className="lg:hidden mb-8 flex justify-between items-center">
               <button 
                 onClick={() => setIsFilterDrawerOpen(true)}
-                className="flex items-center gap-2 bg-ivory border border-wood/10 px-6 py-3 rounded-full text-[12px] font-bold uppercase tracking-widest shadow-sm"
+                className="flex items-center gap-2 bg-white border border-wood/10 px-6 py-3 rounded-full text-[12px] font-bold uppercase tracking-widest shadow-sm"
               >
                 <SlidersHorizontal className="w-4 h-4" />
                 {t('advancedFilter')}
@@ -384,7 +382,7 @@ function ProductListingContent() {
 
             <div 
               ref={filterSummaryRef}
-              className="sticky top-[80px] z-[40] bg-ivory/95 backdrop-blur-md py-4 border-b border-wood/5 mb-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 scroll-mt-[80px]"
+              className="sticky top-[80px] z-[40] bg-white/95 backdrop-blur-md py-4 border-b border-wood/5 mb-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 scroll-mt-[80px]"
             >
               <h2 className="text-2xl font-serif text-wood font-bold">
                 {selectedType !== 'Tất cả' 
@@ -405,7 +403,7 @@ function ProductListingContent() {
             </div>
 
             {sortedAndFilteredProducts.length === 0 ? (
-              <div className="text-center py-20 bg-ivory/50 rounded-2xl">
+              <div className="text-center py-20 bg-wood/5 rounded-2xl">
                 <p className="text-lg text-wood/60 mb-4 font-sans leading-relaxed">{t('emptyState')}</p>
                 <button onClick={() => {
                   setSelectedCategory('Tất cả'); setSelectedMaterialType('Tất cả'); setPriceRange('Tất cả'); setShowOnlyDiscount(false); setSelectedDesignLine('Tất cả'); setSelectedType('Tất cả');
@@ -419,15 +417,31 @@ function ProductListingContent() {
                   {displayedProducts.map((product) => (
                     <motion.div key={product.group_id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="group cursor-pointer flex flex-col">
                       <Link className="block" href={`/san-pham/${product.slug}`}>
-                        <div className="relative aspect-square overflow-hidden bg-[#faf8f5] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] rounded-[2px] mb-6">
+                        
+                        {/* ĐÃ GỠ BỎ bg-[#faf8f5], shadow, border và rounded để tạo cảm giác không viền (Frameless) */}
+                        <div className="relative aspect-square overflow-hidden mb-6">
                           {product.availableColors > 1 && (
                              <div className="absolute top-4 right-4 z-10 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-[10px] uppercase font-bold tracking-widest text-wood shadow-sm border border-wood/5">
                                + {product.availableColors} {t('colors')}
                              </div>
                           )}
-                          <OptimizedImage src={product.images?.[0]} alt={product.name} aspectRatio="square" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                          
+                          {/* Mix-blend-multiply giúp triệt tiêu hoàn toàn viền trắng nhẹ của ảnh gốc nếu có, hòa tan 100% vào nền trắng của web */}
+                          <OptimizedImage 
+                            src={product.images?.[0]} 
+                            alt={product.name} 
+                            tier="card" 
+                            aspectRatio="square" 
+                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 mix-blend-multiply" 
+                          />
                           {product.images?.[1] && (
-                            <OptimizedImage src={product.images[1]} alt={`${product.name} detail`} aspectRatio="square" className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                            <OptimizedImage 
+                              src={product.images[1]} 
+                              alt={`${product.name} detail`} 
+                              tier="card" 
+                              aspectRatio="square" 
+                              className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 mix-blend-multiply" 
+                            />
                           )}
                         </div>
 
@@ -483,7 +497,7 @@ function ProductListingContent() {
         {isFilterDrawerOpen && (
           <>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsFilterDrawerOpen(false)} className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60]" />
-            <motion.div initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed top-0 left-0 h-full w-[85%] max-w-[350px] bg-ivory z-[70] p-8 shadow-2xl overflow-y-auto">
+            <motion.div initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed top-0 left-0 h-full w-[85%] max-w-[350px] bg-white z-[70] p-8 shadow-2xl overflow-y-auto">
               <div className="flex justify-between items-center mb-10">
                 <div className="font-bold text-wood uppercase tracking-widest">{t('filterLabel')}</div>
                 <button onClick={() => setIsFilterDrawerOpen(false)}><X className="w-6 h-6" /></button>
@@ -506,7 +520,7 @@ export default function ProductListingClient() {
   const t = useTranslations('ProductsPage');
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-ivory flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-wood/40 text-sm uppercase tracking-widest animate-pulse">{t('loading')}</div>
       </div>
     }>

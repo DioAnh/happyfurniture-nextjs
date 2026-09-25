@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, usePathname, useRouter } from '@/routing'; 
 import { useLocale, useTranslations } from 'next-intl';
-
 import { motion, AnimatePresence } from 'motion/react';
 import { ShoppingBag, Menu, Search, X, ChevronDown, Phone, Minus, Plus, Trash2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
@@ -14,6 +13,7 @@ export const Header = () => {
   const pathname = usePathname();
   const locale = useLocale();
   const t = useTranslations('Header');
+  const tCart = useTranslations('Cart');
 
   const menuItems = [
     {
@@ -146,22 +146,17 @@ export const Header = () => {
   return (
     <>
       <header className="fixed top-0 w-full z-50 transition-colors duration-500" style={headerStyle}>
-        
-        {/* FIX 1: Tăng max-w lên 1440px và bỏ các gap khổng lồ đi để không bị tràn màn hình */}
         <div className="w-full max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8 h-[80px] flex items-center justify-between">
           
-        {/* KHỐI 1: LOGO (Bám trái) */}
           <Link href="/" className="flex flex-col items-start shrink-0">
             <h1 className={`text-[22px] font-extrabold tracking-tighter uppercase leading-none transition-colors duration-500 ${logoClass}`}>
               HAPPY FURNITURE
             </h1>
-            {/* Đã gỡ hardcode, tự động dịch theo ngôn ngữ */}
             <p className={`text-[9px] uppercase tracking-[3px] font-semibold mt-1 ml-[1px] transition-colors duration-500 ${isDarkText ? 'text-wood/60' : 'text-white/80'}`}>
               {t('logoSubtitle')}
             </p>
           </Link>
 
-          {/* KHỐI 2: MENU (Căn giữa hoàn hảo bằng flex-1 justify-center) */}
           <nav className="hidden lg:flex flex-1 justify-center items-center gap-3 xl:gap-6 h-full px-2 xl:px-8">
             {menuItems.map((item) => (
               <div 
@@ -189,7 +184,7 @@ export const Header = () => {
                       {item.isMegaMenu ? (
                         <div className="flex p-8">
                           <div className="w-1/2 pr-8 border-r border-wood/10">
-                            <h3 className="text-[10px] font-bold uppercase tracking-widest text-wood/40 mb-6">Theo Bộ Sưu Tập</h3>
+                            <h3 className="text-[10px] font-bold uppercase tracking-widest text-wood/40 mb-6">{t('byCollection')}</h3>
                             <div className="space-y-4">
                               {[
                                 { name: 'Amberglow', code: 'AMB', desc: 'Sắc hạ rực rỡ' },
@@ -215,7 +210,7 @@ export const Header = () => {
                           </div>
                           
                           <div className="w-1/2 pl-8">
-                            <h3 className="text-[10px] font-bold uppercase tracking-widest text-wood/40 mb-6">Dòng Sản Phẩm</h3>
+                            <h3 className="text-[10px] font-bold uppercase tracking-widest text-wood/40 mb-6">{t('byProductLine')}</h3>
                             <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                               {item.dropdown.map((subItem) => (
                                 <Link
@@ -264,7 +259,6 @@ export const Header = () => {
             ))}
           </nav>
 
-          {/* KHỐI 3: TIỆN ÍCH (Bám phải) */}
           <div className={`flex items-center shrink-0 gap-3 xl:gap-5 pl-3 xl:pl-6 lg:border-l transition-colors duration-500 ${isDarkText ? 'border-wood/20' : 'border-white/30'}`}>
             
             <div className={`hidden md:flex items-center gap-2 text-[11px] font-bold tracking-widest ${textClass} transition-colors duration-300`}>
@@ -365,7 +359,7 @@ export const Header = () => {
               <div className="flex justify-between items-start mb-12">
                 <div className="flex flex-col items-start gap-1">
                   <div className="font-extrabold text-maroon text-xl tracking-tighter leading-none">HAPPY FURNITURE</div>
-                  <div className="text-[9px] uppercase tracking-[3px] text-wood/60 font-semibold">Nội thất nhà làm</div>
+                  <div className="text-[9px] uppercase tracking-[3px] text-wood/60 font-semibold">{t('menuSubtitle')}</div>
                 </div>
                 <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-wood/5 rounded-full transition-colors -mt-2 -mr-2">
                   <X className="w-6 h-6" />
@@ -386,7 +380,7 @@ export const Header = () => {
                     {item.isMegaMenu ? (
                       <div className="pl-2 space-y-8">
                         <div>
-                          <div className="text-[10px] font-bold uppercase tracking-widest text-wood/40 mb-4 border-b border-wood/5 pb-2">Bộ Sưu Tập</div>
+                          <div className="text-[10px] font-bold uppercase tracking-widest text-wood/40 mb-4 border-b border-wood/5 pb-2">{t('byCollection')}</div>
                           <div className="grid gap-4">
                             {[
                               { name: 'Amberglow', code: 'AMB' },
@@ -408,7 +402,7 @@ export const Header = () => {
                         </div>
                         
                         <div>
-                          <div className="text-[10px] font-bold uppercase tracking-widest text-wood/40 mb-4 border-b border-wood/5 pb-2">Dòng Sản Phẩm</div>
+                          <div className="text-[10px] font-bold uppercase tracking-widest text-wood/40 mb-4 border-b border-wood/5 pb-2">{t('byProductLine')}</div>
                           <div className="grid gap-4">
                             {item.dropdown.map((subItem) => (
                               <Link 
@@ -468,7 +462,7 @@ export const Header = () => {
         )}
       </AnimatePresence>
 
-      {/* SEARCH */}
+      {/* SEARCH PANEL */}
       <AnimatePresence>
         {isSearchOpen && (
           <motion.div
@@ -488,12 +482,12 @@ export const Header = () => {
               </div>
               
               <div className="flex-1 flex flex-col justify-center max-w-4xl">
-                <p className="text-white/60 font-bold uppercase tracking-[4px] text-xs mb-6">Bạn đang tìm kiếm gì?</p>
+                <p className="text-white/60 font-bold uppercase tracking-[4px] text-xs mb-6">{t('searchTitle')}</p>
                 <form onSubmit={(e) => handleSearch(e)} className="relative group">
                   <input 
                     autoFocus
                     type="text"
-                    placeholder="Nhập tên sản phẩm, dịch vụ..."
+                    placeholder={t('searchPlaceholder')}
                     className="w-full bg-transparent border-b-2 border-white/10 py-4 md:py-6 text-4xl md:text-7xl text-white placeholder:text-white/10 focus:outline-none focus:border-white transition-all duration-500 font-serif leading-tight"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -504,8 +498,8 @@ export const Header = () => {
                 </form>
                 
                 <div className="mt-12 flex flex-wrap gap-4">
-                  <p className="text-white/40 text-[11px] uppercase tracking-widest w-full mb-2 font-bold">Gợi ý phổ biến:</p>
-                  {['Tủ áo kịch trần', 'Giường ngủ MDF', 'Bàn làm việc Thuận An', 'Combo căn hộ cho thuê'].map(tag => (
+                  <p className="text-white/40 text-[11px] uppercase tracking-widest w-full mb-2 font-bold">{t('searchSuggestionsLabel')}</p>
+                  {[t('searchSuggestion1'), t('searchSuggestion2'), t('searchSuggestion3'), t('searchSuggestion4')].map(tag => (
                     <button 
                       key={tag}
                       onClick={() => {
@@ -524,7 +518,7 @@ export const Header = () => {
         )}
       </AnimatePresence>
 
-      {/* CART */}
+      {/* CART DRAWER */}
       <AnimatePresence>
         {isCartOpen && (
           <div className="fixed inset-0 z-[120]">
@@ -544,8 +538,10 @@ export const Header = () => {
             >
               <div className="p-8 border-b border-wood/10 flex justify-between items-center bg-white">
                 <div>
-                  <h3 className="text-xl font-bold text-wood uppercase tracking-widest">Giỏ hàng</h3>
-                  <p className="text-[10px] text-wood/40 uppercase tracking-widest mt-1">{totalItems} sản phẩm trong giỏ</p>
+                  <h3 className="text-xl font-bold text-wood uppercase tracking-widest">{tCart('drawerTitle')}</h3>
+                  <p className="text-[10px] text-wood/40 uppercase tracking-widest mt-1">
+                    {tCart('itemsInCart').replace('{count}', totalItems.toString())}
+                  </p>
                 </div>
                 <button onClick={() => setIsCartOpen(false)} className="p-3 hover:bg-wood/5 rounded-full transition-colors">
                   <X className="w-6 h-6" />
@@ -558,14 +554,14 @@ export const Header = () => {
                     <div className="w-24 h-24 bg-ivory rounded-full flex items-center justify-center mb-8">
                       <ShoppingBag className="w-10 h-10 text-wood/10" />
                     </div>
-                    <h4 className="text-lg font-bold text-wood mb-2">Giỏ hàng đang trống</h4>
-                    <p className="text-wood/50 mb-10 text-sm leading-relaxed">Hãy khám phá các mẫu nội thất may đo <br />tuyệt vời từ xưởng Happy Furniture.</p>
+                    <h4 className="text-lg font-bold text-wood mb-2">{tCart('emptyTitle')}</h4>
+                    <p className="text-wood/50 mb-10 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: tCart('emptyDesc') }}></p>
                     <Link 
                       href="/san-pham" 
                       onClick={() => setIsCartOpen(false)}
                       className="bg-maroon text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-wood transition-all shadow-lg shadow-maroon/20"
                     >
-                      Bắt đầu mua sắm
+                      {tCart('exploreBtn')}
                     </Link>
                   </div>
                 ) : (
@@ -573,7 +569,8 @@ export const Header = () => {
                     {cart.map((item) => (
                       <div key={item.id} className="flex gap-4 group">
                         <div className="w-20 h-20 rounded-lg overflow-hidden border border-wood/5 shrink-0 relative aspect-square">
-                          <OptimizedImage src={item.image} alt={item.name} aspectRatio="square" className="w-full h-full" />
+                          {/* NÉN ẢNH SIÊU TỐC VỚI THUMBNAIL CHO NGĂN KÉO */}
+                          <OptimizedImage src={item.image} alt={item.name} tier="thumbnail" aspectRatio="square" className="w-full h-full" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex justify-between items-start mb-1">
@@ -585,7 +582,9 @@ export const Header = () => {
                               <Trash2 className="w-4 h-4" />
                             </button>
                           </div>
-                          <p className="text-[10px] text-wood/40 uppercase tracking-widest mb-3">{item.material}</p>
+                          <p className="text-[10px] text-wood/40 uppercase tracking-widest mb-3">
+                            {tCart('colorLabel')} {item.material}
+                          </p>
                           <div className="flex justify-between items-center">
                             <div className="flex items-center gap-3 bg-ivory/50 rounded-full px-3 py-1">
                               <button onClick={() => updateQuantity(item.id, -1)} className="hover:text-maroon"><Minus className="w-3 h-3" /></button>
@@ -603,7 +602,7 @@ export const Header = () => {
 
               <div className="p-8 bg-ivory/30 border-t border-wood/10">
                 <div className="flex justify-between items-center mb-8">
-                  <span className="font-bold text-wood uppercase tracking-widest text-xs">Tạm tính:</span>
+                  <span className="font-bold text-wood uppercase tracking-widest text-xs">{tCart('subtotalDrawer')}</span>
                   <span className="font-bold text-maroon text-2xl">{formatPrice(totalPrice)}</span>
                 </div>
                 {cart.length > 0 ? (
@@ -612,15 +611,15 @@ export const Header = () => {
                     onClick={() => setIsCartOpen(false)}
                     className="w-full bg-maroon text-white py-5 rounded-xl font-bold uppercase tracking-widest text-[12px] hover:bg-wood transition-all shadow-lg shadow-maroon/20 flex items-center justify-center gap-3"
                   >
-                    Tiến hành thanh toán
+                    {tCart('drawerCheckoutBtn')}
                   </Link>
                 ) : (
                   <button className="w-full bg-wood/10 text-wood/30 py-5 rounded-xl font-bold uppercase tracking-widest text-[12px] cursor-not-allowed border border-wood/5">
-                    Tiến hành thanh toán
+                    {tCart('drawerCheckoutBtn')}
                   </button>
                 )}
                 <p className="text-center text-[10px] text-wood/40 uppercase tracking-widest mt-6">
-                  Miễn phí vận chuyển & lắp đặt tại Thuận An
+                  {tCart('drawerFreeShippingNote')}
                 </p>
               </div>
             </motion.div>

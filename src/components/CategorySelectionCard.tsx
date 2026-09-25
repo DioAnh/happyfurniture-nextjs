@@ -1,5 +1,6 @@
 import React from 'react';
-import { OptimizedImage } from './OptimizedImage';
+import { OptimizedImage } from '@/components/OptimizedImage';
+
 
 interface Props {
   id: string;
@@ -22,11 +23,12 @@ export const CategorySelectionCard: React.FC<Props> = ({ name, image, isActive, 
         }`}
       >
         <div className="relative w-full h-full rounded-[2px] overflow-hidden">
-          <OptimizedImage
-            src={image}
-            alt={name}
-            aspectRatio="square"
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          <OptimizedImage 
+            src={image} 
+            alt={name} 
+            tier="thumbnail" // Sử dụng tier thumbnail cho các ảnh nhỏ
+            aspectRatio="square" 
+            className="w-full h-full object-cover" 
           />
         </div>
       </div>

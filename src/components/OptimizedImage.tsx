@@ -1,52 +1,70 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 
 interface OptimizedImageProps {
-  src?: string;
+  src: string;
   alt: string;
-  className?: string;
-  fallbackSrc?: string;
-  aspectRatio?: 'square' | 'video' | 'auto';
+  className?: string; // Class cho khung bọc ngoài
+  imgClassName?: string; // Class trực tiếp cho thẻ Image
+  aspectRatio?: 'square' | 'video' | 'portrait' | 'auto';
   priority?: boolean;
+  // Bổ sung cấp độ 'card' cho mức 50%
+  tier?: 'thumbnail' | 'card' | 'detail' | 'original'; 
 }
 
-const DEFAULT_PLACEHOLDER = 'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?q=80&w=800&auto=format&fit=crop';
-
-export const OptimizedImage: React.FC<OptimizedImageProps> = ({ 
+export const OptimizedImage = ({ 
   src, 
   alt, 
   className = '', 
-  fallbackSrc = DEFAULT_PLACEHOLDER,
+  imgClassName = '',
   aspectRatio = 'auto',
   priority = false,
-}) => {
-  const [imgSrc, setImgSrc] = useState(src || fallbackSrc);
+  tier = 'card' // Mặc định ở mức 50%
+}: OptimizedImageProps) => {
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    setImgSrc(src || fallbackSrc);
-  }, [src, fallbackSrc]);
+  const aspectClass = 
+    aspectRatio === 'square' ? 'aspect-square' : 
+    aspectRatio === 'video' ? 'aspect-video' : 
+    aspectRatio === 'portrait' ? 'aspect-[3/4]' : '';
 
-  const aspectClass = aspectRatio === 'square' ? 'aspect-square' : 
-                      aspectRatio === 'video' ? 'aspect-video' : '';
+  // CHIẾN LƯỢC NÉN ẢNH MỚI: Thumbnail 10%, Card 50%, Detail 80%, Zoom 100%
+  const quality = tier === 'thumbnail' ? 20 : (tier === 'card' ? 50 : (tier === 'detail' ? 80 : 100));
+  const isUnoptimized = tier === 'original';
 
-  // Kiểm tra xem ảnh có phải từ Supabase không
-  const isSupabaseImage = imgSrc.includes('supabase.co');
+  const sizes = tier === 'thumbnail' 
+    ? '(max-width: 768px) 20vw, 10vw' 
+    : (tier === 'card' ? '(max-width: 768px) 50vw, 33vw' : '(max-width: 768px) 100vw, 50vw');
+
+  if (!src || src.startsWith('THAY_LINK')) {
+    return (
+      <div className={`w-full h-full bg-wood/5 flex items-center justify-center text-wood/30 text-xs ${aspectClass} ${className}`}>
+        No Image
+      </div>
+    );
+  }
 
   return (
-    <Image
-      src={imgSrc}
-      alt={alt}
-      fill
-      priority={priority}
-      // BƯỚC ĐỘT PHÁ: Nếu là ảnh Supabase (đã là WebP), không cần Next.js nén lại nữa!
-      unoptimized={isSupabaseImage}
-      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-      className={`object-cover ${aspectClass} ${className}`.trim()}
-      onError={() => {
-        if (imgSrc !== fallbackSrc) setImgSrc(fallbackSrc);
-      }}
-    />
+    // Thêm transform: 'translateZ(0)' để ép trình duyệt cắt viền bo tròn tuyệt đối
+    <div className={`relative overflow-hidden w-full h-full ${aspectClass} ${className}`} style={{ transform: 'translateZ(0)' }}>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority={priority}
+        quality={quality}
+        unoptimized={isUnoptimized}
+        sizes={sizes}
+        className={`
+          object-cover transition-all duration-700 ease-in-out
+          ${isLoading ? 'scale-110 blur-xl grayscale' : 'scale-100 blur-0 grayscale-0'}
+          ${imgClassName}
+        `}
+        style={{ borderRadius: 'inherit' }}
+        onLoad={() => setIsLoading(false)}
+      />
+    </div>
   );
 };

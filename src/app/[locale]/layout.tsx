@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     template: "%s | Happy Furniture", // Tự động thêm hậu tố cho các trang con
   },
   description: "Xưởng Nội thất Happy Furniture chuyên sản xuất, thiết kế và thi công lắp đặt nội thất gỗ công nghiệp MDF lõi xanh chống ẩm phủ Melamine chất lượng cao.",
-  keywords: ["xưởng nội thất", "sản xuất nội thất", "thi công nội thất", "thiết kế nội thất", "nội thất gỗ công nghiệp", "nội thất hiện đại", "MDF lõi xanh chống ẩm", "nội thất bình dương", "nội thất thuận an"],
+  keywords: ["xưởng nội thất", "xưởng nội thất gỗ công nghiệp", "xưởng sản xuất nội thất", "thi công nội thất", "thiết kế nội thất", "nội thất gỗ công nghiệp", "nội thất hiện đại", "MDF lõi xanh chống ẩm", "nội thất bình dương", "nội thất tp.hcm"],
   openGraph: {
     type: "website",
     locale: "vi_VN",
