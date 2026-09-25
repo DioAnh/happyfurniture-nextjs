@@ -16,9 +16,9 @@ import { useTranslations } from 'next-intl';
 
 // --- DATA ---
 const MATERIAL_NAMES: Record<string, string> = {
-  'BT26': 'Gỗ Sồi Nga (Sáng)', 'BT56': 'Gỗ Óc Chó (Trầm)', 'BT120': 'Gỗ Mun (Đen Than)',
-  'BT178': 'Gỗ Sồi Mỹ (Nâu Ấm)', 'BT180': 'Gỗ Tần Bì (Xám Nhạt)', 'BT58': 'Gỗ Xám Khói',
-  'BT123': 'Gỗ Thích (Minimal)', 'BT131': 'Gỗ Cherry (Đỏ Trầm)', 'SW': 'Trắng Trơn (Smooth White)',
+  'BT26': 'Vân Gỗ Tần Bì', 'BT56': 'Vân Gỗ Anh Đào', 'BT120': 'Vân Gỗ Mun Đen',
+  'BT178': 'Vân Gỗ Óc Chó', 'BT180': 'Vân Gỗ Sồi Sáng', 'BT58': 'Vân Gỗ Sồi Trắng',
+  'BT123': 'Vân Gỗ Sồi Nhạt', 'BT131': 'Vân Gỗ Sồi Xám', 'SW': 'Trắng Trơn (Smooth White)',
   'WC': 'Trắng Kem (White Cream)', 'LG': 'Xám Nhạt (Light Grey)', 'CR': 'Beige (Crema)',
   'DS': 'Xanh Đen (Dark Sky)', 'MB': 'Đen Mờ (Matte Black)'
 };
@@ -358,7 +358,7 @@ export default function ProductDetailClient({ initialProduct, groupVariants }: {
 
               {/* Ảnh chính - ÁP DỤNG TIER="CARD" 50% (Sửa theo ý user) */}
               <div className="flex-1 aspect-square w-full rounded-sm overflow-hidden bg-white border border-wood/5 relative shadow-sm h-fit">
-                <OptimizedImage src={displayImages[activeImage]} alt={product.name} tier="card" aspectRatio="square" className="w-full h-full object-cover" priority={true} />
+                <OptimizedImage src={displayImages[activeImage]} alt={product.name} tier="detail" aspectRatio="square" className="w-full h-full object-cover" priority={true} />
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-full shadow-sm border border-wood/5 flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-maroon" />
                   <span className="text-[10px] font-bold tracking-widest uppercase text-wood">{t('warrantyBadge')}</span>

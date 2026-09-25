@@ -30,7 +30,7 @@ export const OptimizedImage = ({
     aspectRatio === 'video' ? 'aspect-video' : 
     aspectRatio === 'portrait' ? 'aspect-[3/4]' : '';
 
-  // CHIẾN LƯỢC NÉN ẢNH MỚI: Thumbnail 10%, Card 50%, Detail 80%, Zoom 100%
+  // CHIẾN LƯỢC NÉN ẢNH MỚI: Thumbnail 20%, Card 50%, Detail 80%, Zoom 100%
   const quality = tier === 'thumbnail' ? 20 : (tier === 'card' ? 50 : (tier === 'detail' ? 80 : 100));
   const isUnoptimized = tier === 'original';
 
