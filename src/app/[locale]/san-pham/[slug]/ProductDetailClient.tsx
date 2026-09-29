@@ -148,6 +148,27 @@ export default function ProductDetailClient({ initialProduct, groupVariants }: {
 
   useEffect(() => { setActiveImage(0); }, [product.slug]);
 
+  // THỦ THUẬT 1: PRELOAD NGẦM ẢNH CỦA TẤT CẢ BIẾN THỂ TRONG GROUP (GIẢI QUYẾT ĐỘ TRỄ 3S)
+  useEffect(() => {
+    if (groupVariants && groupVariants.length > 0) {
+      const preloadImages = () => {
+        groupVariants.forEach((v: any) => {
+          if (v.images && v.images[0]) {
+            const img = new window.Image();
+            img.src = v.images[0];
+          }
+        });
+      };
+      
+      // Sử dụng requestIdleCallback để không làm chậm lúc trang đang load LCP
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(preloadImages);
+      } else {
+        setTimeout(preloadImages, 2000); 
+      }
+    }
+  }, [groupVariants]);
+
   useEffect(() => {
     const autoScroll = () => {
       if (workshopScrollRef.current) {
@@ -191,13 +212,23 @@ export default function ProductDetailClient({ initialProduct, groupVariants }: {
   const handleVariantChange = async (targetSlug: string) => {
     if (targetSlug === product.slug) return;
     setIsNavigating(true);
-    try {
-      const { data: newVariant, error } = await supabase.from('products').select('*').eq('slug', targetSlug).single();
-      if (!error && newVariant) {
-        setProduct({ ...newVariant, description: newVariant.description || product.description, base_name: product.base_name, rooms: product.rooms });
-        window.history.replaceState(null, '', `/san-pham/${targetSlug}`);
-      }
-    } catch (e) { console.error(e); } finally { setIsNavigating(false); }
+    
+    // Tìm variant đã có sẵn trong danh sách groupVariants từ prop thay vì phải fetch lại từ Supabase
+    const localVariant = groupVariants.find(v => v.slug === targetSlug);
+    
+    if (localVariant) {
+      setProduct({ ...localVariant, description: localVariant.description || product.description, base_name: product.base_name, rooms: product.rooms });
+      window.history.replaceState(null, '', `/san-pham/${targetSlug}`);
+      setIsNavigating(false);
+    } else {
+      try {
+        const { data: newVariant, error } = await supabase.from('products').select('*').eq('slug', targetSlug).single();
+        if (!error && newVariant) {
+          setProduct({ ...newVariant, description: newVariant.description || product.description, base_name: product.base_name, rooms: product.rooms });
+          window.history.replaceState(null, '', `/san-pham/${targetSlug}`);
+        }
+      } catch (e) { console.error(e); } finally { setIsNavigating(false); }
+    }
   };
 
   return (
@@ -345,7 +376,7 @@ export default function ProductDetailClient({ initialProduct, groupVariants }: {
           <div className="w-full lg:w-[48%] shrink-0 flex justify-start">
             <div className="sticky top-[130px] flex flex-col-reverse lg:flex-row items-start gap-3 w-full max-w-[640px] mx-auto lg:ml-0 lg:mr-auto">
               
-              {/* Ảnh nhỏ (Thumbnails) - ÁP DỤNG TIER="THUMBNAIL" 10% */}
+              {/* Ảnh nhỏ (Thumbnails) */}
               {displayImages.length > 1 && (
                 <div className="flex lg:flex-col gap-3 w-full lg:w-[80px] shrink-0 overflow-x-auto hide-scrollbar">
                   {displayImages.map((img: string, index: number) => (
@@ -356,9 +387,9 @@ export default function ProductDetailClient({ initialProduct, groupVariants }: {
                 </div>
               )}
 
-              {/* Ảnh chính - ÁP DỤNG TIER="CARD" 50% (Sửa theo ý user) */}
+              {/* Ảnh chính ĐÃ NÂNG CẤP LÊN ORIGINAL ĐỂ ĐẠT ĐỘ SẮC NÉT MAX */}
               <div className="flex-1 aspect-square w-full rounded-sm overflow-hidden bg-white border border-wood/5 relative shadow-sm h-fit">
-                <OptimizedImage src={displayImages[activeImage]} alt={product.name} tier="detail" aspectRatio="square" className="w-full h-full object-cover" priority={true} />
+                <OptimizedImage src={displayImages[activeImage]} alt={product.name} tier="original" aspectRatio="square" className="w-full h-full object-cover" priority={true} />
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-full shadow-sm border border-wood/5 flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-maroon" />
                   <span className="text-[10px] font-bold tracking-widest uppercase text-wood">{t('warrantyBadge')}</span>
@@ -439,7 +470,6 @@ export default function ProductDetailClient({ initialProduct, groupVariants }: {
                         <button key={codeStr} onClick={() => handleVariantChange(targetVariant.slug)} disabled={isNavigating} title={MATERIAL_NAMES[codeStr] || codeStr}
                           className={`relative rounded-full transition-all flex items-center justify-center p-0.5 ${isActive ? 'border-2 border-maroon shadow-md scale-110' : 'border border-wood/20 hover:border-maroon/50 hover:scale-105'}`}
                         >
-                          {/* SỬA LỖI TRÀN VIỀN: Thêm transform: translateZ(0) thông qua style, ép OptimizedImage nhận class rounded-full */}
                           <div className="w-8 h-8 rounded-full overflow-hidden border border-wood/5 relative" style={{ backgroundColor: MATERIAL_COLORS[codeStr] || '#CCCCCC', transform: 'translateZ(0)' }}>
                             <OptimizedImage 
                               src={getMaterialImageUrl(codeStr)} 
@@ -586,7 +616,6 @@ export default function ProductDetailClient({ initialProduct, groupVariants }: {
               {WORKSHOP_PHOTOS.map((photo, index) => (
                 <div key={index} className="w-[85vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-start">
                   <div className="group relative overflow-hidden bg-wood/5 aspect-[3/4] rounded-sm shadow-sm">
-                    {/* ÁP DỤNG TIER="CARD" 50% */}
                     <OptimizedImage src={photo.url} alt={tHome(photo.captionKey)} tier="card" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                     <div className="absolute inset-0 bg-gradient-to-t from-wood/90 via-wood/20 to-transparent opacity-90 flex items-end p-6 md:p-8">
                       <p className="text-white text-xs md:text-sm font-bold tracking-widest uppercase">{tHome(photo.captionKey)}</p>
@@ -696,7 +725,6 @@ export default function ProductDetailClient({ initialProduct, groupVariants }: {
             ].map((item, i) => (
               <Link href="/san-pham" key={i} className="group block">
                 <div className="aspect-square bg-white border border-wood/5 rounded-sm overflow-hidden mb-4 relative shadow-sm">
-                  {/* ÁP DỤNG TIER="CARD" 50% */}
                   <OptimizedImage src={item.img} alt={item.title} tier="card" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
                 <h4 className="font-bold text-wood group-hover:text-maroon transition-colors text-sm line-clamp-1">{item.title}</h4>

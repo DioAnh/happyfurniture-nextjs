@@ -195,6 +195,7 @@ export default function HomeClient() {
         <div className="absolute inset-0 z-0">
           <OptimizedImage 
             src={HOME_IMAGES.heroBanner} alt="Happy Furniture" 
+            tier="original"
             className="w-full h-full object-cover object-center" priority={true}
           />
           <div className="absolute inset-0 bg-black/40 bg-gradient-to-t from-black/60 via-transparent to-black/30 z-10" />
@@ -220,8 +221,25 @@ export default function HomeClient() {
             </motion.p>
 
             <motion.div variants={itemVariants}>
-              <Link href="/san-pham" className="inline-flex px-10 py-4 bg-white/10 text-white border border-white/80 hover:bg-maroon hover:border-maroon backdrop-blur-sm transition-all duration-500 font-bold tracking-[0.2em] text-[11px] uppercase shadow-xl">
-                {t('heroBtn')}
+              {/* NÚT ĐƯỢC TỐI ƯU VỚI LAYERING ANIMATION */}
+              <Link href="/san-pham" className="group relative inline-flex items-center justify-center border border-white/80 hover:border-maroon transition-colors duration-500 shadow-xl overflow-hidden rounded-sm">
+                
+                {/* LỚP 1: Nền kính mờ - Bắt đầu trong suốt, từ từ mờ lên sau 0.8s */}
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1, delay: 0.8 }}
+                  className="absolute inset-0 bg-white/10 backdrop-blur-sm transition-opacity duration-500 group-hover:opacity-0"
+                />
+                
+                {/* LỚP 2: Nền đỏ Maroon - Chìm dưới đáy, chỉ nổi lên khi Hover */}
+                <div className="absolute inset-0 bg-maroon opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                
+                {/* LỚP 3: Nội dung Text luôn nằm trên cùng */}
+                <span className="relative z-10 px-10 py-4 text-white font-bold tracking-[0.2em] text-[11px] uppercase pointer-events-none">
+                  {t('heroBtn')}
+                </span>
+                
               </Link>
             </motion.div>
           </motion.div>

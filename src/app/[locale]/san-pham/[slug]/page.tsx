@@ -4,8 +4,7 @@ import ProductDetailClient from './ProductDetailClient';
 import { notFound } from 'next/navigation';
 
 // FIX: Yêu cầu Vercel KHÔNG ĐƯỢC CACHE trang này, luôn lấy data mới nhất từ Supabase
-export const revalidate = 0; 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -86,17 +85,20 @@ export default async function ProductDetailPage({ params }: Props) {
     groupData = group;
   }
 
+// Cập nhật lại đoạn truy vấn variants trong hàm ProductDetailPage
   let groupVariants: any[] = [];
   if (product.group_id) {
     const { data: variants } = await supabase
       .from('products')
-      .select('slug, size, material_code, material')
+      // Chỉ lấy đúng những cột Client cần để xử lý đổi biến thể (có 'images' để preload)
+      .select('slug, size, material_code, material, price, old_price, images') 
       .eq('group_id', product.group_id);
     if (variants) {
       groupVariants = variants;
     }
   }
 
+  
   // Tối ưu hóa dữ liệu truyền xuống Client
   const mergedProduct = {
     ...product,
