@@ -110,7 +110,7 @@ export default function ContactClient() {
                   </div>
                   <div>
                     <p className="text-[12px] uppercase tracking-widest text-wood/40 font-bold mb-1">{t('emailLabel')}</p>
-                    <p className="text-[16px] font-bold text-wood">contact@happyfurniture.net</p>
+                    <p className="text-[16px] font-bold text-wood">happyfurniture.net@gmail.com</p>
                   </div>
                 </div>
                 <div className="flex gap-4">

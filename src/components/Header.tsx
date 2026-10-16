@@ -69,7 +69,7 @@ export const Header = () => {
       title: t('contact'),
       path: '/lien-he',
       dropdown: [
-        { label: 'Bảng mã vân gỗ (Vật liệu)', path: '/vat-lieu' },
+        { label: 'Tiêu chuẩn Vật liệu', path: '/vat-lieu' },
         { label: 'Thông tin liên hệ', path: '/lien-he' },
         { label: 'Quy trình làm việc', path: '/quy-trinh-lam-viec' },
         { label: 'Chính sách thanh toán', path: '/chinh-sach-thanh-toan' },

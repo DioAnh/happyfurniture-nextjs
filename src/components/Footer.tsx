@@ -115,7 +115,7 @@ export const Footer = () => {
                 <span className="text-lg font-bold group-hover:text-white transition-colors">0909.163.593</span>
               </a>
               <div className="space-y-1">
-                <p className="text-sm text-ivory/60 break-all">contact@happyfurniture.net</p>
+                <p className="text-sm text-ivory/60 break-all">happyfurniture.net@gmail.com</p>
               </div>
               <div className="grid gap-3">
                 <a 

@@ -297,21 +297,31 @@ export default function HomeClient() {
       </section>
 
       <section className="bg-maroon py-16 md:py-20 relative overflow-hidden">
-        <div className="max-w-4xl mx-auto px-6 relative z-10 flex flex-col items-center text-center gap-10">
+        {/* Nới rộng không gian: Đổi max-w-4xl thành max-w-5xl */}
+        <div className="max-w-5xl mx-auto px-6 relative z-10 flex flex-col items-center text-center gap-10">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-3xl">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4 leading-tight">{t('catTitle')}</h2>
             <p className="text-white/70 text-lg">{t('catDesc')}</p>
           </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4 w-full">
-            <a href="https://drive.google.com/file/d/1LYxW7jWmRYkKrxRvixl7J58aMD2JFgVv/view?usp=sharing" target="_blank" rel="noreferrer" className="w-full sm:w-[280px] bg-white text-maroon px-4 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-wood hover:text-white transition-all flex items-center justify-center gap-3 shadow-xl">
+
+          {/* Dàn layout: Đổi sm:flex-row thành lg:flex-row để các nút tự động chia đều */}
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="flex flex-col lg:flex-row flex-wrap justify-center items-center gap-4 w-full">
+            
+            <Link href="/san-pham" 
+                  className="w-full lg:w-auto bg-white text-maroon px-8 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-wood hover:text-white transition-all flex items-center justify-center gap-3 shadow-xl">
               <Download className="w-4 h-4 shrink-0" /> {t('catBtn1')}
-            </a>
-            <a href="https://drive.google.com/file/d/1vA3qgSCkx1_5xFhajBdmnUzPCyM7oJsT/view?usp=sharing" target="_blank" rel="noreferrer" className="w-full sm:w-[280px] bg-transparent border-2 border-white text-white px-4 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-white hover:text-maroon transition-all flex items-center justify-center gap-3">
+            </Link>
+            
+            <a href="https://drive.google.com/file/d/1vA3qgSCkx1_5xFhajBdmnUzPCyM7oJsT/view?usp=sharing" target="_blank" rel="noreferrer" 
+               className="w-full lg:w-auto bg-transparent border border-white/40 text-white px-8 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-white hover:text-maroon transition-all flex items-center justify-center gap-3">
               <Download className="w-4 h-4 shrink-0" /> {t('catBtn2')}
             </a>
-            <Link href="/vat-lieu" className="w-full sm:w-[280px] bg-wood border-2 border-wood text-ivory px-4 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-white hover:text-maroon hover:border-white transition-all flex items-center justify-center gap-3">
+            
+            <Link href="/vat-lieu" 
+                  className="w-full lg:w-auto bg-wood border border-wood text-ivory px-8 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-white hover:text-maroon hover:border-white transition-all flex items-center justify-center gap-3">
               <Star className="w-4 h-4 shrink-0" /> {t('catBtn3')}
             </Link>
+
           </motion.div>
         </div>
       </section>
