@@ -119,6 +119,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={`${primaryFont.variable} ${playfair.variable}`}>
       <head>
+        <meta name="facebook-domain-verification" content="7nev2tuf1dud2gh66p7fizisi9shmf" />
         <meta name="geo.region" content="VN-61" />
         <meta name="geo.placename" content="Thuận An, Bình Dương" />
         <meta name="geo.position" content="10.9562375;106.7234531" />
