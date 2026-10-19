@@ -21,62 +21,62 @@ export const Header = () => {
       path: '/san-pham',
       isMegaMenu: true,
       dropdown: [
-        { label: 'Kệ sách trang trí', path: '/san-pham?type=Shelf' },
-        { label: 'Tủ đựng đồ Đa năng', path: '/san-pham?type=Storage+Cabinet' },
-        { label: 'Tủ giày', path: '/san-pham?type=Shoes+Cabinet' },
-        { label: 'Giường ngủ', path: '/san-pham?type=Bed' },
-        { label: 'Tủ đầu giường', path: '/san-pham?type=Bedside' },
-        { label: 'Tủ hộc kéo', path: '/san-pham?type=Drawer+Cabinet' },
-        { label: 'Tủ quần áo', path: '/san-pham?type=Wardrobe' },
-        { label: 'Bàn làm việc', path: '/san-pham?type=Office+Desk' },
-        { label: 'Kệ Tivi', path: '/san-pham?type=TV+Media+Unit' },
-        { label: 'Bàn Console trang trí', path: '/san-pham?type=Console+Table' },
-        { label: 'Bàn trà cà phê', path: '/san-pham?type=Coffee+Table' },
-        { label: 'Bàn ăn', path: '/san-pham?type=Dining+Table' }
+        { label: t('prodShelf'), path: '/san-pham?type=Shelf' },
+        { label: t('prodStorage'), path: '/san-pham?type=Storage+Cabinet' },
+        { label: t('prodShoes'), path: '/san-pham?type=Shoes+Cabinet' },
+        { label: t('prodBed'), path: '/san-pham?type=Bed' },
+        { label: t('prodBedside'), path: '/san-pham?type=Bedside' },
+        { label: t('prodDrawer'), path: '/san-pham?type=Drawer+Cabinet' },
+        { label: t('prodWardrobe'), path: '/san-pham?type=Wardrobe' },
+        { label: t('prodDesk'), path: '/san-pham?type=Office+Desk' },
+        { label: t('prodTv'), path: '/san-pham?type=TV+Media+Unit' },
+        { label: t('prodConsole'), path: '/san-pham?type=Console+Table' },
+        { label: t('prodCoffee'), path: '/san-pham?type=Coffee+Table' },
+        { label: t('prodDining'), path: '/san-pham?type=Dining+Table' }
       ]
     },
     {
       title: t('services'), 
       path: '/dich-vu',
       dropdown: [
-        { label: 'Giải Pháp Nội Thất Cho Thuê', path: '/dich-vu/can-ho-cho-thue' },
-        { label: 'Thiết Kế & Thi Công Nội Thất Nhà Ở', path: '/dich-vu/nha-pho-chung-cu' },
-        { label: 'Sản Xuất & Gia Công Nội Thất Lẻ May Đo', path: '/dich-vu/gia-cong-noi-that' },
-        { label: 'Thầu Thi Công & Lắp Đặt Nội Thất', path: '/dich-vu/thi-cong-lap-dat' },
-        { label: 'Thầu Thi Công Dự Án Quy Mô Lớn', path: '/dich-vu/thau-du-an-chung-cu' }
+        { label: t('srvRental'), path: '/dich-vu/can-ho-cho-thue' },
+        { label: t('srvResidential'), path: '/dich-vu/nha-pho-chung-cu' },
+        { label: t('srvBespoke'), path: '/dich-vu/gia-cong-noi-that' },
+        { label: t('srvInstallation'), path: '/dich-vu/thi-cong-lap-dat' },
+        { label: t('srvContract'), path: '/dich-vu/thau-du-an-chung-cu' }
       ]
     },
     {
       title: t('projects'),
       path: '/du-an',
       dropdown: [
-        { label: 'Công trình thực tế Nội thất cho thuê', path: '/du-an/noi-that-cho-thue' },
-        { label: 'Công trình thực tế Căn hộ chung cư', path: '/du-an/can-ho-chung-cu' },
-        { label: 'Công trình thực tế Nhà phố', path: '/du-an/nha-pho' }
+        { label: t('prjRental'), path: '/du-an/noi-that-cho-thue' },
+        { label: t('prjApartment'), path: '/du-an/can-ho-chung-cu' },
+        { label: t('prjTownhouse'), path: '/du-an/nha-pho' }
       ]
     },
     {
       title: t('community'),
       path: '/cong-dong',
       dropdown: [
-        { label: 'Học viện Happy Furniture Academy', path: '/hoc-vien' },
-        { label: 'Kiến thức nội thất', path: '/cong-dong?category=Kiến+thức' },
-        { label: 'Xu hướng thiết kế', path: '/cong-dong?category=Xu+hướng' },
-        { label: 'Workshop & Sự kiện', path: '/cong-dong?category=Workshop' }
+        { label: t('comAcademy'), path: '/hoc-vien' },
+        { label: t('comKnowledge'), path: '/cong-dong?category=Kiến+thức' },
+        { label: t('comTrends'), path: '/cong-dong?category=Xu+hướng' },
+        { label: t('comWorkshop'), path: '/cong-dong?category=Workshop' }
       ]
     },
     {
       title: t('contact'),
       path: '/lien-he',
       dropdown: [
-        { label: 'Tiêu chuẩn Vật liệu', path: '/vat-lieu' },
-        { label: 'Thông tin liên hệ', path: '/lien-he' },
-        { label: 'Quy trình làm việc', path: '/quy-trinh-lam-viec' },
-        { label: 'Chính sách thanh toán', path: '/chinh-sach-thanh-toan' },
-        { label: 'Chính sách bảo hành', path: '/chinh-sach-bao-hanh' },
-        { label: 'Chính sách vận chuyển & lắp đặt', path: '/chinh-sach-van-chuyen' },
-        { label: 'Xưởng sản xuất Nội thất (Quận 12)', path: 'https://maps.app.goo.gl/eFUALjGezoPBD8y46' },
-        { label: 'Cửa hàng Nội thất (Bình Dương)', path: 'https://maps.app.goo.gl/wPNMErQWShXnE1iz5' }
+        { label: t('cntMaterials'), path: '/vat-lieu' },
+        { label: t('cntInfo'), path: '/lien-he' },
+        { label: t('cntWorkflow'), path: '/quy-trinh-lam-viec' },
+        { label: t('cntPayment'), path: '/chinh-sach-thanh-toan' },
+        { label: t('cntWarranty'), path: '/chinh-sach-bao-hanh' },
+        { label: t('cntShipping'), path: '/chinh-sach-van-chuyen' },
+        { label: t('cntFactory'), path: 'https://maps.app.goo.gl/eFUALjGezoPBD8y46' },
+        { label: t('cntShowroom'), path: 'https://maps.app.goo.gl/wPNMErQWShXnE1iz5' }
       ]
     }
   ];
@@ -179,50 +179,22 @@ export const Header = () => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className={`absolute top-full bg-white shadow-2xl border border-wood/5 rounded-sm overflow-hidden ${item.isMegaMenu ? '-left-64 w-[850px]' : 'left-0 w-[280px]'}`}
+                      className={`absolute top-full bg-white shadow-2xl border border-wood/5 rounded-sm overflow-hidden ${item.isMegaMenu ? 'left-0 w-[520px]' : 'left-0 w-[280px]'}`}
                     >
                       {item.isMegaMenu ? (
-                        <div className="flex p-8">
-                          <div className="w-1/2 pr-8 border-r border-wood/10">
-                            <h3 className="text-[10px] font-bold uppercase tracking-widest text-wood/40 mb-6">{t('byCollection')}</h3>
-                            <div className="space-y-4">
-                              {[
-                                { name: 'Amberglow', code: 'AMB', desc: 'Sắc hạ rực rỡ' },
-                                { name: 'Woodland', code: 'WDL', desc: 'Hơi thở rừng sâu' },
-                                { name: 'Cosmic', code: 'CSM', desc: 'Sắc đen huyền bí' },
-                                { name: 'Aether', code: 'AET', desc: 'Ấm áp tinh tế' },
-                                { name: 'Aura', code: 'AUR', desc: 'Nắng sớm nhẹ nhàng' }
-                              ].map(col => (
-                                <Link 
-                                  key={col.code} 
-                                  href={`/san-pham?range=${col.code}`}
-                                  onClick={() => setActiveDropdown(null)}
-                                  className="group flex items-center justify-between p-3 rounded-lg hover:bg-ivory transition-colors"
-                                >
-                                  <div>
-                                    <div className="font-serif text-lg text-wood group-hover:text-maroon transition-colors">{col.name}</div>
-                                    <div className="text-[11px] text-wood/50 font-sans">{col.desc}</div>
-                                  </div>
-                                  <div className="w-8 h-px bg-maroon/0 group-hover:bg-maroon transition-all duration-300"></div>
-                                </Link>
-                              ))}
-                            </div>
-                          </div>
-                          
-                          <div className="w-1/2 pl-8">
-                            <h3 className="text-[10px] font-bold uppercase tracking-widest text-wood/40 mb-6">{t('byProductLine')}</h3>
-                            <div className="grid grid-cols-2 gap-x-4 gap-y-2">
-                              {item.dropdown.map((subItem) => (
-                                <Link
-                                  key={subItem.label}
-                                  href={subItem.path}
-                                  onClick={() => setActiveDropdown(null)}
-                                  className="block px-3 py-2 text-[13px] text-wood/80 hover:bg-ivory hover:text-maroon transition-all rounded-md"
-                                >
-                                  {subItem.label}
-                                </Link>
-                              ))}
-                            </div>
+                        <div className="p-8">
+                          <h3 className="text-[10px] font-bold uppercase tracking-widest text-wood/40 mb-6">{t('byProductLine')}</h3>
+                          <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+                            {item.dropdown.map((subItem) => (
+                              <Link
+                                key={subItem.label}
+                                href={subItem.path}
+                                onClick={() => setActiveDropdown(null)}
+                                className="block px-3 py-2.5 text-[13px] text-wood/80 hover:bg-ivory hover:text-maroon transition-all rounded-md"
+                              >
+                                {subItem.label}
+                              </Link>
+                            ))}
                           </div>
                         </div>
                       ) : (
@@ -361,9 +333,26 @@ export const Header = () => {
                   <div className="font-extrabold text-maroon text-xl tracking-tighter leading-none">HAPPY FURNITURE</div>
                   <div className="text-[9px] uppercase tracking-[3px] text-wood/60 font-semibold">{t('menuSubtitle')}</div>
                 </div>
-                <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-wood/5 rounded-full transition-colors -mt-2 -mr-2">
-                  <X className="w-6 h-6" />
-                </button>
+                <div className="flex items-center gap-3 -mt-1 -mr-2">
+                  <div className="flex items-center gap-2 text-[11px] font-bold tracking-widest text-wood px-2 py-1 bg-ivory rounded-md">
+                    <button 
+                      onClick={() => { handleLocaleChange('vi'); setIsMobileMenuOpen(false); }}
+                      className={`transition-all ${locale === 'vi' ? 'text-maroon font-extrabold' : 'opacity-50'}`}
+                    >
+                      VI
+                    </button>
+                    <span className="w-px h-3 bg-wood/20"></span>
+                    <button 
+                      onClick={() => { handleLocaleChange('en'); setIsMobileMenuOpen(false); }}
+                      className={`transition-all ${locale === 'en' ? 'text-maroon font-extrabold' : 'opacity-50'}`}
+                    >
+                      EN
+                    </button>
+                  </div>
+                  <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-wood/5 rounded-full transition-colors">
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-8">
@@ -377,73 +366,31 @@ export const Header = () => {
                       {item.title}
                     </Link>
                     
-                    {item.isMegaMenu ? (
-                      <div className="pl-2 space-y-8">
-                        <div>
-                          <div className="text-[10px] font-bold uppercase tracking-widest text-wood/40 mb-4 border-b border-wood/5 pb-2">{t('byCollection')}</div>
-                          <div className="grid gap-4">
-                            {[
-                              { name: 'Amberglow', code: 'AMB' },
-                              { name: 'Woodland', code: 'WDL' },
-                              { name: 'Cosmic', code: 'CSM' },
-                              { name: 'Aether', code: 'AET' },
-                              { name: 'Aura', code: 'AUR' }
-                            ].map(col => (
-                              <Link 
-                                key={col.code} 
-                                href={`/san-pham?range=${col.code}`} 
-                                onClick={() => setIsMobileMenuOpen(false)} 
-                                className="text-xl font-serif font-bold text-wood hover:text-maroon flex items-center gap-2"
-                              >
-                                {col.name}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                        
-                        <div>
-                          <div className="text-[10px] font-bold uppercase tracking-widest text-wood/40 mb-4 border-b border-wood/5 pb-2">{t('byProductLine')}</div>
-                          <div className="grid gap-4">
-                            {item.dropdown.map((subItem) => (
-                              <Link 
-                                key={subItem.label} 
-                                href={subItem.path} 
-                                onClick={() => setIsMobileMenuOpen(false)} 
-                                className="text-lg font-medium text-wood/80 hover:text-maroon"
-                              >
-                                {subItem.label}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="grid gap-4 pl-2">
-                        {item.dropdown.map((subItem) => (
-                          subItem.path.startsWith('http') ? (
-                            <a 
-                              key={subItem.label} 
-                              href={subItem.path}
-                              target="_blank"
-                              rel="noreferrer"
-                              onClick={() => setIsMobileMenuOpen(false)}
-                              className="text-lg font-medium text-wood/80 hover:text-maroon"
-                            >
-                              {subItem.label}
-                            </a>
-                          ) : (
-                            <Link 
-                              key={subItem.label} 
-                              href={subItem.path} 
-                              onClick={() => setIsMobileMenuOpen(false)}
-                              className="text-lg font-medium text-wood/80 hover:text-maroon"
-                            >
-                              {subItem.label}
-                            </Link>
-                          )
-                        ))}
-                      </div>
-                    )}
+                    <div className="grid gap-4 pl-2">
+                      {item.dropdown.map((subItem) => (
+                        subItem.path.startsWith('http') ? (
+                          <a 
+                            key={subItem.label} 
+                            href={subItem.path}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-lg font-medium text-wood/80 hover:text-maroon"
+                          >
+                            {subItem.label}
+                          </a>
+                        ) : (
+                          <Link 
+                            key={subItem.label} 
+                            href={subItem.path} 
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-lg font-medium text-wood/80 hover:text-maroon"
+                          >
+                            {subItem.label}
+                          </Link>
+                        )
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -569,7 +516,6 @@ export const Header = () => {
                     {cart.map((item) => (
                       <div key={item.id} className="flex gap-4 group">
                         <div className="w-20 h-20 rounded-lg overflow-hidden border border-wood/5 shrink-0 relative aspect-square">
-                          {/* NÉN ẢNH SIÊU TỐC VỚI THUMBNAIL CHO NGĂN KÉO */}
                           <OptimizedImage src={item.image} alt={item.name} tier="thumbnail" aspectRatio="square" className="w-full h-full" />
                         </div>
                         <div className="flex-1 min-w-0">

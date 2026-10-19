@@ -1,12 +1,10 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { ArrowRight, ShieldCheck, Truck, Factory, Users, Award, CheckCircle2, Zap, Star, Clock, Phone, Download, Check, ChevronDown } from 'lucide-react';
+import { motion } from 'motion/react';
+import { Link } from '@/routing';
+import { ArrowRight, ShieldCheck, Factory, Users, Award, Zap, Star, Download, ChevronDown } from 'lucide-react';
 import { OptimizedImage } from '@/components/OptimizedImage';
-import { RangeSelectionCard } from '@/components/RangeSelectionCard';
 import { FaqSection } from '@/components/FaqSection';
 import { QualityStandards } from '@/components/QualityStandards';
 import { ProductCategories } from '@/components/ProductCategories';
@@ -20,98 +18,8 @@ export const HOME_IMAGES = {
   uspWorkshop: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_002.webp'
 };
 
-const DEMO_IMAGES = {
-  ranges: {
-    amb: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=800',
-    wdl: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=800',
-    csm: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800',
-    aet: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=800',
-    aur: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=800'
-  }
-};
-
-const HomeCollections = () => {
-  const t = useTranslations('HomeMain');
-  const router = useRouter();
-  
-  const RANGES = [
-    { id: 'amb', name: 'Amberglow', code: 'AMB', story: t('ranges.amb') },
-    { id: 'wdl', name: 'Woodland', code: 'WDL', story: t('ranges.wdl') },
-    { id: 'csm', name: 'Cosmic', code: 'CSM', story: t('ranges.csm') },
-    { id: 'aet', name: 'Aether', code: 'AET', story: t('ranges.aet') },
-    { id: 'aur', name: 'Aura', code: 'AUR', story: t('ranges.aur') }
-  ];
-
-  const [selectedRange, setSelectedRange] = useState<string>(RANGES[0].id);
-  const storyRef = useRef<HTMLDivElement>(null);
-
-  const handleSelectRange = (id: string) => {
-    setSelectedRange(id);
-    setTimeout(() => {
-      storyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 150);
-  };
-
-  return (
-    <section className="py-24 bg-ivory/50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-serif text-wood mb-4">{t('colTitle')}</h2>
-          <p className="text-wood/60 max-w-2xl mx-auto">{t('colDesc')}</p>
-        </div>
-        
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-8 mb-16">
-          {RANGES.map((r) => (
-            <RangeSelectionCard
-              key={r.id} id={r.id} name={r.name} code={r.code}
-              image={DEMO_IMAGES.ranges[r.id as keyof typeof DEMO_IMAGES.ranges]}
-              isActive={selectedRange === r.id}
-              className="w-full" imageClassName="w-full aspect-[4/5]"
-              onClick={() => handleSelectRange(r.id)}
-            />
-          ))}
-        </div>
-
-        <div ref={storyRef} className="scroll-mt-24">
-        <AnimatePresence mode="wait">
-          <motion.div 
-            key={selectedRange}
-            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.5 }}
-            className="bg-white p-8 md:p-16 rounded-xl shadow-sm border border-wood/5 flex flex-col md:flex-row gap-12 items-center"
-          >
-            <div className="w-full md:w-5/12 aspect-[4/5] relative rounded-lg overflow-hidden shadow-xl">
-               <OptimizedImage src={DEMO_IMAGES.ranges[selectedRange as keyof typeof DEMO_IMAGES.ranges]} alt={selectedRange} aspectRatio="square" className="w-full h-full object-cover" />
-            </div>
-              <div className="w-full md:w-7/12 space-y-8">
-                <div className="flex items-center gap-4">
-                    <span className="text-xs uppercase tracking-[0.3em] font-bold text-maroon">{RANGES.find(r => r.id === selectedRange)?.code}</span>
-                    <span className="flex-1 h-px bg-wood/10"></span>
-                </div>
-                <h3 className="text-5xl md:text-6xl font-serif text-wood">{RANGES.find(r => r.id === selectedRange)?.name}</h3>
-                <p className="text-wood/70 leading-relaxed text-lg font-serif italic border-l-4 border-maroon pl-6">
-                  &quot;{RANGES.find(r => r.id === selectedRange)?.story}&quot;
-                </p>
-                
-                <div className="pt-4">
-                  <button 
-                    onClick={() => router.push(`/san-pham?range=${RANGES.find(r => r.id === selectedRange)?.code}`)}
-                    className="bg-wood text-white px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-maroon transition-colors"
-                  >
-                    {t('colExplore')} {RANGES.find(r => r.id === selectedRange)?.name}
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 export default function HomeClient() {
   const t = useTranslations('HomeMain');
-  const SHOW_TEAM_SECTION = false;
   
   const workshopPhotos = [
     { url: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/manufacturer/interior_manufacturer_001.webp', caption: t('caps.ws1') },
@@ -221,25 +129,17 @@ export default function HomeClient() {
             </motion.p>
 
             <motion.div variants={itemVariants}>
-              {/* NÚT ĐƯỢC TỐI ƯU VỚI LAYERING ANIMATION */}
               <Link href="/san-pham" className="group relative inline-flex items-center justify-center border border-white/80 hover:border-maroon transition-colors duration-500 shadow-xl overflow-hidden rounded-sm">
-                
-                {/* LỚP 1: Nền kính mờ - Bắt đầu trong suốt, từ từ mờ lên sau 0.8s */}
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 1, delay: 0.8 }}
                   className="absolute inset-0 bg-white/10 backdrop-blur-sm transition-opacity duration-500 group-hover:opacity-0"
                 />
-                
-                {/* LỚP 2: Nền đỏ Maroon - Chìm dưới đáy, chỉ nổi lên khi Hover */}
                 <div className="absolute inset-0 bg-maroon opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                
-                {/* LỚP 3: Nội dung Text luôn nằm trên cùng */}
                 <span className="relative z-10 px-10 py-4 text-white font-bold tracking-[0.2em] text-[11px] uppercase pointer-events-none">
                   {t('heroBtn')}
                 </span>
-                
               </Link>
             </motion.div>
           </motion.div>
@@ -297,16 +197,13 @@ export default function HomeClient() {
       </section>
 
       <section className="bg-maroon py-16 md:py-20 relative overflow-hidden">
-        {/* Nới rộng không gian: Đổi max-w-4xl thành max-w-5xl */}
         <div className="max-w-5xl mx-auto px-6 relative z-10 flex flex-col items-center text-center gap-10">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-3xl">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4 leading-tight">{t('catTitle')}</h2>
             <p className="text-white/70 text-lg">{t('catDesc')}</p>
           </motion.div>
 
-          {/* Dàn layout: Đổi sm:flex-row thành lg:flex-row để các nút tự động chia đều */}
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="flex flex-col lg:flex-row flex-wrap justify-center items-center gap-4 w-full">
-            
             <Link href="/san-pham" 
                   className="w-full lg:w-auto bg-white text-maroon px-8 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-wood hover:text-white transition-all flex items-center justify-center gap-3 shadow-xl">
               <Download className="w-4 h-4 shrink-0" /> {t('catBtn1')}
@@ -321,7 +218,6 @@ export default function HomeClient() {
                   className="w-full lg:w-auto bg-wood border border-wood text-ivory px-8 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-white hover:text-maroon hover:border-white transition-all flex items-center justify-center gap-3">
               <Star className="w-4 h-4 shrink-0" /> {t('catBtn3')}
             </Link>
-
           </motion.div>
         </div>
       </section>
@@ -368,7 +264,7 @@ export default function HomeClient() {
               </div>
               <p className="text-wood/70 leading-relaxed text-lg">{t('philDesc')}</p>
               <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="relative rounded-2xl overflow-hidden shadow-2xl border-8 border-white h-[400px] w-full">
-                <OptimizedImage src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1000&auto=format&fit=crop" alt="Triết lý thiết kế nội thất tại Happy Furniture" className="w-full h-full" priority={true} />
+                <OptimizedImage src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1000&auto=format&fit=crop" alt={`${t('philTag')} - Happy Furniture`} className="w-full h-full" priority={true} />
                 <div className="absolute inset-0 bg-maroon/10 mix-blend-multiply" />
               </motion.div>
             </motion.div>
@@ -431,8 +327,6 @@ export default function HomeClient() {
           </div>
         </div>
       </section>
-
-      <HomeCollections />
 
       <section className="pt-32 pb-12 bg-ivory relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
