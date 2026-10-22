@@ -4,7 +4,7 @@ import React from 'react';
 import { Link, useRouter } from '@/routing';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { OptimizedImage } from '@/components/OptimizedImage';
-import { Target, Phone, ArrowLeft, ShieldCheck, Zap, Award, Gem, HardHat, Factory } from 'lucide-react';
+import { Target, ArrowLeft, ShieldCheck, Zap, Award, Gem, HardHat, Factory, type LucideIcon } from 'lucide-react';
 import { QualityStandards } from '@/components/QualityStandards';
 import { FaqSection } from '@/components/FaqSection';
 import { QuickLeadCTA } from '@/components/QuickLeadCTA';
@@ -24,7 +24,16 @@ const Counter = ({ to, delay }: { from: number; to: number | string; delay: numb
   );
 };
 
-const SERVICE_CONFIGS = [
+interface ServiceConfig {
+  slug: string;
+  image: string;
+  technicalImage: string;
+  metricValues: [number, number, number];
+  calloutCoords: [{ x: number; y: number }, { x: number; y: number }];
+  featureIcons: [LucideIcon, LucideIcon, LucideIcon];
+}
+
+const SERVICE_CONFIGS: ServiceConfig[] = [
   {
     slug: 'can-ho-cho-thue',
     image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1200',
@@ -65,7 +74,7 @@ const SERVICE_CONFIGS = [
     calloutCoords: [{ x: 30, y: 40 }, { x: 70, y: 55 }],
     featureIcons: [Factory, ShieldCheck, Award]
   }
-] as const;
+];
 
 export default function ServiceDetailClient({ slug }: { slug: string }) {
   const router = useRouter();
@@ -119,7 +128,7 @@ export default function ServiceDetailClient({ slug }: { slug: string }) {
       <div className="max-w-7xl mx-auto px-6 mb-12 mt-4 relative z-20">
         <button 
           onClick={() => router.push('/dich-vu')}
-          className="flex items-center gap-2 text-wood/60 hover:text-maroon font-semibold tracking-[0.2em] uppercase text-xs transition-colors"
+          className="flex items-center gap-2 text-wood/60 hover:text-maroon font-semibold tracking-[0.2em] uppercase text-xs transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" /> {t('breadcrumb')}
         </button>
