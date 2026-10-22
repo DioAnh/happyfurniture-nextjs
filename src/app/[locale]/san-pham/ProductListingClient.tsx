@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { Link, useRouter } from '@/routing';
 import { motion, AnimatePresence } from 'motion/react';
 import { Filter, X, ChevronRight, Search, SlidersHorizontal } from 'lucide-react';
