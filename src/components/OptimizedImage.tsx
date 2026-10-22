@@ -6,12 +6,11 @@ import Image from 'next/image';
 interface OptimizedImageProps {
   src: string;
   alt: string;
-  className?: string; // Class cho khung bọc ngoài
-  imgClassName?: string; // Class trực tiếp cho thẻ Image
+  className?: string;
+  imgClassName?: string;
   aspectRatio?: 'square' | 'video' | 'portrait' | 'auto';
   priority?: boolean;
-  // Bổ sung cấp độ 'card' cho mức 50%
-  tier?: 'thumbnail' | 'card' | 'detail' | 'original'; 
+  tier?: 'thumbnail' | 'card' | 'detail' | 'original';
 }
 
 export const OptimizedImage = ({ 
@@ -21,18 +20,19 @@ export const OptimizedImage = ({
   imgClassName = '',
   aspectRatio = 'auto',
   priority = false,
-  tier = 'card' // Mặc định ở mức 50%
+  tier = 'card'
 }: OptimizedImageProps) => {
   const [isLoading, setIsLoading] = useState(true);
+  // Nếu Vercel Image Optimization hết quota hoặc lỗi -> tự động fallback về ảnh gốc trực tiếp từ Supabase CDN
+  const [fallbackToOriginal, setFallbackToOriginal] = useState(false);
 
   const aspectClass = 
     aspectRatio === 'square' ? 'aspect-square' : 
     aspectRatio === 'video' ? 'aspect-video' : 
     aspectRatio === 'portrait' ? 'aspect-[3/4]' : '';
 
-  // CHIẾN LƯỢC NÉN ẢNH MỚI: Thumbnail 20%, Card 50%, Detail 80%, Zoom 100%
   const quality = tier === 'thumbnail' ? 20 : (tier === 'card' ? 50 : (tier === 'detail' ? 80 : 100));
-  const isUnoptimized = tier === 'original';
+  const isUnoptimized = tier === 'original' || fallbackToOriginal;
 
   const sizes = tier === 'thumbnail' 
     ? '(max-width: 768px) 20vw, 10vw' 
@@ -47,7 +47,6 @@ export const OptimizedImage = ({
   }
 
   return (
-    // Thêm transform: 'translateZ(0)' để ép trình duyệt cắt viền bo tròn tuyệt đối
     <div className={`relative overflow-hidden w-full h-full ${aspectClass} ${className}`} style={{ transform: 'translateZ(0)' }}>
       <Image
         src={src}
@@ -64,6 +63,12 @@ export const OptimizedImage = ({
         `}
         style={{ borderRadius: 'inherit' }}
         onLoad={() => setIsLoading(false)}
+        onError={() => {
+          if (!fallbackToOriginal) {
+            setFallbackToOriginal(true);
+            setIsLoading(false);
+          }
+        }}
       />
     </div>
   );
