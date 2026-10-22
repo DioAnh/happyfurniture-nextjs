@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { Link, useRouter } from '@/routing';
 import { motion, AnimatePresence } from 'motion/react';
 import { Filter, X, ChevronRight, Search, SlidersHorizontal } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
@@ -117,6 +117,7 @@ function ProductListingContent() {
       price: repVariant.price,
       old_price: repVariant.old_price,
       size: repVariant.size,
+      dimensions: repVariant.dimensions,
       material_code: repVariant.material_code,
       images: imagesToDisplay,
       totalVariants: variants.length,
@@ -449,6 +450,14 @@ function ProductListingContent() {
                           <div className="flex items-center gap-3 mb-3">
                             <span className="text-[10px] tracking-[0.1em] font-semibold text-wood/40">
                               {product.design_code === 'MIN' ? 'MINIMAL' : 'MODERN'}
+                              {product.size && (
+                              <>
+                                <span className="w-1 h-px bg-wood/20"></span>
+                                <span className="text-[10px] tracking-wider font-semibold text-wood/60">
+                                  Size {product.size} {product.dimensions ? `(${product.dimensions}mm)` : ''}
+                                </span>
+                              </>
+                            )}
                             </span>
                             {product.old_price && (
                               <>

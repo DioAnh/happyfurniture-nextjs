@@ -3,12 +3,21 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Users, ArrowRight, ChevronRight, Mail, PenTool, LayoutTemplate, Hammer, BookOpen, CalendarDays, Sofa, Building2 } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/routing';
 import { OptimizedImage } from '@/components/OptimizedImage';
+import { useLocale, useTranslations } from 'next-intl';
 
-const CATEGORIES = ['Tất cả', 'Thiết kế', 'Thi công', 'Sản xuất', 'Kiến thức', 'Sự kiện', 'Nội thất lẻ', 'Dự án'];
+const CATEGORY_MAP = [
+  { dbValue: 'Tất cả', labelKey: 'all' },
+  { dbValue: 'Thiết kế', labelKey: 'design' },
+  { dbValue: 'Thi công', labelKey: 'build' },
+  { dbValue: 'Sản xuất', labelKey: 'production' },
+  { dbValue: 'Kiến thức', labelKey: 'knowledge' },
+  { dbValue: 'Sự kiện', labelKey: 'event' },
+  { dbValue: 'Nội thất lẻ', labelKey: 'retail' },
+  { dbValue: 'Dự án', labelKey: 'project' }
+] as const;
 
-// Đưa hàm getIconForType trực tiếp vào đây để tránh lỗi import
 const getIconForType = (type: string) => {
   switch (type) {
     case 'Thiết kế': return <PenTool className="w-3 h-3" />;
@@ -23,11 +32,18 @@ const getIconForType = (type: string) => {
 };
 
 export default function CommunityClient({ initialPosts }: { initialPosts: any[] }) {
+  const t = useTranslations('CommunityPage');
+  const locale = useLocale();
   const [activeCategory, setActiveCategory] = useState('Tất cả');
 
   const filteredPosts = activeCategory === 'Tất cả' 
     ? initialPosts 
     : initialPosts.filter(post => post.type === activeCategory);
+
+  const translateType = (dbType: string) => {
+    const found = CATEGORY_MAP.find(c => c.dbValue === dbType);
+    return found ? t(`categories.${found.labelKey}`) : dbType;
+  };
 
   return (
     <div className="bg-ivory min-h-screen">
@@ -36,10 +52,10 @@ export default function CommunityClient({ initialPosts }: { initialPosts: any[] 
         <div className="absolute inset-0 opacity-20">
           <OptimizedImage 
             src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2000&auto=format&fit=crop" 
-            alt="Nội thất và thiết kế không gian làm việc cộng đồng" 
+            alt={t('title')} 
             aspectRatio="video"
             className="w-full h-full"
-            priority={true} // Bật ưu tiên tải ảnh LCP
+            priority={true}
           />
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
@@ -49,7 +65,7 @@ export default function CommunityClient({ initialPosts }: { initialPosts: any[] 
             className="inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full mb-6 border border-white/20"
           >
             <Users className="w-4 h-4 text-maroon" />
-            <span className="text-[11px] font-bold uppercase tracking-widest text-white">Happy Furniture Community</span>
+            <span className="text-[11px] font-bold uppercase tracking-widest text-white">{t('badge')}</span>
           </motion.div>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
@@ -57,7 +73,7 @@ export default function CommunityClient({ initialPosts }: { initialPosts: any[] 
             transition={{ delay: 0.1 }}
             className="text-[42px] md:text-[56px] font-serif font-bold mb-6 leading-tight"
           >
-            Cộng Đồng & Kiến Thức
+            {t('title')}
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -65,7 +81,7 @@ export default function CommunityClient({ initialPosts }: { initialPosts: any[] 
             transition={{ delay: 0.2 }}
             className="text-white/70 max-w-2xl mx-auto text-lg leading-relaxed"
           >
-            Không chỉ là đơn vị thiết kế và thi công, Happy Furniture còn là nơi giao lưu, học hỏi và chia sẻ đam mê nội thất dành cho các nhà thiết kế trẻ, kiến trúc sư và đặc biệt là các gia chủ đang chuẩn bị xây dựng tổ ấm.
+            {t('desc')}
           </motion.p>
         </div>
       </section>
@@ -74,17 +90,17 @@ export default function CommunityClient({ initialPosts }: { initialPosts: any[] 
       <section className="py-20 max-w-7xl mx-auto px-6">
         {/* Filter */}
         <div className="flex flex-wrap justify-center gap-4 mb-16">
-          {CATEGORIES.map((category) => (
+          {CATEGORY_MAP.map((cat) => (
             <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
+              key={cat.dbValue}
+              onClick={() => setActiveCategory(cat.dbValue)}
               className={`px-6 py-3 rounded-full text-[12px] font-bold uppercase tracking-widest transition-all ${
-                activeCategory === category 
+                activeCategory === cat.dbValue 
                   ? 'bg-maroon text-white shadow-lg shadow-maroon/20' 
                   : 'bg-white text-wood/60 hover:bg-ivory hover:text-maroon border border-wood/10'
               }`}
             >
-              {category}
+              {t(`categories.${cat.labelKey}`)}
             </button>
           ))}
         </div>
@@ -110,14 +126,14 @@ export default function CommunityClient({ initialPosts }: { initialPosts: any[] 
                 {post.type && (
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-2">
                     <span className="text-maroon">{getIconForType(post.type)}</span>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-wood">{post.type}</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-wood">{translateType(post.type)}</span>
                   </div>
                 )}
               </div>
               
               <div className="p-8 flex flex-col flex-1">
                 <div className="flex items-center gap-4 text-[11px] text-wood/40 uppercase tracking-widest mb-4 font-bold">
-                  <span>{new Date(post.created_at).toLocaleDateString('vi-VN')}</span>
+                  <span>{new Date(post.created_at).toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-US')}</span>
                   <span className="w-1 h-1 rounded-full bg-wood/20" />
                   <span>{post.author}</span>
                 </div>
@@ -134,7 +150,7 @@ export default function CommunityClient({ initialPosts }: { initialPosts: any[] 
                   href={`/cong-dong/${post.slug}`} 
                   className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-maroon group-hover:gap-4 transition-all mt-auto"
                 >
-                  Đọc tiếp <ChevronRight className="w-4 h-4" />
+                  {t('readMore')} <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
             </motion.article>
@@ -149,15 +165,15 @@ export default function CommunityClient({ initialPosts }: { initialPosts: any[] 
             <Mail className="w-8 h-8 text-maroon" />
           </div>
           <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">
-            Đăng ký nhận bản tin nội thất
+            {t('nlTitle')}
           </h2>
           <p className="text-white/70 mb-10 text-lg">
-            Đừng bỏ lỡ những xu hướng thiết kế mới nhất, các bài viết chuyên sâu và thông tin về các buổi workshop sắp tới từ Happy Furniture.
+            {t('nlDesc')}
           </p>
           <form className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto" onSubmit={(e) => e.preventDefault()}>
             <input 
               type="email" 
-              placeholder="Nhập địa chỉ email của bạn..." 
+              placeholder={t('nlPlaceholder')} 
               className="flex-1 bg-white/5 border border-white/10 rounded-full px-6 py-4 text-white placeholder:text-white/40 focus:outline-none focus:border-maroon transition-colors"
               required
             />
@@ -165,7 +181,7 @@ export default function CommunityClient({ initialPosts }: { initialPosts: any[] 
               type="submit"
               className="bg-maroon text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[12px] hover:bg-white hover:text-maroon transition-all flex items-center justify-center gap-2 shrink-0"
             >
-              Đăng ký ngay <ArrowRight className="w-4 h-4" />
+              {t('nlBtn')} <ArrowRight className="w-4 h-4" />
             </button>
           </form>
         </div>

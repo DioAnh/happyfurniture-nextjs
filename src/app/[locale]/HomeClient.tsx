@@ -9,6 +9,7 @@ import { FaqSection } from '@/components/FaqSection';
 import { QualityStandards } from '@/components/QualityStandards';
 import { ProductCategories } from '@/components/ProductCategories';
 import { useTranslations } from 'next-intl';
+import { QuickLeadCTA } from '@/components/QuickLeadCTA';
 
 export const HOME_IMAGES = {
   heroBanner: 'https://hkrgketabjgrmtjwntta.supabase.co/storage/v1/object/public/website-images/main-pages/noi-that-phong-ngu-mdf-melamine-thuan-an-binh-duong.webp',
@@ -153,6 +154,8 @@ export default function HomeClient() {
         </motion.div>
       </section>
 
+      
+
       <section className="py-24 bg-white text-center">
         <div className="max-w-4xl mx-auto px-6">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
@@ -166,6 +169,8 @@ export default function HomeClient() {
           </motion.div>
         </div>
       </section>
+
+      <QuickLeadCTA />
 
       <section className="py-24 bg-ivory/50 border-t border-wood/5 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">

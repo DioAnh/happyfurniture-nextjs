@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, ArrowRight, Download } from 'lucide-react';
 import { OptimizedImage } from '@/components/OptimizedImage';
+import { QuickLeadCTA } from '@/components/QuickLeadCTA';
 
 const DUMMY_PROJECTS = [
   { id: 'benhill-thuan-an-01', title: 'Chung cư BenHill Thuận An - Căn hộ 01 (Japandi)', category: 'Căn hộ chung cư', location: 'Thuận An, Bình Dương', thumbnail: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1200', description: 'Thiết kế tối ưu cho căn hộ 2 phòng ngủ.', year: '2023', area: '65m2' },
@@ -77,6 +78,10 @@ export default function ProjectsClient() {
           </div>
         </div>
       </section>
+
+      <QuickLeadCTA />
+
+      
     </div>
   );
 }

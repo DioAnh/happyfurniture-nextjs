@@ -3,27 +3,30 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Search, Ruler, Lightbulb, Calculator, PenTool, FileCheck, Wallet, Factory, Truck, CheckCircle2, ArrowRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export default function WorkflowClient() {
+  const t = useTranslations('WorkflowPage');
+
   const steps = [
-    { id: '01', title: 'Thấu hiểu', desc: 'Tiếp nhận yêu cầu, phân tích thói quen, nghề nghiệp và ngân sách dự kiến của gia chủ.', icon: Search, color: 'bg-blue-50 text-blue-600' },
-    { id: '02', title: 'Khảo sát hiện trạng', desc: 'Đo đạc thực tế chính xác và phân tích luồng di chuyển, ánh sáng tại công trình.', icon: Ruler, color: 'bg-orange-50 text-orange-600' },
-    { id: '03', title: 'Ý tưởng sơ phác', desc: 'Lên concept tổng quan và các giải pháp sơ bộ về mặt bằng công năng.', icon: Lightbulb, color: 'bg-yellow-50 text-yellow-600' },
-    { id: '04', title: 'Báo giá sơ bộ', desc: 'Cung cấp dự toán ngân sách và điều chỉnh phương án cho phù hợp với chủ nhà.', icon: Calculator, color: 'bg-green-50 text-green-600' },
-    { id: '05', title: 'Thiết kế 3D', desc: 'Đồng kiến tạo cùng gia chủ để chốt phương án 3D và bản vẽ kỹ thuật chi tiết.', icon: PenTool, color: 'bg-purple-50 text-purple-600' },
-    { id: '06', title: 'Báo giá chi tiết', desc: 'Minh bạch, không phát sinh, chi tiết đến từng phụ kiện và vật liệu sử dụng.', icon: FileCheck, color: 'bg-cyan-50 text-cyan-600' },
-    { id: '07', title: 'Đặt cọc sản xuất', desc: 'Tạm ứng 50% để xưởng đặt ván (Ba Thanh) và chuẩn bị nguyên vật liệu sản xuất.', icon: Wallet, color: 'bg-maroon/5 text-maroon' },
-    { id: '08', title: 'Gia công tại xưởng', desc: 'Sản xuất trực tiếp tại xưởng Quận 12 trong 7 ngày với tiêu chuẩn kỹ thuật cao.', icon: Factory, color: 'bg-slate-50 text-slate-600' },
-    { id: '09', title: 'Vận chuyển & Lắp đặt', desc: 'Giao hàng và thi công hoàn thiện tại công trình trong vòng 7 ngày tiếp theo.', icon: Truck, color: 'bg-indigo-50 text-indigo-600' },
-    { id: '10', title: 'Bàn giao & Bảo hành', desc: 'Nghiệm thu, vệ sinh, thanh toán 50% còn lại và kích hoạt bảo hành 1 năm.', icon: CheckCircle2, color: 'bg-emerald-50 text-emerald-600' }
+    { id: '01', title: t('s1Title'), desc: t('s1Desc'), icon: Search, color: 'bg-blue-50 text-blue-600' },
+    { id: '02', title: t('s2Title'), desc: t('s2Desc'), icon: Ruler, color: 'bg-orange-50 text-orange-600' },
+    { id: '03', title: t('s3Title'), desc: t('s3Desc'), icon: Lightbulb, color: 'bg-yellow-50 text-yellow-600' },
+    { id: '04', title: t('s4Title'), desc: t('s4Desc'), icon: Calculator, color: 'bg-green-50 text-green-600' },
+    { id: '05', title: t('s5Title'), desc: t('s5Desc'), icon: PenTool, color: 'bg-purple-50 text-purple-600' },
+    { id: '06', title: t('s6Title'), desc: t('s6Desc'), icon: FileCheck, color: 'bg-cyan-50 text-cyan-600' },
+    { id: '07', title: t('s7Title'), desc: t('s7Desc'), icon: Wallet, color: 'bg-maroon/5 text-maroon' },
+    { id: '08', title: t('s8Title'), desc: t('s8Desc'), icon: Factory, color: 'bg-slate-50 text-slate-600' },
+    { id: '09', title: t('s9Title'), desc: t('s9Desc'), icon: Truck, color: 'bg-indigo-50 text-indigo-600' },
+    { id: '10', title: t('s10Title'), desc: t('s10Desc'), icon: CheckCircle2, color: 'bg-emerald-50 text-emerald-600' }
   ];
 
   const howToSchema = {
     "@context": "https://schema.org",
     "@type": "HowTo",
-    "name": "Quy trình thiết kế và thi công nội thất trọn gói - Happy Furniture",
-    "description": "Hướng dẫn chi tiết 10 bước từ khảo sát, thiết kế 3D đến gia công tại xưởng và lắp đặt hoàn thiện nội thất nhà ở.",
-    "totalTime": "P20D", // Nghĩa là quy trình mất khoảng 20 ngày (Period 20 Days)
+    "name": t('schemaName'),
+    "description": t('schemaDesc'),
+    "totalTime": "P20D",
     "step": steps.map((step, index) => ({
       "@type": "HowToStep",
       "position": index + 1,
@@ -34,8 +37,6 @@ export default function WorkflowClient() {
 
   return (
     <div className="bg-ivory min-h-screen py-20">
-
-      {/* CHÈN MÃ SCHEMA VÔ HÌNH VÀO ĐÂY */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
@@ -43,13 +44,13 @@ export default function WorkflowClient() {
       
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-20">
-          <h2 className="text-maroon font-bold uppercase tracking-[4px] text-xs mb-4">Quy trình chuyên nghiệp</h2>
+          <h2 className="text-maroon font-bold uppercase tracking-[4px] text-xs mb-4">{t('tag')}</h2>
           <h1 className="text-[32px] md:text-[50px] font-serif font-bold text-wood leading-tight">
-            Đồng hành cùng Happy Furniture <br />
-            <span className="italic text-maroon">Kiến tạo không gian sống</span>
+            {t('title1')} <br />
+            <span className="italic text-maroon">{t('title2')}</span>
           </h1>
           <p className="mt-6 text-wood/60 max-w-2xl mx-auto">
-            Quy trình làm việc minh bạch, gãy gọn giúp khách hàng hoàn toàn an tâm về tiến độ và chất lượng sản phẩm.
+            {t('desc')}
           </p>
         </div>
 
@@ -66,7 +67,7 @@ export default function WorkflowClient() {
                 className={`relative flex flex-col lg:flex-row items-center gap-8 lg:gap-20 ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
               >
                 <div className={`flex-1 w-full ${index % 2 === 0 ? 'lg:text-right' : 'lg:text-left'}`}>
-                  <div className={`bg-white p-8 rounded-2xl shadow-sm border border-wood/5 hover:border-maroon/20 transition-all group`}>
+                  <div className="bg-white p-8 rounded-2xl shadow-sm border border-wood/5 hover:border-maroon/20 transition-all group">
                     <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-6 ${step.color}`}>
                       <step.icon className="w-6 h-6" />
                     </div>
@@ -94,24 +95,24 @@ export default function WorkflowClient() {
             <Factory className="w-64 h-64" />
           </div>
           <div className="relative z-10">
-            <h3 className="text-2xl md:text-3xl font-serif font-bold mb-8">Tóm tắt tiến độ & Cam kết</h3>
+            <h3 className="text-2xl md:text-3xl font-serif font-bold mb-8">{t('summaryTitle')}</h3>
             <div className="grid md:grid-cols-3 gap-8 text-left">
               <div className="bg-white/5 p-6 rounded-xl border border-white/10">
-                <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-3">Tiến độ</h4>
-                <p className="text-sm text-white/70">Tổng thời gian từ lúc chốt 3D đến khi bàn giao: <span className="text-white font-bold">14 - 20 ngày</span>.</p>
+                <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-3">{t('sum1Title')}</h4>
+                <p className="text-sm text-white/70">{t('sum1Desc')}<span className="text-white font-bold">{t('sum1Bold')}</span>.</p>
               </div>
               <div className="bg-white/5 p-6 rounded-xl border border-white/10">
-                <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-3">Thiết kế</h4>
-                <p className="text-sm text-white/70"><span className="text-white font-bold">Miễn phí 100% thiết kế 3D</span> khi khách hàng ký hợp đồng thi công trọn gói.</p>
+                <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-3">{t('sum2Title')}</h4>
+                <p className="text-sm text-white/70"><span className="text-white font-bold">{t('sum2Bold')}</span>{t('sum2Desc')}</p>
               </div>
               <div className="bg-white/5 p-6 rounded-xl border border-white/10">
-                <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-3">Bảo hành</h4>
-                <p className="text-sm text-white/70">Bảo hành kỹ thuật <span className="text-white font-bold">12 tháng</span> và hỗ trợ bảo trì trọn đời sản phẩm.</p>
+                <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-3">{t('sum3Title')}</h4>
+                <p className="text-sm text-white/70">{t('sum3Desc1')}<span className="text-white font-bold">{t('sum3Bold')}</span>{t('sum3Desc2')}</p>
               </div>
             </div>
             <div className="mt-12">
               <a href="https://zalo.me/0909163593" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-maroon text-white px-10 py-5 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-maroon transition-all">
-                Bắt đầu dự án ngay <ArrowRight className="w-4 h-4" />
+                {t('ctaBtn')} <ArrowRight className="w-4 h-4" />
               </a>
             </div>
           </div>
