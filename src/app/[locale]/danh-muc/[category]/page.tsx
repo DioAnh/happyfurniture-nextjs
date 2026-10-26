@@ -11,7 +11,7 @@ const resolveTypeCode = (category: string): string => {
   if (category.includes('giuong-ngu')) return 'BE';
   if (category.includes('tu-dau-giuong')) return 'BS';
   if (category.includes('tu-hoc-keo')) return 'DC';
-  if (category.includes('da-nang') || category.includes('tu-kho')) return 'ST';
+  if (category.includes('tu-luu-tru') || category.includes('tu-kho')) return 'ST';
   if (category.includes('tu-giay')) return 'SC';
   if (category.includes('ke-trang-tri')) return 'SH';
   if (category.includes('ke-tivi')) return 'TV';
